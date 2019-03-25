@@ -26,21 +26,40 @@ import dtu.planning.app.TimeRegistration;
 
 public class CreateProjectSteps {
 	
-	@When("an employee creates a project")
-	public void anEmployeeCreatesAProject() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+	private PlanningApp planningApp = new PlanningApp();
+	private Project project;
+	
+	@Given("there is an internal project with name {string}")
+	public void thereIsAnInternalProjectWithName(String name) throws Exception {
+		project = new Project(name, true, planningApp.projectCount);
 	}
 
-	@Then("the project is created")
-	public void theProjectIsCreated() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+	@When("an employee creates the project")
+	public void anEmployeeCreatesTheProject() throws Exception {
+		planningApp.createProject(project);
+	}
+
+	@Then("the internal project with name {string} is created")
+	public void theInternalProjectWithNameIsCreated(String name) throws Exception {
+	    assertThat(project.getName(), is(equalTo(name)));
+	    assertThat(project.isProjectInternal(), is(equalTo(true)));
+	    assertThat(planningApp.getProjects(), hasItem(project));
+	}
+	
+	@Then("the external project with name {string} is created")
+	public void theExternalProjectWithNameIsCreated(String name) throws Exception {
+		assertThat(project.getName(), is(equalTo(name)));
+	    assertThat(project.isProjectInternal(), is(equalTo(false)));
+	    assertThat(planningApp.getProjects(), hasItem(project));
 	}
 
 	@Then("the project is given a project number")
 	public void theProjectIsGivenAProjectNumber() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+	    assertThat(project.getProjectNumber(), is(equalTo(planningApp.projectCount - 1)));
+	}
+
+	@Given("there is an external project with name {string}")
+	public void thereIsAnExternalProjectWithName(String name) throws Exception {
+		project = new Project(name, false, planningApp.projectCount);
 	}
 }

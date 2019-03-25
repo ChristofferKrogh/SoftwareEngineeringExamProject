@@ -11,7 +11,7 @@ import cucumber.api.junit.Cucumber;
 	plugin = { "html:target/cucumber/wikipedia.html"}, 
 	monochrome=true, 
 	snippets = SnippetType.CAMELCASE, 
-	glue = { "dtu.library.acceptance_tests"})
+	glue = { "dtu.planning.acceptance_tests"})
 public class AcceptanceTest {
 
 }
