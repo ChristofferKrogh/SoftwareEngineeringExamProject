@@ -8,7 +8,7 @@
 #    And no project leader is assigned to project
 #    When I assign employee as project leader
 #    Then the employee is assigned as project leader for the project
-#    
+#
 #Scenario: A project leader is assigned to a project that does not exist
 #    Given project does not exist
 #    When I assign employee as project leader
