@@ -1,8 +1,11 @@
 # Compiled class file
 *.class
 
-# Ignore target folder
+# Ignore target folder for cucumber
 target/
+
+# Bin mappe indeholder midlertidige filer
+bin/
 
 # OS
 .DS_Store
