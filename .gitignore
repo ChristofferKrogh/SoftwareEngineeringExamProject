@@ -1,8 +1,14 @@
 # Compiled class file
 *.class
 
-# Ignore target folder
+# Ignore target folder for cucumber
 target/
+
+# Bin mappe indeholder midlertidige filer
+bin/
+
+# Doc er ikke nødvendig
+doc/
 
 # OS
 .DS_Store
@@ -27,3 +33,6 @@ target/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Compiled mappe
+jml-compiled/
