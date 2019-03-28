@@ -18,6 +18,22 @@ public class Project {
 //		this.number = generateNumber();
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public boolean isProjectInternal() {
+		return this.isProjectInternal;
+	}
+	
+	public Employee getProjectLeader() {
+		return projectLeader;
+	}
+	
+	public int getProjectNumber() {
+		return number;
+	}
+	
 //	private int generateNumber() {
 //		// todo: include dato
 //	}
