@@ -7,6 +7,9 @@ target/
 # Bin mappe indeholder midlertidige filer
 bin/
 
+# Doc er ikke nødvendig
+doc/
+
 # OS
 .DS_Store
 
