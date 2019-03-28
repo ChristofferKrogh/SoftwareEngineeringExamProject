@@ -4,6 +4,9 @@
 # Ignore target folder
 target/
 
+# OS
+.DS_Store
+
 # Log file
 *.log
 
