@@ -30,44 +30,30 @@ public class AssignEmployeeToActivitySteps {
 	private PlanningApp planningApp = new PlanningApp();
 	private Activity activity;
 	private Project project;
+	private Employee projectLeader;
 	private Employee employee;
 
 	@Given("the activity exists")
 	public void theActivityExists() {
-		activity = new Activity("Some Activity", 0, 1, 2 , 3); // Insert project counter instead of hardcoded number.
-		/* Does it even make sense to make all of these checks?
-		assertThat(activity.getName(),is(equalTo("Some Activity")));
-		assertThat(activity.getExpectedStart(),is(equalTo(0)));
-		assertThat(activity.getExpectedEnd(),is(equalTo(1)));
-		assertThat(activity.getExpectedAmountOfHours(),is(equalTo(2)));
-		assertThat(activity.getAssociatedProjectNumber(),is(equalTo(3))); */
-		assertThat(activity,is(not(equalTo(null))));
+		activity = new Activity("Some Activity", 0, 1, 2 , 3); // Insert project counter instead of hardcoded number?
 	}
 
 	@Given("the project leader is project leader for the overlying project") // This does not make any sense to check this. When would the project leader as per definition not be the project leader?
 	public void theProjectLeaderIsProjectLeaderForTheOverlyingProject() {
-		employee = new Employee("John Smith", "JS");
-		project = new Project("Some project", false, 3); // Insert project counter instead of hardcoded number.
-		assertThat(project.getName(),is(equalTo("Some project")));
-		assertFalse(project.isProjectInternal());
-		assertThat(project.getProjectNumber(),is(equalTo(3)));
-		
-		// NOT DONE!
-		
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+		projectLeader = new Employee("John Smith", "JS");
+		project = new Project("Some project", false, 3); // Insert project counter instead of hardcoded number?
+		project.setProjectLeader(projectLeader);
 	}
 
 	@When("I assign an employee to the activity")
 	public void iAssignAnEmployeeToTheActivity() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+		employee = new Employee("Jane Doe","JD");
+		activity.assignEmployee(employee); // Should properly be expanded. Nothing here says who's assigning the employee.
 	}
 
 	@Then("the employee is assigned to the activity")
 	public void theEmployeeIsAssignedToTheActivity() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+		assertTrue(activity.getAssignedEmployees().contains(employee));
 	}
 
 

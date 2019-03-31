@@ -30,6 +30,10 @@ public class Project {
 		return projectLeader;
 	}
 	
+	public void setProjectLeader(Employee e) {
+		this.projectLeader = e;
+	}
+	
 	public int getProjectNumber() {
 		return number;
 	}

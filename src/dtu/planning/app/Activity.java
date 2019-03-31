@@ -39,5 +39,13 @@ public class Activity {
 	public int getAssociatedProjectNumber() {
 		return associatedProjectNumber; 
 	}
+	
+	public List<Employee> getAssignedEmployees() {
+		return employees;
+	}
+	
+	public void assignEmployee(Employee e) {
+		employees.add(e);
+	}
 
 }
