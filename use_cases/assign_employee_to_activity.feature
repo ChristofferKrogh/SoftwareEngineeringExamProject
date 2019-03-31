@@ -1,14 +1,13 @@
-#Feature: Assign employee to activity
-#    Description: the project leader assigns an employee to an activity
-#    Actor: Project leader
-#    
-#Scenario: An employee is assigned to the activity successfully
-#    Given the employee exists
-#    And the activity exists
-#    And the project leader is project leader for the overlying project
-#    When I assign an employee to the activity
-#    Then the employee is assigned to the activity
-#    
+Feature: Assign employee to activity
+    Description: the project leader assigns an employee to an activity
+    Actor: Project leader
+    
+Scenario: An employee is assigned to the activity successfully
+    Given the activity exists
+    And the project leader is project leader for the overlying project
+    When I assign an employee to the activity
+    Then the employee is assigned to the activity
+    
 #Scenario: A non-project leader tries to assign an employee to an activity
 #    Given the employee exists
 #    And the activity exists
