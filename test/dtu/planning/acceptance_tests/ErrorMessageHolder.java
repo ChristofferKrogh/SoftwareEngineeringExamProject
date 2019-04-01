@@ -1,7 +1,8 @@
-package dtu.library.acceptance_tests;
+package dtu.planning.acceptance_tests;
 
-public class ErrorMessage {
+public class ErrorMessageHolder {
 	private String errorMessage = "";
+	
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -9,4 +10,5 @@ public class ErrorMessage {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
+
 }
