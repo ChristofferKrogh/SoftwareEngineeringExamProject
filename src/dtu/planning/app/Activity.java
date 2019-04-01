@@ -39,5 +39,15 @@ public class Activity {
 	public int getAssociatedProjectNumber() {
 		return associatedProjectNumber; 
 	}
+	
+	public List<Employee> getAssignedEmployees() {
+		return employees;
+	}
+	
+	// First argument: The actor, must be the project leader
+	// Second argument: The employee who's being added
+	public void assignEmployee(Employee projectLeader, Employee employee) {
+		employees.add(employee);
+	}
 
 }

@@ -13,3 +13,5 @@
 # 	 And I have a activity "Project design"
 #	 When an employee creates an activity
 #	 Then I get the error message "It is only the project leader who can add activities."
+#
+# Tilføj test der fejler for at lave en ny aktivitet med samme navn som et der allerede findes.
