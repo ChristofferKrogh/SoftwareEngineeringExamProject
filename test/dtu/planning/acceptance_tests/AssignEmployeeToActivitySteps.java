@@ -33,28 +33,48 @@ public class AssignEmployeeToActivitySteps {
 	private Employee projectLeader;
 	private Employee employee;
 
-	@Given("the activity exists")
-	public void theActivityExists() {
-		activity = new Activity("Some Activity", 0, 1, 2 , 3); // Insert project counter instead of hardcoded number?
+	@Given("employee with initials {string} exists")
+	public void employeeWithInitialsExists(String initials) {
+		// Employee name doesn't matter, so it is set to null.
+		employee = new Employee(null,initials);
 	}
 
-	@Given("the project leader is project leader for the overlying project") // This does not make any sense to check this. When would the project leader as per definition not be the project leader?
-	public void theProjectLeaderIsProjectLeaderForTheOverlyingProject() {
+	@Given("the activity with name {string} exists")
+	public void theActivityWithNameExists(String name) {
+		// The values 0, 1, 2, 3 are chosen as an example.
+		// Activity does not test that the assigned project id, actually exists or is the id that it is assigned to
+		activity = new Activity(name, 0, 1, 2, 1);
+	}
+
+	@Given("the project with id {int} exists")
+	public void theProjectWithIDExists(int projectid) {
+		// Name does not matter here, so it is set to null. It does not matter if the project is internal or external so it is set to false
+		project = new Project(null, false, projectid);
+	}
+
+	@Given("the project leader is project leader for the project")
+	public void theProjectLeaderIsProjectLeaderForTheProject() {
 		projectLeader = new Employee("John Smith", "JS");
-		project = new Project("Some project", false, 3); // Insert project counter instead of hardcoded number?
 		project.setProjectLeader(projectLeader);
 	}
 
-	@When("I assign an employee to the activity")
-	public void iAssignAnEmployeeToTheActivity() {
-		employee = new Employee("Jane Doe","JD");
-		activity.assignEmployee(employee); // Should properly be expanded. Nothing here says who's assigning the employee.
+	@Given("the activity is assigned to the project")
+	public void theActivityIsAssignedToTheProject() {
+		project.assignActivity(activity);
 	}
 
-	@Then("the employee is assigned to the activity")
-	public void theEmployeeIsAssignedToTheActivity() {
+	@When("the project leader assign the employee to the activity")
+	public void theProjectLeaderAssignTheEmployeeToTheActivity() {
+		activity.assignEmployee(projectLeader,employee);
+	}
+
+	@Then("the employee {string} is assigned to the activity {string}")
+	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) {
+		assertThat(employee.getInitials(),is(equalTo(employeeInitials)));
+		assertThat(activity.getName(),is(equalTo(activityName)));
 		assertTrue(activity.getAssignedEmployees().contains(employee));
 	}
+
 
 
 }

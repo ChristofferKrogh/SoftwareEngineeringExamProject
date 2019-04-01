@@ -7,7 +7,7 @@ public class Project {
 	private String name;
 	private boolean isProjectInternal;
 	private Employee projectLeader;
-	private List<Activity> activities;
+	private List<Activity> activities = new ArrayList<>();
 	private int number;
 	// start and end dates are missing
 
@@ -36,6 +36,11 @@ public class Project {
 	
 	public int getProjectNumber() {
 		return number;
+	}
+
+	public void assignActivity(Activity activity) {
+		// Does not check that the projectID of the activity does match the project of which it is being assigned.
+		activities.add(activity);
 	}
 	
 //	private int generateNumber() {

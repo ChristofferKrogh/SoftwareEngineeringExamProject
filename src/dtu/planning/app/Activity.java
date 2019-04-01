@@ -44,8 +44,10 @@ public class Activity {
 		return employees;
 	}
 	
-	public void assignEmployee(Employee e) {
-		employees.add(e);
+	// First argument: The actor, must be the project leader
+	// Second argument: The employee who's being added
+	public void assignEmployee(Employee projectLeader, Employee employee) {
+		employees.add(employee);
 	}
 
 }
