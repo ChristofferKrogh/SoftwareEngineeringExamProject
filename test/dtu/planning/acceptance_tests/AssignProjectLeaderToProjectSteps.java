@@ -26,34 +26,63 @@ import dtu.planning.app.TimeRegistration;
 
 public class AssignProjectLeaderToProjectSteps {
 	
-	@Given("employee exists")
-	public void employeeExists() {
+	private PlanningApp planningApp = new PlanningApp();
+	private Project project;
+	private Employee projectLeader;
+	private Employee employee;
+	private ErrorMessageHolder errorMessage;
+	
+	@Given("employee with initials {string} exists")
+	public void employeeWithInitialsExists(String initials) throws Exception {
 	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+//	    throw new cucumber.api.PendingException();
 	}
 
-	@Given("project exists")
-	public void projectExists() {
+	@Given("project with project number {int} exists")
+	public void projectWithProjectNumberExists(Integer pNumber) throws Exception {
 	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+//	    throw new cucumber.api.PendingException();
 	}
 
-	@Given("no project leader is assigned to project")
-	public void noProjectLeaderIsAssignedToProject() {
+	@Given("no project leader is assigned to project with project number {int}")
+	public void noProjectLeaderIsAssignedToProjectWithProjectNumber(Integer pNumber) throws Exception {
 	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+//	    throw new cucumber.api.PendingException();
 	}
 
-	@When("I assign employee as project leader")
-	public void iAssignEmployeeAsProjectLeader() {
+	@When("I assign employee with initials {string} as project leader")
+	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
 	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+//	    throw new cucumber.api.PendingException();
 	}
 
-	@Then("the employee is assigned as project leader for the project")
-	public void theEmployeeIsAssignedAsProjectLeaderForTheProject() {
+	@Then("the employee with initials {string} is assigned as project leader for the project with project number {int}")
+	public void theEmployeeWithInitialsIsAssignedAsProjectLeaderForTheProjectWithProjectNumber(String initials, Integer pNumber) throws Exception {
 	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
+//	    throw new cucumber.api.PendingException();
+	}
+	
+//	@Given("project with project number {int} does not exist")
+//	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
+
+	@Then("I get the error message {string}")
+	public void iGetTheErrorMessage(String errorMessage) throws Exception {
+		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
 	}
 
+//	@Given("project has a project leader")
+//	public void projectHasAProjectLeader() throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
+//
+//	@Given("employee with initials {string} does not exist")
+//	public void employeeWithInitialsDoesNotExist(String initials) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
+	
 }
