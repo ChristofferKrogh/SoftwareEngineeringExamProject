@@ -29,12 +29,12 @@ public class Project {
 		return this.isProjectInternal;
 	}
 	
-	public Employee getProjectLeader() {
-		return projectLeader;
-	}
-	
 	public void setProjectLeader(Employee employee) {
 		this.projectLeader = employee;
+	}
+	
+	public Employee getProjectLeader() {
+		return projectLeader;
 	}
 	
 	public int getProjectNumber() {
@@ -72,9 +72,9 @@ public class Project {
 	    return (Activity) r.get();
 	}
 	
-	public boolean hasProjectLeader() {
-		return false;
-	}
+//	public boolean hasProjectLeader() {
+//		return false;
+//	}
 	
 //	private int generateNumber() {
 //		// todo: include dato
