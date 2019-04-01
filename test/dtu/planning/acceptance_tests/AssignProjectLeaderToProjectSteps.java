@@ -32,35 +32,35 @@ public class AssignProjectLeaderToProjectSteps {
 	private Employee employee;
 	private ErrorMessageHolder errorMessage;
 	
-	@Given("employee with initials {string} exists")
-	public void employeeWithInitialsExists(String initials) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-//	    throw new cucumber.api.PendingException();
-	}
-
-	@Given("project with project number {int} exists")
-	public void projectWithProjectNumberExists(Integer pNumber) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-//	    throw new cucumber.api.PendingException();
-	}
-
-	@Given("no project leader is assigned to project with project number {int}")
-	public void noProjectLeaderIsAssignedToProjectWithProjectNumber(Integer pNumber) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-//	    throw new cucumber.api.PendingException();
-	}
-
-	@When("I assign employee with initials {string} as project leader")
-	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-//	    throw new cucumber.api.PendingException();
-	}
-
-	@Then("the employee with initials {string} is assigned as project leader for the project with project number {int}")
-	public void theEmployeeWithInitialsIsAssignedAsProjectLeaderForTheProjectWithProjectNumber(String initials, Integer pNumber) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-//	    throw new cucumber.api.PendingException();
-	}
+//	@Given("employee with initials {string} exists")
+//	public void employeeWithInitialsExists(String initials) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
+//
+//	@Given("project with project number {int} exists")
+//	public void projectWithProjectNumberExists(Integer pNumber) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
+//
+//	@Given("no project leader is assigned to project with project number {int}")
+//	public void noProjectLeaderIsAssignedToProjectWithProjectNumber(Integer pNumber) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
+//
+//	@When("I assign employee with initials {string} as project leader")
+//	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
+//
+//	@Then("the employee with initials {string} is assigned as project leader for the project with project number {int}")
+//	public void theEmployeeWithInitialsIsAssignedAsProjectLeaderForTheProjectWithProjectNumber(String initials, Integer pNumber) throws Exception {
+//	    // Write code here that turns the phrase above into concrete actions
+////	    throw new cucumber.api.PendingException();
+//	}
 	
 //	@Given("project with project number {int} does not exist")
 //	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
@@ -68,10 +68,10 @@ public class AssignProjectLeaderToProjectSteps {
 ////	    throw new cucumber.api.PendingException();
 //	}
 
-	@Then("I get the error message {string}")
-	public void iGetTheErrorMessage(String errorMessage) throws Exception {
-		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
-	}
+//	@Then("I get the error message {string}")
+//	public void iGetTheErrorMessage(String errorMessage) throws Exception {
+//		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
+//	}
 
 //	@Given("project has a project leader")
 //	public void projectHasAProjectLeader() throws Exception {
