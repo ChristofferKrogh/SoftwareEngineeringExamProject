@@ -1,14 +1,14 @@
-Feature: Assign project leader to project
-    Description: An employee is assigned as project leader for a project
-    Actors: Employee
-    
+#Feature: Assign project leader to project
+#    Description: An employee is assigned as project leader for a project
+#    Actors: Employee
+#    
 #Scenario: A project leader is assigned successfully
 #    Given employee with initials "ABCD" exists
 #    And project with project number 191234 exists
 #    And no project leader is assigned to project with project number 191234
 #    When I assign employee with initials "ABCD" as project leader
 #    Then the employee with initials "ABCD" is assigned as project leader for the project with project number 191234
-
+#
 #Scenario: A project leader is assigned to a project that does not exist
 #    Given project with project number 191234 does not exist
 #    When I assign employee with initials "ABCD" as project leader

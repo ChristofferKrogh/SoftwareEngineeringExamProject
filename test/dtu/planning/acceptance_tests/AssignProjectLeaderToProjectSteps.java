@@ -34,20 +34,19 @@ public class AssignProjectLeaderToProjectSteps {
 	
 //	@Given("employee with initials {string} exists")
 //	public void employeeWithInitialsExists(String initials) throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
+//		employee = new Employee(null,initials);
 //	}
 //
 //	@Given("project with project number {int} exists")
 //	public void projectWithProjectNumberExists(Integer pNumber) throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
+//		project = new Project(null, false, pNumber);
 //	}
 //
 //	@Given("no project leader is assigned to project with project number {int}")
 //	public void noProjectLeaderIsAssignedToProjectWithProjectNumber(Integer pNumber) throws Exception {
 //	    // Write code here that turns the phrase above into concrete actions
 ////	    throw new cucumber.api.PendingException();
+//		assertFalse();
 //	}
 //
 //	@When("I assign employee with initials {string} as project leader")
@@ -66,6 +65,7 @@ public class AssignProjectLeaderToProjectSteps {
 //	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
 //	    // Write code here that turns the phrase above into concrete actions
 ////	    throw new cucumber.api.PendingException();
+//	assertFalse();
 //	}
 
 //	@Then("I get the error message {string}")
@@ -78,7 +78,7 @@ public class AssignProjectLeaderToProjectSteps {
 //	    // Write code here that turns the phrase above into concrete actions
 ////	    throw new cucumber.api.PendingException();
 //	}
-//
+
 //	@Given("employee with initials {string} does not exist")
 //	public void employeeWithInitialsDoesNotExist(String initials) throws Exception {
 //	    // Write code here that turns the phrase above into concrete actions

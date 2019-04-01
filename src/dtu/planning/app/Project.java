@@ -43,6 +43,10 @@ public class Project {
 		activities.add(activity);
 	}
 	
+	public boolean hasProjectLeader() {
+		return false;
+	}
+	
 //	private int generateNumber() {
 //		// todo: include dato
 //	}
