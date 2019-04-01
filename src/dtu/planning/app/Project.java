@@ -2,6 +2,9 @@ package dtu.planning.app;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import dtu.planning.app.NotProjectLeaderException;
 
 public class Project {
 	private String name;
@@ -30,17 +33,43 @@ public class Project {
 		return projectLeader;
 	}
 	
-	public void setProjectLeader(Employee e) {
-		this.projectLeader = e;
+	public void setProjectLeader(Employee employee) {
+		this.projectLeader = employee;
 	}
 	
 	public int getProjectNumber() {
 		return number;
 	}
 
-	public void assignActivity(Activity activity) {
+	public void addActivity(String name, int expectedStart, int expectedEnd, int expectedAmountOfHours, int associatedProjectNumber) {
 		// Does not check that the projectID of the activity does match the project of which it is being assigned.
-		activities.add(activity);
+		activities.add(new Activity(name, expectedStart, expectedEnd, expectedAmountOfHours, associatedProjectNumber));
+	}
+	
+	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException {
+		// Todo: Check that projectleader is projectleader for this project
+		if (this.projectLeader != projectLeader) {
+			throw new NotProjectLeaderException("You are not the project leader for this project");
+		}
+		
+		Activity activity = getActivityByName(activityName);
+		
+		// assign employee to that activity
+		activity.assignEmployee(projectLeader,employee);
+	}
+	
+	public List<Employee> getEmployeesAssignedToActivity(String activityName) {
+		Activity activity = getActivityByName(activityName);
+		return activity.getAssignedEmployees();
+	}
+	
+	private Activity getActivityByName(String activityName) {
+		// Find activity by name
+		Optional r = activities
+			      .stream()
+			      .filter(b -> b.getName().equals(activityName))
+			      .findFirst();
+	    return (Activity) r.get();
 	}
 	
 	public boolean hasProjectLeader() {
