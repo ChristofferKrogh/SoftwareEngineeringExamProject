@@ -121,10 +121,10 @@ public class CreateProjectSteps {
 	    // TODO: assertThat there is not a project with the projectNumber
 	}
 
-	@Then("I get the error message {string}")
-	public void iGetTheErrorMessage(String errorMessage) throws Exception {
-	    assertEquals(errorMessage, this.errorMessage.getErrorMessage());
-	}
+//	@Then("I get the error message {string}")
+//	public void iGetTheErrorMessage(String errorMessage) throws Exception {
+//	    assertEquals(errorMessage, this.errorMessage.getErrorMessage());
+//	}
 	
 	@When("an employee edits the start date of the project to a date after the end date")
 	public void anEmployeeEditsTheStartDateOfTheProjectToADateAfterTheEndDate() throws Exception {
