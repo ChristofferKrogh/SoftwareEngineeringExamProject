@@ -33,6 +33,14 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 	
+	public List<Integer> getProjectNumbers() {
+		List<Integer> projectNumbers = new ArrayList<>();
+		for (Project p : projects) {
+			projectNumbers.add(p.getProjectNumber());
+		}
+		return projectNumbers;
+	}
+	
 	public List<Project> getProjects() {
 		return projects;
 	}
