@@ -20,20 +20,23 @@ public class AssignEmployeeToActivitySteps {
 	private Project project;
 	private PlanningApp planningApp;
 	private ProjectHolder projectHolder;
+	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private Employee actor;
 	private Employee employee;
 	
-	public AssignEmployeeToActivitySteps(PlanningApp planningApp, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder) {
+	public AssignEmployeeToActivitySteps(PlanningApp planningApp, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
 		this.planningApp = planningApp;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
+		this.employeeHolder = employeeHolder;
 	}
 
 	@Given("employee with initials {string} exists")
 	public void employeeWithInitialsExists(String initials) {
 		// Employee name doesn't matter, so it is set to null.
 		employee = new Employee(null,initials);
+		employeeHolder.setEmployee(employee);
 	}
 
 	@Given("the project with id {int} exists")
@@ -77,6 +80,7 @@ public class AssignEmployeeToActivitySteps {
 	@Then("the employee {string} is assigned to the activity {string}")
 	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) {
 		project = projectHolder.getProject();
+		employee = employeeHolder.getEmployee();
 		assertThat(employee.getInitials(),is(equalTo(employeeInitials)));
 		assertTrue(project.getEmployeesAssignedToActivity(activityName).contains(employee));
 	}
