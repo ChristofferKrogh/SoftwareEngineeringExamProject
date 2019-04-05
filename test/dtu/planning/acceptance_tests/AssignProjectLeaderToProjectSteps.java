@@ -29,16 +29,18 @@ public class AssignProjectLeaderToProjectSteps {
 	
 	private PlanningApp planningApp = new PlanningApp();
 	private ProjectHolder projectHolder;
+	private EmployeeHolder employeeHolder;
 	private Project project;
 	private Employee projectLeader;
 	private Employee employee;
 	private ErrorMessageHolder errorMessage;
 //	private String errorMessageHolder;
 	
-	public AssignProjectLeaderToProjectSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, ProjectHolder projectHolder) {
+	public AssignProjectLeaderToProjectSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
 		this.planningApp = planningApp;
 		this.errorMessage = errorMessage;
 		this.projectHolder = projectHolder;
+		this.employeeHolder = employeeHolder;
 	}
 	
 //	@Given("employee with initials {string} exists")
@@ -51,26 +53,29 @@ public class AssignProjectLeaderToProjectSteps {
 //		project = new Project(null, false, pNumber);
 //	}
 
-//	@When("I assign employee with initials {string} as project leader")
-//	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
-////		try {
-//		// projektet her er en nullpointer, fordi det ikke er initialiseret... 
-//			project = projectHolder.getProject();
-//			project.setProjectLeader(employee);
-//			projectHolder.setProject(project);
-////		} catch (OperationNotAllowedException e) {
-////			errorMessage.setErrorMessage(e.getMessage());
-////		}
-//	}
-//
-//	@Then("the employee with initials {string} is assigned as project leader for the project with id {int}")
-//	public void theEmployeeWithInitialsIsAssignedAsProjectLeaderForTheProjectWithProjectNumber(String initials, Integer pNumber) throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
-//		project = projectHolder.getProject();
-//		assertThat(employee.getInitials(),is(equalTo(initials)));
-//		assertThat(project.getProjectLeader(),is(equalTo(employee)));
-//	}
+	@When("I assign employee with initials {string} as project leader")
+	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
+//		try {
+		// projektet her er en nullpointer, fordi det ikke er initialiseret... 
+			project = projectHolder.getProject();
+			employee = employeeHolder.getEmployee();
+			project.setProjectLeader(employee);
+			projectHolder.setProject(project);
+			employeeHolder.setEmployee(employee);
+//		} catch (OperationNotAllowedException e) {
+//			errorMessage.setErrorMessage(e.getMessage());
+//		}
+	}
+
+	@Then("the employee with initials {string} is assigned as project leader for the project with id {int}")
+	public void theEmployeeWithInitialsIsAssignedAsProjectLeaderForTheProjectWithProjectNumber(String initials, Integer pNumber) throws Exception {
+	    // Write code here that turns the phrase above into concrete actions
+//	    throw new cucumber.api.PendingException();
+		project = projectHolder.getProject();
+		employee = employeeHolder.getEmployee();
+		assertThat(employee.getInitials(),is(equalTo(initials)));
+		assertThat(project.getProjectLeader(),is(equalTo(employee)));
+	}
 	
 //	@Given("project with id {int} does not exist")
 //	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
@@ -81,9 +86,9 @@ public class AssignProjectLeaderToProjectSteps {
 //
 //	@Then("I get the error message {string}")
 //	public void iGetTheErrorMessage(String errorMessage) throws Exception {
-//		assertEquals(errorMessageHolder, this.errorMessageHolder.getErrorMessage());
+//		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
 //	}
-//
+
 //	@Given("project has a project leader")
 //	public void projectHasAProjectLeader() throws Exception {
 //	    // Write code here that turns the phrase above into concrete actions
