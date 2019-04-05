@@ -5,10 +5,16 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+// import java.util.stream.Collectors;
 
 public class PlanningApp {
+	// Storage for the projects
 	private List<Project> projects = new ArrayList<>();
+	
+	// Storage for the list of employees that work for the company
+	private List<Employee> employees = new ArrayList<>();
+	
+	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 	
 	public void createProject(Project project) {
@@ -33,7 +39,21 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 	
+	public List<Integer> getProjectNumbers() {
+		List<Integer> projectNumbers = new ArrayList<>();
+		for (Project p : projects) {
+			projectNumbers.add(p.getProjectNumber());
+		}
+		return projectNumbers;
+	}
+	
 	public List<Project> getProjects() {
 		return projects;
 	}
+	
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+	
+	
 }

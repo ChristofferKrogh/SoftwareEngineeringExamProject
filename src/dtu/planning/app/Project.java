@@ -50,11 +50,12 @@ public class Project {
 	}
 	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException {
-		// Todo: Check that projectleader is projectleader for this project
+		// Check that projectleader is projectleader for this project. If not stop!
 		if (this.projectLeader != projectLeader) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
 		
+		// Find and get the activity by name.
 		Activity activity = getActivityByName(activityName);
 		
 		// assign employee to that activity
@@ -62,7 +63,10 @@ public class Project {
 	}
 	
 	public List<Employee> getEmployeesAssignedToActivity(String activityName) {
+		// Find and get the activity by name.
 		Activity activity = getActivityByName(activityName);
+		
+		// Return list of assigned employees
 		return activity.getAssignedEmployees();
 	}
 	
