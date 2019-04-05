@@ -10,13 +10,13 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.planning.app.Employee;
-import dtu.planning.app.Project;
 
 import dtu.planning.app.NotProjectLeaderException;
+import dtu.planning.app.PlanningApp;
 
 public class AssignEmployeeToActivitySteps {
 	
-	private Project project;
+	private PlanningApp planningApp = new PlanningApp();
 	private String errorMessageHolder;
 	private Employee actor;
 	private Employee employee;
