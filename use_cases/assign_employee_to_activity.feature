@@ -17,11 +17,11 @@ Scenario: A non-project leader tries to assign an employee to an activity
     When the actor assign the employee to the activity "Some Activity"
     Then I get the error message "You are not the project leader for this project"
 
-#Scenario: An employee that doesn't exist is assigned to the activity
-#    Given the employee doesn't exist
-#	And the activity exists
-#    When I assign an employee to the activity
-#    Then I get the error message "The employee does not exist"
+Scenario: An employee that doesn't exist is assigned to the activity
+    Given the employee doesn't exist
+	And the activity exists
+    When I assign an employee to the activity
+    Then I get the error message "The employee does not exist"
     
 #Scenario: An employee is assigned to an activity that doesn't exist
 #    Given the activity doesn't exist
