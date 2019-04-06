@@ -60,7 +60,7 @@ public class PlanningApp {
 		return employees;
 	}
 	
-	public void assignEmployee(int projectNumber, String activityName, Employee projectLeader, Employee employee) throws OperationNotAllowedException, NotProjectLeaderException {
+	public void assignEmployee(int projectNumber, String activityName, Employee projectLeader, Employee employee) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		

@@ -3,8 +3,12 @@ package dtu.planning.acceptance_tests;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import java.util.NoSuchElementException;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -12,7 +16,7 @@ import cucumber.api.java.en.When;
 import dtu.planning.app.Employee;
 import dtu.planning.app.Project;
 import dtu.planning.app.Activity;
-
+import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
@@ -82,6 +86,34 @@ public class AssignEmployeeToActivitySteps {
 		actor = new Employee("Jane Doe", "JD");
 	}
 	
+	@Given("the employee doesn't exist")
+	public void theEmployeeDoesnTExist() {
+		// Creating a employee with no name and no initials. That should not be possible to match anywhere.
+		Employee employee = new Employee(null,null);
+		employeeHolder.setEmployee(employee);
+	}
+	
+	@Given("the activity {string} doesn't exist")
+	public void theActivityDoesnTExist(String activityName) throws OperationNotAllowedException {
+		// Get current program state
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		
+		// Current project
+		Project project = planningApp.searchForProject(projectNumber);
+		
+		try {
+			// Check activity is not present
+			Activity activity = project.getActivityByName(activityName);
+			
+			// The activity should not have the same name as asked not to.
+			assertFalse(activity.getName().equals(activityName));
+		} catch (ActivityNotFoundException e) {
+			// Everything is ok, exception is to be expected here.
+		}
+		planningAppHolder.setPlanningApp(planningApp);
+	}
+
+	
 	@When("the actor assign the employee to the activity {string}")
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
@@ -91,12 +123,14 @@ public class AssignEmployeeToActivitySteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (ActivityNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
 	@Then("the employee {string} is assigned to the activity {string}")
-	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException {
+	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException, ActivityNotFoundException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		Project project = planningApp.searchForProject(projectNumber);
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
@@ -106,7 +140,7 @@ public class AssignEmployeeToActivitySteps {
 	
 	@Then("I get the error message {string}")
 	public void iGetTheErrorMessage(String error) {
-		// Credits: Libary app example error message holder
+		// Credits: Library app example error message holder
 		assertEquals(error, errorMessageHolder.getErrorMessage());
 	}
 }

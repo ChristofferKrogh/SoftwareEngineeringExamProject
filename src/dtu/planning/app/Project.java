@@ -49,7 +49,7 @@ public class Project {
 		activities.add(new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, associatedProjectNumber));
 	}
 	
-	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException {
+	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException, ActivityNotFoundException {
 		// Check that projectleader is projectleader for this project. If not stop!
 		if (this.projectLeader != projectLeader) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
@@ -62,7 +62,7 @@ public class Project {
 		activity.assignEmployee(projectLeader,employee);
 	}
 	
-	public List<Employee> getEmployeesAssignedToActivity(String activityName) {
+	public List<Employee> getEmployeesAssignedToActivity(String activityName) throws ActivityNotFoundException {
 		// Find and get the activity by name.
 		Activity activity = getActivityByName(activityName);
 		
@@ -70,12 +70,15 @@ public class Project {
 		return activity.getAssignedEmployees();
 	}
 	
-	private Activity getActivityByName(String activityName) {
+	public Activity getActivityByName(String activityName) throws ActivityNotFoundException {
 		// Find activity by name
 		Optional<Activity> r = activities
 						      .stream()
 						      .filter(b -> b.getName().equals(activityName))
 						      .findFirst();
+		if (r.isEmpty()) {
+			throw new ActivityNotFoundException("The activity does not exist");
+		}
 	    return (Activity) r.get();
 	}
 	
