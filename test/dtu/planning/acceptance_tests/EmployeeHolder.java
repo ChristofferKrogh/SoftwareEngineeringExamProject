@@ -13,5 +13,4 @@ public class EmployeeHolder {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-
 }

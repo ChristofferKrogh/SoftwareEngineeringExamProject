@@ -44,9 +44,9 @@ public class Project {
 		return number;
 	}
 
-	public void addActivity(String name, int expectedStart, int expectedEnd, int expectedAmountOfHours, int associatedProjectNumber) {
+	public void addActivity(String activityName, int expectedStart, int expectedEnd, int expectedAmountOfHours, int associatedProjectNumber) {
 		// Does not check that the projectID of the activity does match the project of which it is being assigned.
-		activities.add(new Activity(name, expectedStart, expectedEnd, expectedAmountOfHours, associatedProjectNumber));
+		activities.add(new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, associatedProjectNumber));
 	}
 	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException {
@@ -72,10 +72,10 @@ public class Project {
 	
 	private Activity getActivityByName(String activityName) {
 		// Find activity by name
-		Optional r = activities
-			      .stream()
-			      .filter(b -> b.getName().equals(activityName))
-			      .findFirst();
+		Optional<Activity> r = activities
+						      .stream()
+						      .filter(b -> b.getName().equals(activityName))
+						      .findFirst();
 	    return (Activity) r.get();
 	}
 	
