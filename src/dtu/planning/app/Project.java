@@ -70,7 +70,7 @@ public class Project {
 		return activity.getAssignedEmployees();
 	}
 	
-	private Activity getActivityByName(String activityName) {
+	public Activity getActivityByName(String activityName) {
 		// Find activity by name
 		Optional r = activities
 			      .stream()
