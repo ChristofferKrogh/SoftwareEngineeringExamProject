@@ -27,14 +27,15 @@ public class AssignEmployeeToActivitySteps {
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
-	private Employee actor;
+	private ActorHolder actorHolder;
 	private int projectNumber;
 	
-	public AssignEmployeeToActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
+	public AssignEmployeeToActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
+		this.actorHolder = actorHolder;
 	}
 
 	@Given("employee with initials {string} exists")
@@ -76,14 +77,16 @@ public class AssignEmployeeToActivitySteps {
 	@Given("the actor is project leader for the project")
 	public void theProjectLeaderIsProjectLeaderForTheProject() throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		actor = new Employee("John Smith", "JS");
+		Employee actor = new Employee("John Smith", "JS");
+		actorHolder.setActor(actor);
 		planningApp.setProjectLeader(projectNumber, actor);
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
 	@Given("the actor is not project leader for the project")
 	public void theActorIsNotProjectLeaderForTheOverlyingProject() {
-		actor = new Employee("Jane Doe", "JD");
+		Employee actor = new Employee("Jane Doe", "JD");
+		actorHolder.setActor(actor);
 	}
 	
 	@Given("the employee doesn't exist")
@@ -118,7 +121,7 @@ public class AssignEmployeeToActivitySteps {
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
-			planningApp.assignEmployee(projectNumber, activityName, actor, employeeHolder.getEmployee());
+			planningApp.assignEmployee(projectNumber, activityName, actorHolder.getActor(), employeeHolder.getEmployee());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
