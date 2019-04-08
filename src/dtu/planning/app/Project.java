@@ -1,6 +1,7 @@
 package dtu.planning.app;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,7 @@ public class Project {
 	public Project(String name, boolean isProjectInternal, int projectCount) {
 		this.name = name;
 		this.isProjectInternal = isProjectInternal;
-		this.number = projectCount;
-//		this.number = generateNumber();
+		this.number = generateNumber(projectCount);
 	}
 	
 	public String getName() {
@@ -108,8 +108,19 @@ public class Project {
 		return endDate;
 	}
 	
-//	private int generateNumber() {
-//		// todo: include dato
-//	}
+	private int generateNumber(int projectCount) {
+		// TODO: Describe the assumption in the report
+		// Assumption: There will never be created more than 10000 projects in the span
+		// 			   of 1 year.
+		int projectNumber = projectCount % 10000;
+		
+		Date date = new Date();
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		year %= 100;
+		projectNumber = year * 10000 + projectNumber;
+		return projectNumber;
+	}
 
 }

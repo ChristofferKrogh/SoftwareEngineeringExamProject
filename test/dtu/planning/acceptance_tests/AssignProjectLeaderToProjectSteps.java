@@ -45,11 +45,13 @@ public class AssignProjectLeaderToProjectSteps {
 		this.employeeHolder = employeeHolder;
 	}
 	
+	// implemented in other file
 //	@Given("employee with initials {string} exists")
 //	public void employeeWithInitialsExists(String initials) throws Exception {
 //		employee = new Employee(null,initials);
 //	}
-//
+
+	// implemented in other file
 //	@Given("the project with id {int} exists")
 //	public void projectWithProjectNumberExists(Integer pNumber) throws Exception {
 //		project = new Project(null, false, pNumber);
@@ -58,16 +60,16 @@ public class AssignProjectLeaderToProjectSteps {
 	@When("I assign employee with initials {string} as project leader")
 	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-//		try {
+		try {
 		// projektet her er en nullpointer, fordi det ikke er initialiseret... 
 			project = projectHolder.getProject();
 			employee = employeeHolder.getEmployee();
-			planningApp.setProjectLeader(project.getProjectNumber(), employee);
+			planningApp.setProjectLeader(project.getProjectNumber(), employee); //employee.getInitials()
 			projectHolder.setProject(project);
 			employeeHolder.setEmployee(employee);
-//		} catch (OperationNotAllowedException e) {
-//			errorMessage.setErrorMessage(e.getMessage());
-//		}
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 
@@ -81,12 +83,12 @@ public class AssignProjectLeaderToProjectSteps {
 		assertThat(project.getProjectLeader(),is(equalTo(employee)));
 	}
 	
-//	@Given("project with id {int} does not exist")
-//	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
-//	assertFalse();
-//	}
+	@Given("project with id {int} does not exist")
+	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
+		assertThat(planningApp.getProjectNumbers(), not(hasItem(pNumber)));
+		project = new Project("Test Project", true, pNumber);
+		projectHolder.setProject(project);
+	}
 //
 //	@Then("I get the error message {string}")
 //	public void iGetTheErrorMessage(String errorMessage) throws Exception {
@@ -99,10 +101,11 @@ public class AssignProjectLeaderToProjectSteps {
 ////	    throw new cucumber.api.PendingException();
 //	}
 //
-//	@Given("employee with initials {string} does not exist")
-//	public void employeeWithInitialsDoesNotExist(String initials) throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
-//	}
+	@Given("employee with initials {string} does not exist")
+	public void employeeWithInitialsDoesNotExist(String initials) {
+		assertThat(planningApp.getEmployeeInitials(), not(hasItem(initials)));
+		employee = new Employee(null,initials);
+		employeeHolder.setEmployee(employee);
+	}
 	
 }

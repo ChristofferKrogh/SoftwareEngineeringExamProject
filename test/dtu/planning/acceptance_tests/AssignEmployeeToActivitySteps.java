@@ -52,15 +52,15 @@ public class AssignEmployeeToActivitySteps {
 	}
 
 	@Given("the project with id {int} exists")
-	public void theProjectWithIDExists(int projectNumber) {
+	public void theProjectWithIDExists(int projectCount) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		// Name does not matter here, so it is set to null. It does not matter if the project is internal or external so it is set to false
 		// Please note: Planning app API naming. Here createProject is not creating a new project. It adds the project in question to the planning app.
-		Project project = new Project(null, false, projectNumber);
+		Project project = new Project(null, false, projectCount);
 		planningApp.createProject(project);
 		
 		// Save the project number for later use
-		this.projectNumber = projectNumber;
+		this.projectNumber = project.getProjectNumber();
 		projectHolder.setProject(project);
 		planningAppHolder.setPlanningApp(planningApp);
 	}
@@ -79,7 +79,7 @@ public class AssignEmployeeToActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		Employee actor = new Employee("John Smith", "JS");
 		actorHolder.setActor(actor);
-		planningApp.setProjectLeader(projectNumber, actor);
+		planningApp.setProjectLeader(projectNumber, actor); // actor.getInitials()
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 	

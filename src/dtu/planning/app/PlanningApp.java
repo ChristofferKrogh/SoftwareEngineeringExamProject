@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-// import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 public class PlanningApp {
 	// Storage for the projects
@@ -40,6 +40,15 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 	
+	public Employee searchForEmployee(String initials) throws OperationNotAllowedException {
+		for (Employee e : employees) {
+			if (e.getInitials() == initials) {
+				return e;
+			}
+		}
+		throw new OperationNotAllowedException("The employee does not exist");
+	}
+	
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
@@ -54,6 +63,14 @@ public class PlanningApp {
 
 	public void addEmployee(Employee employee) {
 		employees.add(employee);
+	}
+	
+	public List<String> getEmployeeInitials() {
+		List<String> employeeInitials = new ArrayList<>();
+		for (Employee e : employees) {
+			employeeInitials.add(e.getInitials());
+		}
+		return employeeInitials;
 	}
 	
 	public List<Employee> getEmployees() {
@@ -86,7 +103,9 @@ public class PlanningApp {
 		
 	}
 	
-	public void setProjectLeader(int projectNumber, Employee employee) throws OperationNotAllowedException {
+	public void setProjectLeader(int projectNumber, Employee employee) throws OperationNotAllowedException { // String initials
+		// Find employee from initials
+//		Employee employee = this.searchForEmployee(initials);
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
