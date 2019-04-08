@@ -77,12 +77,12 @@ public class AssignProjectLeaderToProjectSteps {
 		assertThat(project.getProjectLeader(),is(equalTo(employee)));
 	}
 	
-//	@Given("project with id {int} does not exist")
-//	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
-//	assertFalse();
-//	}
+	@Given("project with id {int} does not exist")
+	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
+		
+		project = new Project("Test Project", true, pNumber);
+		projectHolder.setProject(project);
+	}
 //
 //	@Then("I get the error message {string}")
 //	public void iGetTheErrorMessage(String errorMessage) throws Exception {

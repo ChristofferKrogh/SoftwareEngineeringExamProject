@@ -34,7 +34,6 @@ public class CreateProjectSteps {
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
 	private Project project;
-	private int projectNumber;
 	private GregorianCalendar date;
 	
 	public CreateProjectSteps(PlanningApp planningApp, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder) {
@@ -74,6 +73,7 @@ public class CreateProjectSteps {
 	@Then("the project is given a project number")
 	public void theProjectIsGivenAProjectNumber() throws Exception {
 		project = projectHolder.getProject();
+		// TODO: change this when the project number is implemented
 	    assertThat(project.getProjectNumber(), is(equalTo(planningApp.projectCount - 1)));
 	}
 
@@ -85,7 +85,6 @@ public class CreateProjectSteps {
 	
 	@Given("there is a project with id {int}")
 	public void thereIsAProjectWithId(Integer projectNumber) throws Exception {
-		this.projectNumber = projectNumber;
 		project = new Project("Test Project", true, projectNumber);
 		projectHolder.setProject(project);
 		planningApp.createProject(project);
@@ -96,7 +95,7 @@ public class CreateProjectSteps {
 	    date = new GregorianCalendar(year, month, day);
 	    project = projectHolder.getProject();
 	    try {
-	    	planningApp.editStartDateOfProject(date, projectNumber);
+	    	planningApp.editStartDateOfProject(date, project.getProjectNumber());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -115,7 +114,7 @@ public class CreateProjectSteps {
 		date = new GregorianCalendar(year, month, day);
 		project = projectHolder.getProject();
 		try {
-			planningApp.editEndDateOfProject(date, projectNumber);
+			planningApp.editEndDateOfProject(date, project.getProjectNumber());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -129,10 +128,11 @@ public class CreateProjectSteps {
 	    assertTrue(project.getEndDate().equals(date));
 	}
 	
-	@Given("there is not a project with id {int}")
-	public void thereIsNotAProjectWithId(Integer projectNumber) {
-	    // TODO: assertThat there is not a project with the projectNumber
-	}
+//	@Given("there is not a project with id {int}")
+//	public void thereIsNotAProjectWithId(Integer projectNumber) {
+//	    // TODO: assertThat there is not a project with the projectNumber
+//		assertThat(planningApp.getProjectNumbers(), hasItem(projectNumber));
+//	}
 
 //	@Then("I get the error message {string}")
 //	public void iGetTheErrorMessage(String errorMessage) throws Exception {
