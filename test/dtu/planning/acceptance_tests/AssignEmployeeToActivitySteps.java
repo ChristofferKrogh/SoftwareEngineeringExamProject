@@ -77,7 +77,7 @@ public class AssignEmployeeToActivitySteps {
 	public void theProjectLeaderIsProjectLeaderForTheProject() throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		actor = new Employee("John Smith", "JS");
-		planningApp.setProjectLeader(projectNumber, actor);
+		planningApp.setProjectLeader(projectNumber, actor); // actor.getInitials()
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 	

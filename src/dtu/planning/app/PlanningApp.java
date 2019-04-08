@@ -40,6 +40,15 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 	
+	public Employee searchForEmployee(String initials) throws OperationNotAllowedException {
+		for (Employee e : employees) {
+			if (e.getInitials() == initials) {
+				return e;
+			}
+		}
+		throw new OperationNotAllowedException("The employee does not exist");
+	}
+	
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
@@ -56,6 +65,14 @@ public class PlanningApp {
 		employees.add(employee);
 	}
 	
+	public List<String> getEmployeeInitials() {
+		List<String> employeeInitials = new ArrayList<>();
+		for (Employee e : employees) {
+			employeeInitials.add(e.getInitials());
+		}
+		return employeeInitials;
+	}
+	
 	public List<Employee> getEmployees() {
 		return employees;
 	}
@@ -69,7 +86,7 @@ public class PlanningApp {
 						      .stream()
 						      .filter(b -> b.getInitials().equals(employee.getInitials()))
 						      .findFirst();
-		if (r.isEmpty()) {
+		if (!r.isPresent()) {
 			throw new OperationNotAllowedException("The employee does not exist");
 		}
 		
@@ -86,7 +103,9 @@ public class PlanningApp {
 		
 	}
 	
-	public void setProjectLeader(int projectNumber, Employee employee) throws OperationNotAllowedException {
+	public void setProjectLeader(int projectNumber, Employee employee) throws OperationNotAllowedException { // String initials
+		// Find employee from initials
+//		Employee employee = this.searchForEmployee(initials);
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
