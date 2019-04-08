@@ -83,7 +83,7 @@ public class AssignProjectLeaderToProjectSteps {
 	
 	@Given("project with id {int} does not exist")
 	public void projectWithProjectNumberDoesNotExist(Integer pNumber) throws Exception {
-		
+		assertThat(planningApp.getProjectNumbers(), not(hasItem(pNumber)));
 		project = new Project("Test Project", true, pNumber);
 		projectHolder.setProject(project);
 	}

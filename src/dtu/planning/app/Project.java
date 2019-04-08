@@ -76,7 +76,7 @@ public class Project {
 						      .stream()
 						      .filter(b -> b.getName().equals(activityName))
 						      .findFirst();
-		if (r.isEmpty()) {
+		if (!r.isPresent()) {
 			throw new ActivityNotFoundException("The activity does not exist");
 		}
 	    return (Activity) r.get();
@@ -120,8 +120,7 @@ public class Project {
 		int year = calendar.get(Calendar.YEAR);
 		year %= 100;
 		projectNumber = year * 10000 + projectNumber;
-		System.out.println(projectNumber);
-		return projectCount;
+		return projectNumber;
 	}
 
 }

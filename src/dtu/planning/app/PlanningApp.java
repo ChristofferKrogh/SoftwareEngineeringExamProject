@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-// import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 public class PlanningApp {
 	// Storage for the projects
@@ -69,7 +69,7 @@ public class PlanningApp {
 						      .stream()
 						      .filter(b -> b.getInitials().equals(employee.getInitials()))
 						      .findFirst();
-		if (r.isEmpty()) {
+		if (!r.isPresent()) {
 			throw new OperationNotAllowedException("The employee does not exist");
 		}
 		
