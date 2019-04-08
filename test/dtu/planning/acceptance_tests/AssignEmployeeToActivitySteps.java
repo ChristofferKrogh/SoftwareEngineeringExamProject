@@ -28,7 +28,6 @@ public class AssignEmployeeToActivitySteps {
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private ActorHolder actorHolder;
-	private int projectNumber;
 	
 	public AssignEmployeeToActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder) {
 		this.planningAppHolder = planningAppHolder;
@@ -59,8 +58,6 @@ public class AssignEmployeeToActivitySteps {
 		Project project = new Project(null, false, projectCount);
 		planningApp.createProject(project);
 		
-		// Save the project number for later use
-		this.projectNumber = project.getProjectNumber();
 		projectHolder.setProject(project);
 		planningAppHolder.setPlanningApp(planningApp);
 	}
@@ -70,7 +67,7 @@ public class AssignEmployeeToActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		// The values 0, 1, 2, 3 are chosen as an example.
 		// Activity does not test that the assigned project id, actually exists or is the id that it is assigned to
-		planningApp.addActivity(projectNumber, activityName, 0, 1, 2);
+		planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, 0, 1, 2);
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 
@@ -78,8 +75,13 @@ public class AssignEmployeeToActivitySteps {
 	public void theProjectLeaderIsProjectLeaderForTheProject() throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		Employee actor = new Employee("John Smith", "JS");
+		planningApp.addEmployee(actor);
 		actorHolder.setActor(actor);
-		planningApp.setProjectLeader(projectNumber, actor); // actor.getInitials()
+		try {
+			planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(), actorHolder.getActor().getInitials()); // actor.getInitials()
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
@@ -102,7 +104,7 @@ public class AssignEmployeeToActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		
 		// Current project
-		Project project = planningApp.searchForProject(projectNumber);
+		Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 		
 		try {
 			// Check activity is not present
@@ -121,7 +123,7 @@ public class AssignEmployeeToActivitySteps {
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
-			planningApp.assignEmployee(projectNumber, activityName, actorHolder.getActor(), employeeHolder.getEmployee());
+			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor(), employeeHolder.getEmployee());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
@@ -135,7 +137,7 @@ public class AssignEmployeeToActivitySteps {
 	@Then("the employee {string} is assigned to the activity {string}")
 	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException, ActivityNotFoundException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = planningApp.searchForProject(projectNumber);
+		Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
 		assertTrue(project.getEmployeesAssignedToActivity(activityName).contains(employeeHolder.getEmployee()));
 		planningAppHolder.setPlanningApp(planningApp);
