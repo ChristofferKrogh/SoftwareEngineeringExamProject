@@ -98,9 +98,20 @@ public class PlanningApp {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
-		// Add activity to that project
-		project.addActivity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, projectNumber);
+		// Create new activity
+		Activity activity = new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, project.getProjectNumber());
 		
+		// Add activity to that project
+		project.addActivity(activity);
+		
+	}
+	
+	public void removeActivity(int projectNumber, String activityName) throws OperationNotAllowedException {
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
+		
+		// Add activity to that project
+		project.removeActivityByName(activityName);
 	}
 	
 	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException { // String initials
@@ -110,5 +121,31 @@ public class PlanningApp {
 		Project project = this.searchForProject(projectNumber);
 		
 		project.setProjectLeader(employee);
+	}
+
+	public void registerTime(int projectNumber, String activityName, TimeRegistration timeRegistration) throws OperationNotAllowedException, ActivityNotFoundException {
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
+		
+		// Find activity in project
+		Activity activity = project.getActivityByName(activityName);
+		
+		// Add time registration to that activity
+		activity.registerTime(timeRegistration);
+		
+		// Properly inefficient way to update value
+		// Update activity on project
+		project.removeActivityByName(activityName);
+		project.addActivity(activity);		
+
+		// Properly inefficient way to update value
+		// Update project in planning app
+		this.removeProjectByName(projectNumber);
+		this.createProject(project);
+	}
+	
+	private void removeProjectByName(int projectNumber) {
+		// Remove any activity with the parameter name
+		projects.removeIf(b -> (b.getProjectNumber() == projectNumber));
 	}
 }

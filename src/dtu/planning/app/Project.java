@@ -44,9 +44,9 @@ public class Project {
 		return number;
 	}
 
-	public void addActivity(String activityName, int expectedStart, int expectedEnd, int expectedAmountOfHours, int associatedProjectNumber) {
+	public void addActivity(Activity activity) {
 		// Does not check that the projectID of the activity does match the project of which it is being assigned.
-		activities.add(new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, associatedProjectNumber));
+		activities.add(activity);
 	}
 	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException, ActivityNotFoundException {
@@ -121,6 +121,11 @@ public class Project {
 		year %= 100;
 		projectNumber = year * 10000 + projectNumber;
 		return projectNumber;
+	}
+
+	public void removeActivityByName(String activityName) {
+		// Remove any activity with the parameter name
+		activities.removeIf(b -> b.getName().equals(activityName));
 	}
 
 }

@@ -35,7 +35,6 @@ public class AssignProjectLeaderToProjectSteps {
 	private Employee projectLeader;
 	private Employee employee;
 	private ErrorMessageHolder errorMessage;
-//	private String errorMessageHolder;
 	
 	public AssignProjectLeaderToProjectSteps(PlanningAppHolder planningAppHolder, PlanningApp planningApp, ErrorMessageHolder errorMessage, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
 		this.planningAppHolder = planningAppHolder;
