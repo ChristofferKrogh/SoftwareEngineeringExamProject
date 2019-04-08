@@ -11,6 +11,7 @@ public class Activity {
 	private int expectedAmountOfHours;
 	private int associatedProjectNumber; 
 	private List<Employee> employees = new ArrayList<>();
+	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 	
 	public Activity(String name, int expectedStart, int expectedEnd, int expectedAmountOfHours, int associatedProjectNumber) {
 		this.name = name; 
@@ -48,6 +49,14 @@ public class Activity {
 	// Second argument: The employee who's being added
 	public void assignEmployee(Employee projectLeader, Employee employee) {
 		employees.add(employee);
+	}
+
+	public void registerTime(TimeRegistration timeRegistration) {
+		timeRegistrations.add(timeRegistration);
+	}
+
+	public List<TimeRegistration> getTimeRegistrations() {
+		return timeRegistrations;
 	}
 
 }

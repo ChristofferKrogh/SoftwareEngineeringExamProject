@@ -53,7 +53,8 @@ public class CreateActivitySteps {
 	@When("the project leader creates an activity {string} ")
 	public void theProjectLeaderCreatesAnActivity(String name) {
 		assertThat(project.getProjectLeader(),is(equalTo(employee)));
-		project.addActivity(name, 0, 1, 2, 1);		
+		Activity activity = new Activity(name, 0, 1, 2, 1);
+		project.addActivity(activity);		
 	}
 
 	@Then("the activity {string} is created for the project")
@@ -65,7 +66,8 @@ public class CreateActivitySteps {
 	public void anEmployeeCreatesAnActivity(String init, String name) {
 		employee = new Employee(null,init);
 		assertThat(project.getProjectLeader(),is(equalTo(employee))); // There could be an error
-		project.addActivity(name, 0, 1, 2, 1);
+		Activity activity = new Activity(name, 0, 1, 2, 1);
+		project.addActivity(activity);
 	}
 
 	@Then("get the error message {string}")

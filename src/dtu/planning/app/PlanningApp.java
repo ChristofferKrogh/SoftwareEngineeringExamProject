@@ -98,8 +98,11 @@ public class PlanningApp {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
+		// Create new activity
+		Activity activity = new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, project.getProjectNumber());
+		
 		// Add activity to that project
-		project.addActivity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, projectNumber);
+		project.addActivity(activity);
 		
 	}
 	
@@ -110,5 +113,16 @@ public class PlanningApp {
 		Project project = this.searchForProject(projectNumber);
 		
 		project.setProjectLeader(employee);
+	}
+
+	public void registerTime(int projectNumber, String activityName, TimeRegistration timeRegistration) throws OperationNotAllowedException, ActivityNotFoundException {
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
+		
+		// Find activity in project
+		Activity activity = project.getActivityByName(activityName);
+		
+		// Add time registration to that activity
+		activity.registerTime(timeRegistration);
 	}
 }
