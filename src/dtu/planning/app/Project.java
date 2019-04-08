@@ -123,9 +123,4 @@ public class Project {
 		return projectNumber;
 	}
 
-	public void removeActivityByName(String activityName) {
-		// Remove any activity with the parameter name
-		activities.removeIf(b -> b.getName().equals(activityName));
-	}
-
 }

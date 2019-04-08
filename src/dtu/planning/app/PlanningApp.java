@@ -106,14 +106,6 @@ public class PlanningApp {
 		
 	}
 	
-	public void removeActivity(int projectNumber, String activityName) throws OperationNotAllowedException {
-		// Find project from id
-		Project project = this.searchForProject(projectNumber);
-		
-		// Add activity to that project
-		project.removeActivityByName(activityName);
-	}
-	
 	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException { // String initials
 		// Find employee from initials
 		Employee employee = this.searchForEmployee(initials);
@@ -132,20 +124,5 @@ public class PlanningApp {
 		
 		// Add time registration to that activity
 		activity.registerTime(timeRegistration);
-		
-		// Properly inefficient way to update value
-		// Update activity on project
-		project.removeActivityByName(activityName);
-		project.addActivity(activity);		
-
-		// Properly inefficient way to update value
-		// Update project in planning app
-		this.removeProjectByName(projectNumber);
-		this.createProject(project);
-	}
-	
-	private void removeProjectByName(int projectNumber) {
-		// Remove any activity with the parameter name
-		projects.removeIf(b -> (b.getProjectNumber() == projectNumber));
 	}
 }
