@@ -69,7 +69,7 @@ public class PlanningApp {
 						      .stream()
 						      .filter(b -> b.getInitials().equals(employee.getInitials()))
 						      .findFirst();
-		if (r.isEmpty()) {
+		if (!r.isPresent()) {
 			throw new OperationNotAllowedException("The employee does not exist");
 		}
 		
