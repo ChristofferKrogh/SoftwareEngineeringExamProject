@@ -46,7 +46,12 @@ public class ReportTimeSteps {
 		timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime, TimeRegistration.timeUnits.HOURS);
 		
 		// Register the time
-		planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,timeRegistration);
+		try {
+			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,timeRegistration);
+		} catch (ActivityNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		
 	}
 	
 	@Then("the time report is saved to activity with name {string}")
