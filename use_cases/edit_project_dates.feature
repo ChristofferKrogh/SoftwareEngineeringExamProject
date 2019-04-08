@@ -3,22 +3,22 @@ Feature: Edit project dates
 	Actors: Anyone (employee or project leader i.e. any employee)
 	
 Scenario: The start date of a project is changed
-	Given there is a project with id 0
+	Given the project with id 0 exists
 	When an employee edits the start date of the project to 1/1/2019
-	Then the start date of the project with id 0 is 1/1/2019
+	Then the start date of the project is 1/1/2019
 	
 Scenario: The end date of a project is changed
-	Given there is a project with id 0
+	Given the project with id 0 exists
 	When an employee edits the end date of the project to 2/1/2019
-	Then the end date of the project with id 0 is 2/1/2019
+	Then the end date of the project is 2/1/2019
 	
 Scenario: The start date of an unexisting project is changed
-	Given there is not a project with id 0
+	Given project with id 0 does not exist
 	When an employee edits the start date of the project to 1/1/2019
 	Then I get the error message "The project does not exist"
 	
 Scenario: The end date of an unexisting project is changed
-	Given there is not a project with id 0
+	Given project with id 0 does not exist
 	When an employee edits the end date of the project to 2/1/2019
 	Then I get the error message "The project does not exist"
 	
