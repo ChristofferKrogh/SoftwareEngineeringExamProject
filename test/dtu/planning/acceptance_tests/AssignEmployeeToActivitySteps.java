@@ -40,7 +40,7 @@ public class AssignEmployeeToActivitySteps {
 	@Given("employee with initials {string} exists")
 	public void employeeWithInitialsExists(String initials) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		//PlanningApp planningApp = new PlanningApp();
+		
 		// Employee name doesn't matter, so it is set to null.
 		Employee employee = new Employee(null,initials);
 		employeeHolder.setEmployee(employee);
@@ -138,7 +138,7 @@ public class AssignEmployeeToActivitySteps {
 	
 	@Then("I get the error message {string}")
 	public void iGetTheErrorMessage(String error) {
-		// Credits: Library app example error message holder
+		// Credit: Library application example error message holder by Hubert Baumeister, Associate Professor, DTU Compute, 02161 F19 Lectures
 		assertEquals(errorMessageHolder.getErrorMessage(), error);
 	}
 }
