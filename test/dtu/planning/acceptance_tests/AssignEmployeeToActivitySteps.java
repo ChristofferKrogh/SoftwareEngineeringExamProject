@@ -47,7 +47,6 @@ public class AssignEmployeeToActivitySteps {
 		
 		// Add this employee to the company
 		planningApp.addEmployee(employee);
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@Given("the project with id {int} exists")
@@ -59,7 +58,6 @@ public class AssignEmployeeToActivitySteps {
 		planningApp.createProject(project);
 		
 		projectHolder.setProject(project);
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@Given("the activity with name {string} exists for project")
@@ -68,7 +66,6 @@ public class AssignEmployeeToActivitySteps {
 		// The values 0, 1, 2, 3 are chosen as an example.
 		// Activity does not test that the assigned project id, actually exists or is the id that it is assigned to
 		planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, 0, 1, 2);
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@Given("the actor is project leader for the project")
@@ -82,7 +79,6 @@ public class AssignEmployeeToActivitySteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
 	@Given("the actor is not project leader for the project")
@@ -115,7 +111,6 @@ public class AssignEmployeeToActivitySteps {
 		} catch (ActivityNotFoundException e) {
 			// Everything is ok, exception is to be expected here.
 		}
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	
@@ -131,7 +126,6 @@ public class AssignEmployeeToActivitySteps {
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
 	@Then("the employee {string} is assigned to the activity {string}")
@@ -140,7 +134,6 @@ public class AssignEmployeeToActivitySteps {
 		Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
 		assertTrue(project.getEmployeesAssignedToActivity(activityName).contains(employeeHolder.getEmployee()));
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
 	@Then("I get the error message {string}")

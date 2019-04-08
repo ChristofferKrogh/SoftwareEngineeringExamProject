@@ -56,7 +56,6 @@ public class CreateProjectSteps {
 		planningApp = planningAppHolder.getPlanningApp();
 		project = projectHolder.getProject();
 		planningApp.createProject(project);
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@Then("the internal project with name {string} is created")
@@ -105,7 +104,6 @@ public class CreateProjectSteps {
 		project = new Project("Test Project", true, projectNumber);
 		projectHolder.setProject(project);
 		planningApp.createProject(project);
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@When("an employee edits the start date of the project to {int}\\/{int}\\/{int}")
@@ -119,7 +117,6 @@ public class CreateProjectSteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-	    planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@Then("the start date of the project is {int}\\/{int}\\/{int}")
@@ -140,7 +137,6 @@ public class CreateProjectSteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@Then("the end date of the project is {int}\\/{int}\\/{int}")
@@ -149,17 +145,6 @@ public class CreateProjectSteps {
 	    date = new GregorianCalendar(year, month, day);
 	    assertTrue(project.getEndDate().equals(date));
 	}
-	
-//	@Given("there is not a project with id {int}")
-//	public void thereIsNotAProjectWithId(Integer projectNumber) {
-//	    // TODO: assertThat there is not a project with the projectNumber
-//		assertThat(planningApp.getProjectNumbers(), hasItem(projectNumber));
-//	}
-
-//	@Then("I get the error message {string}")
-//	public void iGetTheErrorMessage(String errorMessage) throws Exception {
-//	    assertEquals(errorMessage, this.errorMessage.getErrorMessage());
-//	}
 	
 	@When("an employee edits the start date of the project to a date after the end date")
 	public void anEmployeeEditsTheStartDateOfTheProjectToADateAfterTheEndDate() throws Exception {
@@ -177,7 +162,6 @@ public class CreateProjectSteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
 	@When("an employee edits the end date of the project to a date before the start date")
@@ -196,7 +180,6 @@ public class CreateProjectSteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 }
