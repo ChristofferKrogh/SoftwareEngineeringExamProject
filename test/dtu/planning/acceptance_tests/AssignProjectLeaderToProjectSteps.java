@@ -28,6 +28,7 @@ import dtu.planning.app.TimeRegistration;
 public class AssignProjectLeaderToProjectSteps {
 	
 	private PlanningApp planningApp = new PlanningApp();
+	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private Project project;
@@ -36,7 +37,8 @@ public class AssignProjectLeaderToProjectSteps {
 	private ErrorMessageHolder errorMessage;
 //	private String errorMessageHolder;
 	
-	public AssignProjectLeaderToProjectSteps(PlanningApp planningApp, ErrorMessageHolder errorMessage, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
+	public AssignProjectLeaderToProjectSteps(PlanningAppHolder planningAppHolder, PlanningApp planningApp, ErrorMessageHolder errorMessage, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
+		this.planningAppHolder = planningAppHolder;
 		this.planningApp = planningApp;
 		this.errorMessage = errorMessage;
 		this.projectHolder = projectHolder;
@@ -55,16 +57,18 @@ public class AssignProjectLeaderToProjectSteps {
 
 	@When("I assign employee with initials {string} as project leader")
 	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 //		try {
 		// projektet her er en nullpointer, fordi det ikke er initialiseret... 
 			project = projectHolder.getProject();
 			employee = employeeHolder.getEmployee();
-			project.setProjectLeader(employee);
+			planningApp.setProjectLeader(project.getProjectNumber(), employee);
 			projectHolder.setProject(project);
 			employeeHolder.setEmployee(employee);
 //		} catch (OperationNotAllowedException e) {
 //			errorMessage.setErrorMessage(e.getMessage());
 //		}
+		planningAppHolder.setPlanningApp(planningApp);
 	}
 
 	@Then("the employee with initials {string} is assigned as project leader for the project with id {int}")
