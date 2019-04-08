@@ -53,6 +53,8 @@ public class CreateProjectSteps {
 
 	@When("an employee creates the project")
 	public void anEmployeeCreatesTheProject() throws Exception {
+		// There is no need to check whether the actor is an employee since we assume
+		// that only employee will have access to this system
 		planningApp = planningAppHolder.getPlanningApp();
 		project = projectHolder.getProject();
 		planningApp.createProject(project);
@@ -81,6 +83,7 @@ public class CreateProjectSteps {
 	public void theProjectIsGivenAProjectNumber() throws Exception {
 		planningApp = planningAppHolder.getPlanningApp();
 		project = projectHolder.getProject();
+		// Determine what the project number should have been
 		int projectNumber = (planningApp.projectCount - 1) % 10000;
 		Date date = new Date();
 		Calendar calendar = new GregorianCalendar();
@@ -99,14 +102,14 @@ public class CreateProjectSteps {
 		projectHolder.setProject(project);
 	}
 	
-	@Given("there is a project with id {int}")
-	public void thereIsAProjectWithId(Integer projectNumber) throws Exception {
-		planningApp = planningAppHolder.getPlanningApp();
-		project = new Project("Test Project", true, projectNumber);
-		projectHolder.setProject(project);
-		planningApp.createProject(project);
-		planningAppHolder.setPlanningApp(planningApp);
-	}
+//	@Given("there is a project with id {int}")
+//	public void thereIsAProjectWithId(Integer projectNumber) throws Exception {
+//		planningApp = planningAppHolder.getPlanningApp();
+//		project = new Project("Test Project", true, projectNumber);
+//		projectHolder.setProject(project);
+//		planningApp.createProject(project);
+//		planningAppHolder.setPlanningApp(planningApp);
+//	}
 
 	@When("an employee edits the start date of the project to {int}\\/{int}\\/{int}")
 	public void anEmployeeEditsTheStartDateOfTheProjectTo(Integer day, Integer month, Integer year) throws Exception {

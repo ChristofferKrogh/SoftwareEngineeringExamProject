@@ -1,7 +1,7 @@
-#Feature: Assign employee to regular activity
-#    Description: the employee assign it self to a regular activity
-#    Actor: Employee
-#    
+Feature: Assign employee to regular activity
+    Description: the employee assigns itself to a regular activity
+    Actor: Employee
+    
 #Scenario: An employee is assigned to the regular activity successfully
 #    Given the employee exists
 #    And I have the regular activity with name "Sick" exists
