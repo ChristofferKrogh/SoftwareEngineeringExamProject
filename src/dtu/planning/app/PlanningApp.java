@@ -60,6 +60,15 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 	
+	public Employee searchForEmployee(String initials) throws OperationNotAllowedException {
+		for (Employee e : employees) {
+			if (e.getInitials() == initials) {
+				return e;
+			}
+		}
+		throw new OperationNotAllowedException("The employee does not exist");
+	}
+	
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
@@ -74,6 +83,14 @@ public class PlanningApp {
 
 	public void addEmployee(Employee employee) {
 		employees.add(employee);
+	}
+	
+	public List<String> getEmployeeInitials() {
+		List<String> employeeInitials = new ArrayList<>();
+		for (Employee e : employees) {
+			employeeInitials.add(e.getInitials());
+		}
+		return employeeInitials;
 	}
 	
 	public List<Employee> getEmployees() {
@@ -101,15 +118,31 @@ public class PlanningApp {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
+		// Create new activity
+		Activity activity = new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, project.getProjectNumber());
+		
 		// Add activity to that project
-		project.addActivity(activityName, expectedStart, expectedEnd, expectedAmountOfHours);
+		project.addActivity(activity);
 		
 	}
 	
-	public void setProjectLeader(int projectNumber, Employee employee) throws OperationNotAllowedException {
+	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException { // String initials
+		// Find employee from initials
+		Employee employee = this.searchForEmployee(initials);
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
 		project.setProjectLeader(employee);
+	}
+
+	public void registerTime(int projectNumber, String activityName, TimeRegistration timeRegistration) throws OperationNotAllowedException, ActivityNotFoundException {
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
+		
+		// Find activity in project
+		Activity activity = project.getActivityByName(activityName);
+		
+		// Add time registration to that activity
+		activity.registerTime(timeRegistration);
 	}
 }

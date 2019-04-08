@@ -35,7 +35,6 @@ public class AssignProjectLeaderToProjectSteps {
 	private Employee projectLeader;
 	private Employee employee;
 	private ErrorMessageHolder errorMessage;
-//	private String errorMessageHolder;
 	
 	public AssignProjectLeaderToProjectSteps(PlanningAppHolder planningAppHolder, PlanningApp planningApp, ErrorMessageHolder errorMessage, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
 		this.planningAppHolder = planningAppHolder;
@@ -44,37 +43,23 @@ public class AssignProjectLeaderToProjectSteps {
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 	}
-	
-//	@Given("employee with initials {string} exists")
-//	public void employeeWithInitialsExists(String initials) throws Exception {
-//		employee = new Employee(null,initials);
-//	}
-//
-//	@Given("the project with id {int} exists")
-//	public void projectWithProjectNumberExists(Integer pNumber) throws Exception {
-//		project = new Project(null, false, pNumber);
-//	}
 
 	@When("I assign employee with initials {string} as project leader")
 	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-//		try {
-		// projektet her er en nullpointer, fordi det ikke er initialiseret... 
+		try {
 			project = projectHolder.getProject();
 			employee = employeeHolder.getEmployee();
-			planningApp.setProjectLeader(project.getProjectNumber(), employee);
+			planningApp.setProjectLeader(project.getProjectNumber(), employee.getInitials()); //employee.getInitials()
 			projectHolder.setProject(project);
 			employeeHolder.setEmployee(employee);
-//		} catch (OperationNotAllowedException e) {
-//			errorMessage.setErrorMessage(e.getMessage());
-//		}
-		planningAppHolder.setPlanningApp(planningApp);
+		} catch (OperationNotAllowedException e) {
+			errorMessage.setErrorMessage(e.getMessage());
+		}
 	}
 
 	@Then("the employee with initials {string} is assigned as project leader for the project with id {int}")
 	public void theEmployeeWithInitialsIsAssignedAsProjectLeaderForTheProjectWithProjectNumber(String initials, Integer pNumber) throws Exception {
-	    // Write code here that turns the phrase above into concrete actions
-//	    throw new cucumber.api.PendingException();
 		project = projectHolder.getProject();
 		employee = employeeHolder.getEmployee();
 		assertThat(employee.getInitials(),is(equalTo(initials)));
@@ -87,22 +72,12 @@ public class AssignProjectLeaderToProjectSteps {
 		project = new Project("Test Project", true, pNumber);
 		projectHolder.setProject(project);
 	}
-//
-//	@Then("I get the error message {string}")
-//	public void iGetTheErrorMessage(String errorMessage) throws Exception {
-//		assertEquals(errorMessage, this.errorMessage.getErrorMessage());
-//	}
-
-//	@Given("project has a project leader")
-//	public void projectHasAProjectLeader() throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
-//	}
-//
-//	@Given("employee with initials {string} does not exist")
-//	public void employeeWithInitialsDoesNotExist(String initials) throws Exception {
-//	    // Write code here that turns the phrase above into concrete actions
-////	    throw new cucumber.api.PendingException();
-//	}
+	
+	@Given("employee with initials {string} does not exist")
+	public void employeeWithInitialsDoesNotExist(String initials) {
+		assertThat(planningApp.getEmployeeInitials(), not(hasItem(initials)));
+		employee = new Employee(null,initials);
+		employeeHolder.setEmployee(employee);
+	}
 	
 }
