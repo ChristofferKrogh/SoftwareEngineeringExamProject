@@ -64,7 +64,7 @@ public class AssignProjectLeaderToProjectSteps {
 		// projektet her er en nullpointer, fordi det ikke er initialiseret... 
 			project = projectHolder.getProject();
 			employee = employeeHolder.getEmployee();
-			planningApp.setProjectLeader(project.getProjectNumber(), employee); //employee.getInitials()
+			planningApp.setProjectLeader(project.getProjectNumber(), employee.getInitials()); //employee.getInitials()
 			projectHolder.setProject(project);
 			employeeHolder.setEmployee(employee);
 		} catch (OperationNotAllowedException e) {

@@ -103,9 +103,9 @@ public class PlanningApp {
 		
 	}
 	
-	public void setProjectLeader(int projectNumber, Employee employee) throws OperationNotAllowedException { // String initials
+	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException { // String initials
 		// Find employee from initials
-//		Employee employee = this.searchForEmployee(initials);
+		Employee employee = this.searchForEmployee(initials);
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		

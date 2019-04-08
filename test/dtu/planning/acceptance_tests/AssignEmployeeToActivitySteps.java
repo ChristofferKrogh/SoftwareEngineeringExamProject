@@ -76,8 +76,12 @@ public class AssignEmployeeToActivitySteps {
 	@Given("the actor is project leader for the project")
 	public void theProjectLeaderIsProjectLeaderForTheProject() throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		actor = new Employee("John Smith", "JS");
-		planningApp.setProjectLeader(projectNumber, actor); // actor.getInitials()
+		try {
+			actor = new Employee("John Smith", "JS");
+			planningApp.setProjectLeader(projectNumber, actor.getInitials());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 		planningAppHolder.setPlanningApp(planningApp);
 	}
 	
@@ -141,6 +145,6 @@ public class AssignEmployeeToActivitySteps {
 	@Then("I get the error message {string}")
 	public void iGetTheErrorMessage(String error) {
 		// Credits: Library app example error message holder
-		assertEquals(error, errorMessageHolder.getErrorMessage());
+		assertEquals(errorMessageHolder.getErrorMessage(), error);
 	}
 }
