@@ -10,6 +10,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import dtu.planning.app.Activity;
+import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
@@ -56,7 +57,7 @@ public class CreateActivitySteps {
 	}
 
 	@Then("the activity {string} is created for the project")
-	public void theActivityIsCreatedForTheProject(String name) {
+	public void theActivityIsCreatedForTheProject(String name) throws ActivityNotFoundException {
 	    assertThat(project.getActivityByName(name),is(equalTo(name))); 
 	}
 
