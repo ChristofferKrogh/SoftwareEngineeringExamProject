@@ -16,7 +16,6 @@ Scenario: Fail report used time for activity that does not exist
     When the employee report 1 hour on "Don't look at me" on 1/1/2019
     Then I get the error message "The activity does not exist"
     
-# Tjek for medarbejder ikke findes
 Scenario: Fail report used time for project that does not exist
     Given the employee doesn't exist
     And the project with id 1 exists
@@ -24,7 +23,6 @@ Scenario: Fail report used time for project that does not exist
     When the employee report 1 hour on "Some Activity" on 1/1/2019
     Then I get the error message "The employee does not exist"
 
-# Tjek for projekt ikke findes
 Scenario: Fail report used time for employee that does not exist
     Given employee with initials "JS" exists
     And project with id 1 does not exist
