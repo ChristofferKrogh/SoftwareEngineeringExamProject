@@ -82,18 +82,22 @@ public class PlanningApp {
 		Project project = this.searchForProject(projectNumber);
 		
 		// Check that the employee given exists, if not throw exception
-		Optional<Employee> r = employees
-						      .stream()
-						      .filter(b -> b.getInitials().equals(employee.getInitials()))
-						      .findFirst();
-		if (!r.isPresent()) {
-			throw new OperationNotAllowedException("The employee does not exist");
-		}
+		this.checkEmployeeExist(employee);
 		
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);		
 	}
 	
+	private void checkEmployeeExist(Employee employee) throws OperationNotAllowedException {
+		Optional<Employee> r = employees
+			      .stream()
+			      .filter(b -> b.getInitials().equals(employee.getInitials()))
+			      .findFirst();
+		if (!r.isPresent()) {
+		throw new OperationNotAllowedException("The employee does not exist");
+		}	
+	}
+
 	public void addActivity(int projectNumber, String activityName, int expectedStart, int expectedEnd, int expectedAmountOfHours) throws OperationNotAllowedException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
@@ -121,6 +125,9 @@ public class PlanningApp {
 		
 		// Find activity in project
 		Activity activity = project.getActivityByName(activityName);
+		
+		// Check that the employee given exists, if not throw exception
+		this.checkEmployeeExist(timeRegistration.getEmployee());
 		
 		// Add time registration to that activity
 		activity.registerTime(timeRegistration);

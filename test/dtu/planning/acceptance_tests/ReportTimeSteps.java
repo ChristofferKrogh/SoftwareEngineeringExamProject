@@ -50,6 +50,8 @@ public class ReportTimeSteps {
 			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,timeRegistration);
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
 	}

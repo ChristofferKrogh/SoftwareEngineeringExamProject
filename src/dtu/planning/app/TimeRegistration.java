@@ -21,5 +21,8 @@ public class TimeRegistration {
 		this.timeUnit = timeUnit;
 	}
 	
+	public Employee getEmployee () {
+		return employee;
+	}
 	
 }
