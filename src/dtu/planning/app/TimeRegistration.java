@@ -13,6 +13,7 @@ public class TimeRegistration {
 	private timeUnits timeUnit;
 	private Employee employee;
 	
+	// We have chosen to make the key the day for an employee for an activity 
 	public TimeRegistration (Employee employee, GregorianCalendar date, int amountOfTime, timeUnits timeUnit) {
 		this.employee = employee;
 		this.date = date;
