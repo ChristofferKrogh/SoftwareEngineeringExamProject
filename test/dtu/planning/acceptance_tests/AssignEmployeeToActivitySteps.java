@@ -65,7 +65,11 @@ public class AssignEmployeeToActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		// The values 0, 1, 2, 3 are chosen as an example.
 		// Activity does not test that the assigned project id, actually exists or is the id that it is assigned to
-		planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, 0, 1, 2);
+		try {
+			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, 0, 1, 2);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
 
 	@Given("the actor is project leader for the project")
