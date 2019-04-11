@@ -49,6 +49,15 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The employee does not exist");
 	}
 	
+//	public Activity searchForTimeRegistration(Employee employee, GregorianCalendar date) {
+//		for ( TimeRegistration t : Activity.timeRegistrations) {
+//			if (t.getEmployee() == employee && t.getDate() == date) {
+//				return t;
+//			}
+//		}
+//		throw new OperationNotAllowedException("The employee has not registered time for this activity");
+//	}
+	
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {

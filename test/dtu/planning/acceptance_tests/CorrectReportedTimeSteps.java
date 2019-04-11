@@ -32,8 +32,8 @@ public class CorrectReportedTimeSteps {
 	}
 	
 
-	@Given("the employee with initials {string} has reported time for the activity with name {string}")
-	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithName(String string, String string2) {
+	@Given("the employee with initials {string} has reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
+	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String string, String string2, Integer int1, Integer int2, Integer int3) {
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new cucumber.api.PendingException();
 	}
@@ -50,11 +50,11 @@ public class CorrectReportedTimeSteps {
 	    throw new cucumber.api.PendingException();
 	}
 
-	@Given("the employee with initials {string} does not have reported time for the activity with name {string}")
-	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithName(String string, String string2) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
+//	@Given("the employee with initials {string} does not have reported time for the activity with name {string}")
+//	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithName(String string, String string2) {
+//	    // Write code here that turns the phrase above into concrete actions
+//	    throw new cucumber.api.PendingException();
+//	}
 
 
 }

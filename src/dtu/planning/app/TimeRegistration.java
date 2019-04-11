@@ -25,4 +25,16 @@ public class TimeRegistration {
 		return employee;
 	}
 	
+	public GregorianCalendar getDate() {
+		return date;
+	}
+	
+	public int getAmountOfTime() {
+		return amountOfTime;
+	}
+	
+	public timeUnits getTimeUnit() {
+		return timeUnit;
+	}
+ 	
 }
