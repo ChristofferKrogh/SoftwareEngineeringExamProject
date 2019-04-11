@@ -18,6 +18,9 @@ public class Employee {
 		return initials; 
 	}
 	
+	public boolean match(String searchText) {
+		return this.name.contains(searchText) || this.initials.contains(searchText);
+	}
 	
 	
 }

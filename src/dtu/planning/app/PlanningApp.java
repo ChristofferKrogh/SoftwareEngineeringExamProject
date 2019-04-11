@@ -12,34 +12,25 @@ public class PlanningApp {
 	// Storage for the projects
 	private List<Project> projects = new ArrayList<>();
 	
-	// Regular project. This project stores all the regular activities
+	// Regular activities. These include all the regular activities
 	// fx vacation and sickness
-	private Project regularProject = new Project("Regular Activities", true, 0);
+	private List<Activity> regularActivities = new ArrayList<>();
 	
 	// Storage for the list of employees that work for the company
 	private List<Employee> employees = new ArrayList<>();
 	
 	// Counter to ensure unique ID's for each project
-	public int projectCount = 1;
-	
-	public PlanningApp() {
-		initializeRegularProject();
-	}
-	
-	private void initializeRegularProject() {
-		try {
-			regularProject.setStartDate(new GregorianCalendar(2000, 1, 1));
-			regularProject.setEndDate(new GregorianCalendar(3000, 1, 1));
-		} catch (Exception e) {
-			System.out.println("The initalization process failed");		
-		}
-//		regularProject.addActivity("Sickness", 1, 2, 99999);
-//		regularProject.addActivity("Vacation", 1, 2, 99999);
-//		regularProject.addActivity("Courses", 1, 2, 99999);
-	}
+	public int projectCount = 0;
 	
 	public void createProject(Project project) {
 		projects.add(project);
+		projectCount++;
+	}
+	
+	// TODO: der mangler test for nedenstående metode
+	public void createProject(String name, boolean isProjectInternal) {
+		Project newProject = new Project(name, isProjectInternal, projectCount);
+		projects.add(newProject);
 		projectCount++;
 	}
 	
@@ -60,6 +51,17 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 	
+	// TODO: der mangler test for nedenstående metode
+	public List<Project> searchForProjectsByName(String name) {
+		List<Project> searchResults = new ArrayList<>();
+		for (Project p : projects) {
+			if (p.match(name)) {
+				searchResults.add(p);
+			}
+		}
+		return searchResults;
+	}
+	
 	public Employee searchForEmployee(String initials) throws OperationNotAllowedException {
 		for (Employee e : employees) {
 			if (e.getInitials() == initials) {
@@ -68,6 +70,17 @@ public class PlanningApp {
 		}
 		throw new OperationNotAllowedException("The employee does not exist");
 	}
+	
+	// TODO: der mangler test for nedenstående metode
+		public List<Employee> searchForEmployeesByName(String name) {
+			List<Employee> searchResults = new ArrayList<>();
+			for (Employee e : employees) {
+				if (e.match(name)) {
+					searchResults.add(e);
+				}
+			}
+			return searchResults;
+		}
 	
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
@@ -79,6 +92,14 @@ public class PlanningApp {
 	
 	public List<Project> getProjects() {
 		return projects;
+	}
+	
+	public void addRegularActivity(Activity activity) {
+		regularActivities.add(activity);
+	}
+	
+	public List<Activity> getRegularActivities() {
+		return regularActivities;
 	}
 
 	public void addEmployee(Employee employee) {

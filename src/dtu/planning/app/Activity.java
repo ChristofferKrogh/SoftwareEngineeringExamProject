@@ -21,6 +21,14 @@ public class Activity {
 		this.associatedProjectNumber = associatedProjectNumber; 	
 	}
 	
+	public Activity(String name, int startWeek, int endWeek) {
+		this.name = name;
+		this.expectedStart = startWeek;
+		this.expectedEnd = endWeek;
+		this.expectedAmountOfHours = 0; 
+		this.associatedProjectNumber = 0; 
+	}
+	
 	public String getName() {
 		return name; 
 	}
@@ -47,7 +55,7 @@ public class Activity {
 	
 	// First argument: The actor, must be the project leader
 	// Second argument: The employee who's being added
-	public void assignEmployee(Employee projectLeader, Employee employee) {
+	public void assignEmployee(Employee employee) {
 		employees.add(employee);
 	}
 

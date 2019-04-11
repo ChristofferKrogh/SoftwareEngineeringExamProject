@@ -15,7 +15,7 @@ public class Project {
 	private Employee projectLeader;
 	private List<Activity> activities = new ArrayList<>();
 	private int number;
-	private GregorianCalendar startDate = new GregorianCalendar(0000, 1, 1);
+	private GregorianCalendar startDate = new GregorianCalendar(0001, 1, 1);
 	private GregorianCalendar endDate = new GregorianCalendar(3000, 1, 1);
 
 	public Project(String name, boolean isProjectInternal, int projectCount) {
@@ -59,7 +59,7 @@ public class Project {
 		Activity activity = getActivityByName(activityName);
 		
 		// assign employee to that activity
-		activity.assignEmployee(projectLeader,employee);
+		activity.assignEmployee(employee);
 	}
 	
 	public List<Employee> getEmployeesAssignedToActivity(String activityName) throws ActivityNotFoundException {
@@ -108,6 +108,20 @@ public class Project {
 		return endDate;
 	}
 	
+	public String getStartDateString() {
+		int year = startDate.get(Calendar.YEAR);
+		int month = startDate.get(Calendar.MONTH);
+		int date = startDate.get(Calendar.DATE);
+		return date + "/" + month + "/" + year;
+	}
+	
+	public String getEndDateString() {
+		int year = endDate.get(Calendar.YEAR);
+		int month = endDate.get(Calendar.MONTH);
+		int date = endDate.get(Calendar.DATE);
+		return date + "/" + month + "/" + year;
+	}
+	
 	private int generateNumber(int projectCount) {
 		// TODO: Describe the assumption in the report
 		// Assumption: There will never be created more than 10000 projects in the span
@@ -121,6 +135,10 @@ public class Project {
 		year %= 100;
 		projectNumber = year * 10000 + projectNumber;
 		return projectNumber;
+	}
+	
+	public boolean match(String searchText) {
+		return this.name.contains(searchText);	
 	}
 
 }
