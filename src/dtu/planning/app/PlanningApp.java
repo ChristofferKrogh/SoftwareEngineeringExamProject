@@ -1,9 +1,9 @@
 package dtu.planning.app;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+//import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 //import java.util.stream.Collectors;
@@ -22,16 +22,20 @@ public class PlanningApp {
 	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 	
+	// Counter to ensure unique ID's for each employee
+	public int employeeCount = 0;
+	
 	public void createProject(Project project) {
 		projects.add(project);
 		projectCount++;
 	}
 	
 	// TODO: der mangler test for nedenstående metode
-	public void createProject(String name, boolean isProjectInternal) {
+	public Project createProject(String name, boolean isProjectInternal) {
 		Project newProject = new Project(name, isProjectInternal, projectCount);
 		projects.add(newProject);
 		projectCount++;
+		return newProject;
 	}
 	
 	public void editStartDateOfProject(GregorianCalendar startDate, int projectNumber) throws OperationNotAllowedException {
@@ -71,7 +75,17 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The employee does not exist");
 	}
 	
-	// TODO: der mangler test for nedenstående metode
+	// TODO: there are not tests for this method
+	public Employee searchForEmployee(int employeeId) throws OperationNotAllowedException {
+		for (Employee e : employees) {
+			if (e.getEmployeeId() == employeeId) {
+				return e;
+			}
+		}
+		throw new OperationNotAllowedException("The employee does not exist");
+	}
+	
+	// TODO: there are no tests for this method
 		public List<Employee> searchForEmployeesByName(String name) {
 			List<Employee> searchResults = new ArrayList<>();
 			for (Employee e : employees) {
@@ -104,6 +118,14 @@ public class PlanningApp {
 
 	public void addEmployee(Employee employee) {
 		employees.add(employee);
+	}
+	
+	//TODO: there are not tests for this method
+	public Employee createEmployee(String name) {
+		Employee newEmployee = new Employee(name, employeeCount);
+		employees.add(newEmployee);
+		employeeCount++;
+		return newEmployee;
 	}
 	
 	public List<String> getEmployeeInitials() {
@@ -151,12 +173,22 @@ public class PlanningApp {
 		
 	}
 	
-	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException { // String initials
+	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException {
 		// Find employee from initials
 		Employee employee = this.searchForEmployee(initials);
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
+		project.setProjectLeader(employee);
+	}
+	
+	//TODO: there are no tests for this method
+	public void setProjectLeader(int projectNumber, int employeeId) throws OperationNotAllowedException {
+		// Find employee from initials
+		Employee employee = this.searchForEmployee(employeeId);
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
+			
 		project.setProjectLeader(employee);
 	}
 

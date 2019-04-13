@@ -52,8 +52,9 @@ public class MainScreen {
 	private void createExampleData() throws Exception {
 		planningApp.createProject("Test Project", true);
 		planningApp.createProject("Test Project external", false);
-		planningApp.addEmployee(new Employee("John Doe", "JD"));
-		planningApp.addEmployee(new Employee("Jane Doe", "JD"));
+		planningApp.addEmployee(new Employee("Lars Larsen", "LL"));
+		planningApp.createEmployee("John Doe");
+		planningApp.createEmployee("Jane Doe");
 	}
 
 	/**

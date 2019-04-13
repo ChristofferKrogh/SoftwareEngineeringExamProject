@@ -137,8 +137,14 @@ public class Project {
 		return projectNumber;
 	}
 	
+	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
 		return this.name.contains(searchText);	
+	}
+	
+	// TODO: there are no tests for the method below
+	public String toString() {
+		return this.name + " - " + this.number;
 	}
 
 }

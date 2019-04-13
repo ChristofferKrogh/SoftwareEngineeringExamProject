@@ -2,6 +2,7 @@ package dtu.planning.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -17,9 +18,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.xml.stream.events.StartDocument;
 
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Employee;
+import dtu.planning.app.Project;
+import dtu.planning.app.OperationNotAllowedException;
 
 
 public class CreateProjectScreen {
@@ -28,9 +32,18 @@ public class CreateProjectScreen {
 	private PlanningApp planningApp;
 	private JPanel panelCreateProject;
 	private JTextField searchField;
+	private JTextField projectNameField;
+	private JLabel leaderReminderField;
+	private JTextField startDayField;
+	private JTextField startMonthField;
+	private JTextField startYearField;
+	private JTextField endDayField;
+	private JTextField endMonthField;
+	private JTextField endYearField;
+	private JComboBox<String> internalOrExternalComboBox;
 	private JList<Employee> listSearchResult;
 	private DefaultListModel<Employee> searchResults;
-	private JLabel lblSearchResultDetail;
+//	private JLabel lblSearchResultDetail;
 	private JButton btnBack;
 	
 	public CreateProjectScreen(PlanningApp planningApp, ProjectsScreen parentWindow) {
@@ -47,19 +60,19 @@ public class CreateProjectScreen {
                 "Create Project"));
 		
 		JButton btnCreateProject = new JButton("Create Project");
-		btnCreateProject.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		btnCreateProject.setBounds(225, 385, 150, 50);
 		panelCreateProject.add(btnCreateProject);
+		btnCreateProject.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createProject();
+			}
+		});
 		
 		btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+				clear();
 				parentWindow.setVisible(true);
 			}
 		});
@@ -70,74 +83,87 @@ public class CreateProjectScreen {
 		lblProjectName.setBounds(100, 28, 100, 30);
 		panelCreateProject.add(lblProjectName);
 		
-		JTextField projectNameField = new JTextField();
+		projectNameField = new JTextField();
 		projectNameField.setBounds(210, 28, 140, 30);
 		panelCreateProject.add(projectNameField);
 		
 		String[] comboBoxItems = {"Internal", "External"};
-		JComboBox<String> internalOrExternalComboBox = new JComboBox<>(comboBoxItems);
+		internalOrExternalComboBox = new JComboBox<>(comboBoxItems);
 		internalOrExternalComboBox.setBounds(90, 60, 150, 50);
 		panelCreateProject.add(internalOrExternalComboBox);
 		
 		// ------------- Start and end dates ---------------------
 		
+		JLabel lblDateFormat = new JLabel("Day / Month / Year");
+		lblDateFormat.setBounds(215, 110, 200, 30);
+		panelCreateProject.add(lblDateFormat);
+		
 		JLabel lblStartDate = new JLabel("Start Date:");
-		lblStartDate.setBounds(100, 110, 100, 30);
+		lblStartDate.setBounds(100, 135, 100, 30);
 		panelCreateProject.add(lblStartDate);
 		
 		JLabel lblEndDate = new JLabel("End Date:");
-		lblEndDate.setBounds(100, 140, 100, 30);
+		lblEndDate.setBounds(100, 165, 100, 30);
 		panelCreateProject.add(lblEndDate);
 		
-		JTextField startDayField = new JTextField();
-		startDayField.setBounds(210, 110, 30, 30);
+		startDayField = new JTextField();
+		startDayField.setBounds(210, 135, 30, 30);
 		panelCreateProject.add(startDayField);
 		
-		JTextField startMonthField = new JTextField();
-		startMonthField.setBounds(250, 110, 30, 30);
+		startMonthField = new JTextField();
+		startMonthField.setBounds(250, 135, 30, 30);
 		panelCreateProject.add(startMonthField);
 		
-		JTextField startYearField = new JTextField();
-		startYearField.setBounds(290, 110, 60, 30);
+		startYearField = new JTextField();
+		startYearField.setBounds(290, 135, 60, 30);
 		panelCreateProject.add(startYearField);
 		
-		JTextField endDayField = new JTextField();
-		endDayField.setBounds(210, 140, 30, 30);
+		endDayField = new JTextField();
+		endDayField.setBounds(210, 165, 30, 30);
 		panelCreateProject.add(endDayField);
 		
-		JTextField endMonthField = new JTextField();
-		endMonthField.setBounds(250, 140, 30, 30);
+		endMonthField = new JTextField();
+		endMonthField.setBounds(250, 165, 30, 30);
 		panelCreateProject.add(endMonthField);
 		
-		JTextField endYearField = new JTextField();
-		endYearField.setBounds(290, 140, 60, 30);
+		endYearField = new JTextField();
+		endYearField.setBounds(290, 165, 60, 30);
 		panelCreateProject.add(endYearField);
 		
 		JLabel separatorOne = new JLabel("/");
-		separatorOne.setBounds(240, 110, 30, 30);
+		separatorOne.setBounds(240, 135, 30, 30);
 		panelCreateProject.add(separatorOne);
 		
 		JLabel separatorTwo = new JLabel("/");
-		separatorTwo.setBounds(280, 110, 30, 30);
+		separatorTwo.setBounds(280, 135, 30, 30);
 		panelCreateProject.add(separatorTwo);
 		
 		JLabel separatorThree = new JLabel("/");
-		separatorThree.setBounds(240, 140, 30, 30);
+		separatorThree.setBounds(240, 165, 30, 30);
 		panelCreateProject.add(separatorThree);
 		
 		JLabel separatorFour = new JLabel("/");
-		separatorFour.setBounds(280, 140, 30, 30);
+		separatorFour.setBounds(280, 165, 30, 30);
 		panelCreateProject.add(separatorFour);
 		
 		// --------------------------------------------------------
 		
 		JLabel lblLeader = new JLabel("Project Leader:");
-		lblLeader.setBounds(100, 180, 150, 30);
+		lblLeader.setBounds(100, 210, 150, 30);
 		panelCreateProject.add(lblLeader);
 		
 		searchField = new JTextField();
-		searchField.setBounds(210, 180, 140, 30);
+		searchField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				searchEmployees();
+			}
+		});
+		searchField.setBounds(210, 210, 140, 30);
 		panelCreateProject.add(searchField);
+		
+		leaderReminderField = new JLabel();
+		leaderReminderField.setBounds(5, 280, 87, 45);
+		panelCreateProject.add(leaderReminderField);
 		
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
@@ -145,7 +171,7 @@ public class CreateProjectScreen {
 				searchEmployees();
 			}
 		});
-		btnSearch.setBounds(165, 215, 100, 30);
+		btnSearch.setBounds(165, 245, 100, 30);
 		panelCreateProject.add(btnSearch);
 		btnSearch.getRootPane().setDefaultButton(btnSearch);
 		
@@ -171,7 +197,7 @@ public class CreateProjectScreen {
 		listSearchResult.setVisibleRowCount(5);
         JScrollPane listScrollPane = new JScrollPane(listSearchResult);
 
-        listScrollPane.setBounds(100, 250, 250, 100);
+        listScrollPane.setBounds(100, 280, 250, 100);
 		panelCreateProject.add(listScrollPane);
 
 	}
@@ -181,6 +207,11 @@ public class CreateProjectScreen {
 	}
 	
 	protected void searchEmployees() {
+		// Show a reminder to select the employee
+		StringBuffer b = new StringBuffer();
+		b.append("<html><b>Reminder:</b> Select the<br>project leader</html>");
+		leaderReminderField.setText(b.toString());
+		
 		searchResults.clear();
 		planningApp.searchForEmployeesByName(searchField.getText())
 		.forEach((m) -> {searchResults.addElement(m);});
@@ -189,5 +220,77 @@ public class CreateProjectScreen {
 	public void clear() {
 		searchField.setText("");
 		searchResults.clear();
+		projectNameField.setText("");
+		leaderReminderField.setText("");
+		startDayField.setText("");
+		startMonthField.setText("");
+		startYearField.setText("");
+		endDayField.setText("");
+		endMonthField.setText("");
+		endYearField.setText("");
+		internalOrExternalComboBox.setSelectedIndex(0);
+	}
+	
+	public void createProject() {
+		String name = projectNameField.getText();
+		boolean isProjectInternal = internalOrExternalComboBox.getSelectedItem().toString().matches("Internal");
+		if (name.equals("")) {
+			System.out.println("The project needs a name");
+		} else {
+			// Create the project
+			Project project = planningApp.createProject(name, isProjectInternal);
+			
+			// Add a project leader to the project if possible
+			if (listSearchResult.getSelectedIndex() == -1) {
+				System.out.println("The project was created without a project leader");
+			} else {
+				try {
+					planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getEmployeeId());
+				} catch (OperationNotAllowedException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Something went wrong when assigning a project leader to the project");
+					e.printStackTrace();
+				}
+			}
+			
+			// Add a start date to the project if possible
+			if (startDayField.getText().equals("") || 
+					startMonthField.getText().equals("") || 
+					startYearField.getText().equals("")) { // All fields need to be filled out
+				System.out.println("The project was created without a start date");
+			} else {
+				try {
+					int day = Integer.parseInt(startDayField.getText());
+					int month = Integer.parseInt(startMonthField.getText());
+					int year = Integer.parseInt(startYearField.getText());
+					GregorianCalendar startDate = new GregorianCalendar(year, month, day);
+					planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
+				} catch (Exception e) {
+					// TODO: handle exception
+					System.out.println("Something went wrong when changing the start date");
+				}
+			}
+			
+			// Add an end date to the project if possible
+			if (endDayField.getText().equals("") || 
+					endMonthField.getText().equals("") || 
+					endYearField.getText().equals("")) { // All fields need to be filled out
+				System.out.println("The project was created without a end date");
+			} else {
+				try {
+					int day = Integer.parseInt(endDayField.getText());
+					int month = Integer.parseInt(endMonthField.getText());
+					int year = Integer.parseInt(endYearField.getText());
+					GregorianCalendar endDate = new GregorianCalendar(year, month, day);
+					planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
+				} catch (Exception e) {
+					// TODO: handle exception
+					System.out.println("Something went wrong when changing the end date");
+				}
+			}
+			
+			clear();
+		}
+		
 	}
 }
