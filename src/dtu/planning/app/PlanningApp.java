@@ -38,6 +38,16 @@ public class PlanningApp {
 		return newProject;
 	}
 	
+	// TODO: there are no tests for the method below
+	public void setNameOfProject(String name, int projectNumber) throws OperationNotAllowedException {
+		searchForProject(projectNumber).setName(name);
+	}
+	
+	// TODO: there are no tests for the method below
+	public void setProjectInternal(boolean isProjectInternal, int projectNumber) throws OperationNotAllowedException {
+		searchForProject(projectNumber).setInternal(isProjectInternal);
+	}
+	
 	public void editStartDateOfProject(GregorianCalendar startDate, int projectNumber) throws OperationNotAllowedException {
 		searchForProject(projectNumber).setStartDate(startDate);
 	}

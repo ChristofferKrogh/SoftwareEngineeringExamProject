@@ -38,7 +38,12 @@ public class Employee {
 	}
 	
 	public boolean match(String searchText) {
-		return this.name.contains(searchText) || this.initials.contains(searchText);
+		searchText = searchText.toLowerCase();
+		String name = this.name.toLowerCase();
+		String initials = this.initials.toLowerCase();
+		return name.contains(searchText) ||
+				initials.contains(searchText) ||
+				Integer.toString(employeeId).contains(searchText);
 	}
 	
 	public String toString() {

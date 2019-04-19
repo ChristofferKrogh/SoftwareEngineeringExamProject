@@ -8,7 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -17,8 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
+//import javax.swing.SwingConstants;
+//import javax.swing.event.ListSelectionEvent;
+//import javax.swing.event.ListSelectionListener;
+//import javax.xml.stream.events.StartDocument;
 import javax.swing.event.ListSelectionListener;
-import javax.xml.stream.events.StartDocument;
 
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Employee;
@@ -31,9 +34,11 @@ public class CreateProjectScreen {
 	private ProjectsScreen parentWindow;
 	private PlanningApp planningApp;
 	private JPanel panelCreateProject;
+	private JPanel panelCreateProjectSuccess;
 	private JTextField searchField;
 	private JTextField projectNameField;
 	private JLabel leaderReminderField;
+	private JLabel lblSuccessMessage;
 	private JTextField startDayField;
 	private JTextField startMonthField;
 	private JTextField startYearField;
@@ -43,7 +48,7 @@ public class CreateProjectScreen {
 	private JComboBox<String> internalOrExternalComboBox;
 	private JList<Employee> listSearchResult;
 	private DefaultListModel<Employee> searchResults;
-//	private JLabel lblSearchResultDetail;
+	private Project project;
 	private JButton btnBack;
 	
 	public CreateProjectScreen(PlanningApp planningApp, ProjectsScreen parentWindow) {
@@ -59,12 +64,72 @@ public class CreateProjectScreen {
 		panelCreateProject.setBorder(BorderFactory.createTitledBorder(
                 "Create Project"));
 		
+		// ------------ Success Message --------------------
+		panelCreateProjectSuccess = new JPanel();
+		parentWindow.addPanel(panelCreateProjectSuccess);
+		panelCreateProjectSuccess.setLayout(null);
+		panelCreateProjectSuccess.setBorder(BorderFactory.createTitledBorder(
+                "Success Message"));
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				panelCreateProjectSuccess.setVisible(false);
+				clear();
+				parentWindow.setVisible(true);
+			}
+		});
+		btnBack.setBounds(21, 28, 59, 29);
+		panelCreateProjectSuccess.add(btnBack);
+		
+		JPanel panelSuccessMessage = new JPanel();
+		panelSuccessMessage.setBounds(50, 65, 330, 310);
+		panelCreateProjectSuccess.add(panelSuccessMessage);
+		panelSuccessMessage.setLayout(null);
+		
+		lblSuccessMessage = new JLabel("");
+		lblSuccessMessage.setVerticalAlignment(SwingConstants.TOP);
+		lblSuccessMessage.setBounds(0, 0, 330, 310);
+		panelSuccessMessage.add(lblSuccessMessage);
+		
+		JButton btnCreateProjectSuccess = new JButton("Create Project");
+		btnCreateProjectSuccess.setBounds(225, 385, 150, 50);
+		panelCreateProjectSuccess.add(btnCreateProjectSuccess);
+		btnCreateProjectSuccess.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCreateProjectSuccess.setVisible(false);
+				clear();
+				panelCreateProject.setVisible(true);
+			}
+		});
+		
+		JButton btnCreateActivity = new JButton("Create Activity");
+		btnCreateActivity.setBounds(25, 385, 150, 50);
+		panelCreateProjectSuccess.add(btnCreateActivity);
+		btnCreateActivity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Jeg forestiller mig, at det bliver noget i stil med:
+//				createActivityScreen.setProject(project);
+//				panelCreateProjectSuccess.setVisible(false);
+//				clear();
+//				createActivityScreen.setVisible(true);
+			}
+				
+		});
+		// -------------------------------------------------
+		
 		JButton btnCreateProject = new JButton("Create Project");
 		btnCreateProject.setBounds(225, 385, 150, 50);
 		panelCreateProject.add(btnCreateProject);
 		btnCreateProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createProject();
+				if (project != null) {
+					setVisible(false);
+					setSuccessMessage();
+					panelCreateProjectSuccess.setVisible(true);
+				}
 			}
 		});
 		
@@ -179,21 +244,16 @@ public class CreateProjectScreen {
 		listSearchResult = new JList<Employee>(searchResults);
 		listSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listSearchResult.setSelectedIndex(0);
-//		listSearchResult.addListSelectionListener(new ListSelectionListener() {
-//			
-//			@Override
-//			public void valueChanged(ListSelectionEvent e) {
-//		        if (e.getValueIsAdjusting() == false) {
-//
-//		            if (listSearchResult.getSelectedIndex() == -1) {
-//		            	lblSearchResultDetail.setText("");
-//
-//		            } else {
-//		            	lblSearchResultDetail.setText(new ProjectPrinter(listSearchResult.getSelectedValue()).printDetail());
-//		            }
-//		        }
-//			}
-//		});
+		listSearchResult.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (listSearchResult.getSelectedIndex() == -1) {
+					searchField.setText("");
+				} else {
+					searchField.setText(listSearchResult.getSelectedValue().getName());
+				}
+				
+			}
+		});
 		listSearchResult.setVisibleRowCount(5);
         JScrollPane listScrollPane = new JScrollPane(listSearchResult);
 
@@ -204,6 +264,10 @@ public class CreateProjectScreen {
 
 	public void setVisible(boolean aFlag) {
 		panelCreateProject.setVisible(aFlag);
+	}
+	
+	public void addPanel(JPanel panel) {
+		parentWindow.addPanel(panel);
 	}
 	
 	protected void searchEmployees() {
@@ -217,6 +281,15 @@ public class CreateProjectScreen {
 		.forEach((m) -> {searchResults.addElement(m);});
 	}
 	
+	private void setSuccessMessage() {
+		StringBuffer b = new StringBuffer();
+		b.append("<html><h1>The project \"");
+		b.append(project.getName());
+		b.append("\" was created!</h1><br>");
+		b.append("<p>You can now create an activity for this project or you can choose to create a new project.</p></html>");		
+		lblSuccessMessage.setText(b.toString());
+	}
+	
 	public void clear() {
 		searchField.setText("");
 		searchResults.clear();
@@ -228,7 +301,9 @@ public class CreateProjectScreen {
 		endDayField.setText("");
 		endMonthField.setText("");
 		endYearField.setText("");
+		lblSuccessMessage.setText("");
 		internalOrExternalComboBox.setSelectedIndex(0);
+		project = null;
 	}
 	
 	public void createProject() {
@@ -247,9 +322,7 @@ public class CreateProjectScreen {
 				try {
 					planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getEmployeeId());
 				} catch (OperationNotAllowedException e) {
-					// TODO Auto-generated catch block
-					System.out.println("Something went wrong when assigning a project leader to the project");
-					e.printStackTrace();
+					System.out.println(e.getMessage());
 				}
 			}
 			
@@ -266,8 +339,7 @@ public class CreateProjectScreen {
 					GregorianCalendar startDate = new GregorianCalendar(year, month, day);
 					planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
 				} catch (Exception e) {
-					// TODO: handle exception
-					System.out.println("Something went wrong when changing the start date");
+					System.out.println(e.getMessage());
 				}
 			}
 			
@@ -284,12 +356,11 @@ public class CreateProjectScreen {
 					GregorianCalendar endDate = new GregorianCalendar(year, month, day);
 					planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
 				} catch (Exception e) {
-					// TODO: handle exception
-					System.out.println("Something went wrong when changing the end date");
+					System.out.println(e.getMessage());
 				}
 			}
 			
-			clear();
+			this.project = project;
 		}
 		
 	}

@@ -28,8 +28,16 @@ public class Project {
 		return name;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public boolean isProjectInternal() {
 		return this.isProjectInternal;
+	}
+	
+	public void setInternal(boolean isProjectInternal) {
+		this.isProjectInternal = isProjectInternal;
 	}
 	
 	public void setProjectLeader(Employee employee) {
@@ -82,9 +90,12 @@ public class Project {
 	    return (Activity) r.get();
 	}
 	
-//	public boolean hasProjectLeader() {
-//		return false;
-//	}
+	public boolean hasProjectLeader() {
+		if (projectLeader == null) {
+			return false;
+		}
+		return true;
+	}
 	
 	public void setStartDate(GregorianCalendar newStartDate) throws OperationNotAllowedException {
 		if (newStartDate.after(endDate)) {
@@ -139,7 +150,20 @@ public class Project {
 	
 	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
-		return this.name.contains(searchText);	
+		searchText = searchText.toLowerCase();
+		String name = this.name.toLowerCase();
+		if (searchText.contains("external")) {
+			return !isProjectInternal;
+		} else if (searchText.contains("internal")) {
+			return isProjectInternal;
+		} else if (projectLeader != null) {
+			 return name.contains(searchText) ||
+						Integer.toString(number).contains(searchText) ||
+						projectLeader.match(searchText); // It might be overkill to include the project leader in the search
+		} else {
+			return name.contains(searchText) ||
+					Integer.toString(number).contains(searchText);	
+		}
 	}
 	
 	// TODO: there are no tests for the method below
