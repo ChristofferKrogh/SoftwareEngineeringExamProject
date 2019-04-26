@@ -2,12 +2,15 @@ package dtu.planning.app;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.GregorianCalendar;
 
 public class Activity {
 	
 	private String name; 
 	private int expectedStart; 
 	private int expectedEnd; 
+	private GregorianCalendar startWeek;
+	private GregorianCalendar endWeek;
 	private int expectedAmountOfHours;
 	private int associatedProjectNumber; 
 	private List<Employee> employees = new ArrayList<>();
@@ -25,6 +28,15 @@ public class Activity {
 		this.name = name;
 		this.expectedStart = startWeek;
 		this.expectedEnd = endWeek;
+		this.expectedAmountOfHours = 0; 
+		this.associatedProjectNumber = 0; 
+	}
+	
+	// TODO: There are no tests for the method below
+	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek) {
+		this.name = name;
+		this.startWeek = startWeek;
+		this.endWeek = endWeek;
 		this.expectedAmountOfHours = 0; 
 		this.associatedProjectNumber = 0; 
 	}

@@ -41,9 +41,22 @@ public class RegularActivitySteps {
 		this.employeeHolder = employeeHolder;
 	}
 	
-	@Given("I have the regular activity with name {string} start week {int} end week {int}")
-	public void iHaveTheRegularActivityWithNameStartWeekEndWeekAndExpectedAmountOfHours(String name, Integer startWeek, Integer endWeek) {
-		activity = new Activity(name, startWeek, endWeek);
+	@Given("employee with employeeId {int} exists")
+	public void employeeWithEmployeeIdExists(Integer int1) {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new cucumber.api.PendingException();
+	}
+
+	@Given("I have the regular activity with name {string} , start: week {int} of year {int} and end: week {int} of year {int}")
+	public void iHaveTheRegularActivityWithNameStartWeekOfYearAndEndWeekOfYear(String name, Integer startWeek, Integer startYear, Integer endWeek, Integer endYear) {
+		// GregorianCalendar has sunday as the first day of the week and saturday as the last day
+		GregorianCalendar start = new GregorianCalendar();
+	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
+	    
+	    GregorianCalendar end = new GregorianCalendar();
+	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
+		
+		activity = new Activity(name, start, end);
 	}
 
 	@When("I create the regular activity and assign the employee to it")

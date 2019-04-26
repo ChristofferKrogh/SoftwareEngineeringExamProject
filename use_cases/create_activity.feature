@@ -3,18 +3,18 @@ Feature: Create activity
     Actors: Project leader
     
 #Scenario: Create activity successfully 
-#    Given project with id "201795" exists
-# 	 And the project leader has initials "BS"
+#    Given project with id 201795 exists
+# 	 And project leader has initials "BS"
 #    When the project leader creates an activity "Project design"
 #    Then the activity "Project design" is created for the project
-
+#
 #Scenario: Create activity when not project leader
-#	 Given project with id "201795" exists
+#	 Given project with id 201795 exists
 #	 When an employee "AP" creates an activity "Project design"
 #	 Then get the error message "It is only the project leader who can add activities."
-
+#
 #Scenario: Create activity with same names 
-#	Given project "Test Project" with id "201795" exists
+#	Given project "Test Project" with id 201795 exists
 #	And actor have an activity "Project design"
 #	And activity "Project design" is already an activity 
 #	When the project leader creates an activity
@@ -25,4 +25,4 @@ Feature: Create activity
 #	And actor have and activity "Project design" 
 #	When the project leader creates an activity 
 #	Then get the error message "The activity is not part of a project." 
-# 
+ 
