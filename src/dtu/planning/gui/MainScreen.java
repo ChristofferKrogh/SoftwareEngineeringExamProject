@@ -104,6 +104,17 @@ public class MainScreen {
 		btnRegularActivities.setBounds(104, 90, 193, 29);
 		panelMenu.add(btnRegularActivities);
 		
+		JButton btnActivities = new JButton("Activities");
+		btnActivities.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+//				ActivitiesScreen.setVisible(true);
+			}
+
+		});
+		btnActivities.setBounds(104, 128, 193, 29);
+		panelMenu.add(btnActivities);
+		
 		projectsScreen = new ProjectsScreen(planningApp, this);
 		createProjectScreen = new CreateProjectScreen(planningApp, projectsScreen);
 		editProjectScreen = new EditProjectScreen(planningApp, projectsScreen);
