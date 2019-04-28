@@ -180,5 +180,38 @@ public class CreateProjectSteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
+	
+	@When("an employee changes the name of the project to {string}")
+	public void anEmployeeChangesTheNameOfTheProjectTo(String name) {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		try {
+			planningApp.setNameOfProject(name, projectHolder.getProject().getProjectNumber());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@Then("the name of the project is {string}")
+	public void theNameOfTheProjectIs(String name) {
+	    assertEquals(name, projectHolder.getProject().getName());
+	}
+
+	@When("an employee changes the internal status of the project to {string}")
+	public void anEmployeeChangesTheInternalStatusOfTheProjectTo(String internalStatusString) {
+		boolean isProjectInternal = internalStatusString.toLowerCase().equals("true");
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		try {
+			planningApp.setProjectInternal(isProjectInternal, projectHolder.getProject().getProjectNumber());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		
+	}
+
+	@Then("the internal status of the project is {string}")
+	public void theInternalStatusOfTheProjectIs(String internalStatusString) {
+		boolean isProjectInternal = internalStatusString.toLowerCase().equals("true");
+		assertEquals(isProjectInternal, projectHolder.getProject().isProjectInternal());
+	}
 
 }

@@ -15,7 +15,7 @@ public class Project {
 	private Employee projectLeader;
 	private List<Activity> activities = new ArrayList<>();
 	private int number;
-	private GregorianCalendar startDate = new GregorianCalendar(0001, 1, 1);
+	private GregorianCalendar startDate = new GregorianCalendar(1000, 1, 1);
 	private GregorianCalendar endDate = new GregorianCalendar(3000, 1, 1);
 
 	public Project(String name, boolean isProjectInternal, int projectCount) {
@@ -134,9 +134,8 @@ public class Project {
 	}
 	
 	private int generateNumber(int projectCount) {
-		// TODO: Describe the assumption in the report
-		// Assumption: There will never be created more than 10000 projects in the span
-		// 			   of 1 year.
+		// Assumption: There will never be created more than 10000 
+		// 			   projects in the span of 1 year.
 		int projectNumber = projectCount % 10000;
 		
 		Date date = new Date();

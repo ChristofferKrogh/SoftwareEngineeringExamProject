@@ -318,7 +318,7 @@ public class EditProjectScreen {
 		// Set project leader if possible
 		if (listSearchResult.getSelectedIndex() != -1) {
 			try {
-				planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getEmployeeId());
+				planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getInitials());
 			} catch (OperationNotAllowedException e) {
 				System.out.println(e.getMessage());
 			}

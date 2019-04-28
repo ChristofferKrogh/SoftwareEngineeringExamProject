@@ -22,9 +22,6 @@ public class PlanningApp {
 	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 	
-	// Counter to ensure unique ID's for each employee
-	public int employeeCount = 0;
-	
 	public void createProject(Project project) {
 		projects.add(project);
 		projectCount++;
@@ -38,12 +35,10 @@ public class PlanningApp {
 		return newProject;
 	}
 	
-	// TODO: there are no tests for the method below
 	public void setNameOfProject(String name, int projectNumber) throws OperationNotAllowedException {
 		searchForProject(projectNumber).setName(name);
 	}
 	
-	// TODO: there are no tests for the method below
 	public void setProjectInternal(boolean isProjectInternal, int projectNumber) throws OperationNotAllowedException {
 		searchForProject(projectNumber).setInternal(isProjectInternal);
 	}
@@ -54,6 +49,14 @@ public class PlanningApp {
 	
 	public void editEndDateOfProject(GregorianCalendar endDate, int projectNumber) throws OperationNotAllowedException {
 		searchForProject(projectNumber).setEndDate(endDate);
+	}
+	
+	public void editStartWeekOfRegular(GregorianCalendar startWeek, String regularActivityName) throws OperationNotAllowedException {
+		searchForRegActivity(regularActivityName).setStartWeek(startWeek);
+	}
+	
+	public void editEndWeekOfRegular(GregorianCalendar endWeek, String regularActivityName) throws OperationNotAllowedException {
+		searchForRegActivity(regularActivityName).setEndWeek(endWeek);
 	}
 	
 	public Project searchForProject(int projectNumber) throws OperationNotAllowedException {
@@ -85,15 +88,27 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The employee does not exist");
 	}
 	
-	// TODO: there are not tests for this method
-	public Employee searchForEmployee(int employeeId) throws OperationNotAllowedException {
-		for (Employee e : employees) {
-			if (e.getEmployeeId() == employeeId) {
-				return e;
+	public Activity searchForRegActivity(String name) throws OperationNotAllowedException {
+		for (Activity a : regularActivities) {
+			if (a.getName().equals(name)) {
+				return a;
 			}
 		}
-		throw new OperationNotAllowedException("The employee does not exist");
+		throw new OperationNotAllowedException("The regular activity does not exist");
 	}
+	
+	// TODO: there are no tests for the method below
+	public List<Activity> searchForRegActivitiesByName(String searchText) {
+		List<Activity> searchResults = new ArrayList<>();
+		for (Activity a : regularActivities) {
+			if (a.match(searchText)) {
+				searchResults.add(a);
+			}
+		}
+		
+		return searchResults;
+	}
+	
 	
 	// TODO: there are no tests for this method
 		public List<Employee> searchForEmployeesByName(String name) {
@@ -118,7 +133,10 @@ public class PlanningApp {
 		return projects;
 	}
 	
-	public void addRegularActivity(Activity activity) {
+	public void addRegularActivity(Activity activity, String initials) throws OperationNotAllowedException {
+		Employee employee = searchForEmployee(initials);
+		activity.assignEmployee(employee);
+		activity.setName(activity.getName() + " - " + employee.getName());
 		regularActivities.add(activity);
 	}
 	
@@ -126,16 +144,13 @@ public class PlanningApp {
 		return regularActivities;
 	}
 
-	public void addEmployee(Employee employee) {
+	public void addEmployee(Employee employee) throws OperationNotAllowedException {
+		for (Employee e : employees) {
+			if (e.getInitials().equals(employee.getInitials())) {
+				throw new OperationNotAllowedException("An employee with the same initials is already in the system");
+			}
+		}
 		employees.add(employee);
-	}
-	
-	//TODO: there are not tests for this method
-	public Employee createEmployee(String name) {
-		Employee newEmployee = new Employee(name, employeeCount);
-		employees.add(newEmployee);
-		employeeCount++;
-		return newEmployee;
 	}
 	
 	public List<String> getEmployeeInitials() {
@@ -189,16 +204,6 @@ public class PlanningApp {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
-		project.setProjectLeader(employee);
-	}
-	
-	//TODO: there are no tests for this method
-	public void setProjectLeader(int projectNumber, int employeeId) throws OperationNotAllowedException {
-		// Find employee from initials
-		Employee employee = this.searchForEmployee(employeeId);
-		// Find project from id
-		Project project = this.searchForProject(projectNumber);
-			
 		project.setProjectLeader(employee);
 	}
 

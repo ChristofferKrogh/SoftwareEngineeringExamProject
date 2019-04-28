@@ -1,4 +1,4 @@
-Feature: Edit project dates
+Feature: Edit project
 	Description: The start and end date of a project is set or changed.
 	Actors: Anyone (employee or project leader i.e. any employee)
 	
@@ -31,4 +31,24 @@ Scenario: the end date of a project is changed to be sooner than the start date
 	Given the project with id 1 exists
 	When an employee edits the end date of the project to a date before the start date
 	Then I get the error message "The end date must be after the start date"
+	
+Scenario: the name of a project is changed
+	Given the project with id 1 exists
+	When an employee changes the name of the project to "New Project Name"
+	Then the name of the project is "New Project Name"
+	
+Scenario: the name of an unexisting project is changed
+	Given project with id 1 does not exist
+	When an employee changes the name of the project to "New Project Name"
+	Then I get the error message "The project does not exist"
+	
+Scenario: the internal status of a project is changed
+	Given the project with id 1 exists
+	When an employee changes the internal status of the project to "true"
+	Then the internal status of the project is "true"
+	
+Scenario: the internal status of an unexisting project is changed
+	Given project with id 1 does not exist
+	When an employee changes the internal status of the project to "true"
+	Then I get the error message "The project does not exist"
 	

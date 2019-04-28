@@ -71,7 +71,7 @@ public class CreateProjectScreen {
 		panelCreateProjectSuccess.setBorder(BorderFactory.createTitledBorder(
                 "Success Message"));
 		
-		JButton btnBack = new JButton("Back");
+		btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -320,7 +320,7 @@ public class CreateProjectScreen {
 				System.out.println("The project was created without a project leader");
 			} else {
 				try {
-					planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getEmployeeId());
+					planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getInitials());
 				} catch (OperationNotAllowedException e) {
 					System.out.println(e.getMessage());
 				}

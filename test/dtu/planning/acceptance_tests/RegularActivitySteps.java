@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -40,12 +41,6 @@ public class RegularActivitySteps {
 		this.errorMessageHolder = errorMessageHolder;
 		this.employeeHolder = employeeHolder;
 	}
-	
-	@Given("employee with employeeId {int} exists")
-	public void employeeWithEmployeeIdExists(Integer int1) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
 
 	@Given("I have the regular activity with name {string} , start: week {int} of year {int} and end: week {int} of year {int}")
 	public void iHaveTheRegularActivityWithNameStartWeekOfYearAndEndWeekOfYear(String name, Integer startWeek, Integer startYear, Integer endWeek, Integer endYear) {
@@ -58,11 +53,53 @@ public class RegularActivitySteps {
 		
 		activity = new Activity(name, start, end);
 	}
+	
+	@Given("the regular activity is in the system")
+	public void theRegularActivityIsInTheSystem() {
+		try {
+			planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@Given("the regular activity is not in the system")
+	public void theRegularActivityIsNotInTheSystem() {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		assertThat(planningApp.getRegularActivities(), not(hasItem(activity)));
+	}
 
 	@When("I create the regular activity and assign the employee to it")
 	public void iCreateTheRegularActivityAndAssignTheEmployeeToIt() {
-	    planningAppHolder.getPlanningApp().addRegularActivity(activity);
-	    activity.assignEmployee(employeeHolder.getEmployee());
+		try {
+		    planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("I change the start week of the regular activity to week {int} of year {int}")
+	public void iChangeTheStartWeekOfTheRegularActivityToWeekOfYear(Integer startWeek, Integer startYear) {
+		GregorianCalendar start = new GregorianCalendar();
+	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
+	    
+	    try {
+			planningAppHolder.getPlanningApp().editStartWeekOfRegular(start, activity.getName());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("I change the end week of the regular activity to week {int} of year {int}")
+	public void iChangeTheEndWeekOfTheRegularActivityToWeekOfYear(Integer endWeek, Integer endYear) {
+		GregorianCalendar end = new GregorianCalendar();
+	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
+	    
+	    try {
+			planningAppHolder.getPlanningApp().editEndWeekOfRegular(end, activity.getName());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
 
 	@Then("the regular activity is created and the employee is assigned to it")
@@ -72,5 +109,24 @@ public class RegularActivitySteps {
 		assertThat(planningApp.getRegularActivities(), hasItem(activity));
 		assertThat(activity.getAssignedEmployees(), hasItem(employeeHolder.getEmployee()));
 	}
-
+	
+	@Then("the start week of the regular activity is week {int} of year {int}")
+	public void thenTheStartWeekOfTheRegularActivityIsWeekOfYear(Integer startWeek, Integer startYear) throws OperationNotAllowedException {
+	    PlanningApp planningApp = planningAppHolder.getPlanningApp();
+	    GregorianCalendar start = new GregorianCalendar();
+	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
+	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getStartWeek().get(GregorianCalendar.DATE),start.get(GregorianCalendar.DATE));
+	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getStartWeek().get(GregorianCalendar.MONTH),start.get(GregorianCalendar.MONTH));
+	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getStartWeek().get(GregorianCalendar.YEAR),start.get(GregorianCalendar.YEAR));
+	}
+	
+	@Then("the end week of the regular activity is week {int} of year {int}")
+	public void thenTheEndWeekOfTheRegularActivityIsWeekOfYear(Integer endWeek, Integer endYear) throws OperationNotAllowedException {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+	    GregorianCalendar end = new GregorianCalendar();
+	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
+	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getEndWeek().get(GregorianCalendar.DATE),end.get(GregorianCalendar.DATE));
+	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getEndWeek().get(GregorianCalendar.MONTH),end.get(GregorianCalendar.MONTH));
+	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getEndWeek().get(GregorianCalendar.YEAR),end.get(GregorianCalendar.YEAR));
+}
 }
