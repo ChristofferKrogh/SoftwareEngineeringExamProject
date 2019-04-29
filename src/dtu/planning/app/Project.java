@@ -170,12 +170,13 @@ public class Project {
 		return this.name + " - " + this.number;
 	}
 
-	public void generateReport(Employee projectLeader) throws NotProjectLeaderException {
-		// TODO Auto-generated method stub
+	public Report generateReport(Employee projectLeader) throws NotProjectLeaderException {
 		// Check that projectleader is projectleader for this project. If not stop!
 		if (this.projectLeader != projectLeader) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
+		
+		return new Report(this);
 	}
 
 }
