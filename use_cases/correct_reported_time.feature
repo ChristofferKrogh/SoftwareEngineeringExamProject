@@ -1,7 +1,7 @@
 Feature: Correct reported time
     Description: employee can correct reported time
     Actors: Employee
-    
+
 Scenario: Successfully correct time
     Given employee with initials "ABCD" exists
     And the project with id 1 exists
@@ -36,8 +36,8 @@ Scenario: Fail if the employee doesn't exist
 
 #Scenario: Fail if the project doesn't exist
 #    Given employee with initials "ABCD" exists
-#	 And project with id 191234 does not exist
-#	 And the activity "Some Activity" doesn't exist
+#    And project with id 191234 does not exist
+#    And the activity "Some Activity" doesn't exist
 #    And the employee with initials "ABCD" has reported 0 hours for the activity with name "Some Activity" on the date 1/2/2019
 #    When I update time used to 2 hours
 #    Then I get the error message "The project does not exist"

@@ -13,7 +13,7 @@ public class GenerateReportSteps {
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private ActorHolder actorHolder;
-	
+
 	// Private variables, will give problems when otheres need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
@@ -24,7 +24,7 @@ public class GenerateReportSteps {
 		this.employeeHolder = employeeHolder;
 		this.actorHolder = actorHolder;
 	}
-	
+
 	@When("The actor generates a report for the project")
 	public void theActorGeneratesAReportForTheProject() {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();

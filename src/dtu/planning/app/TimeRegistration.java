@@ -33,6 +33,7 @@ public class TimeRegistration {
 		return amountOfTime;
 	}
 	
+	// TODO: there are no tests for the method below
 	public timeUnits getTimeUnit() {
 		return timeUnit;
 	}

@@ -64,7 +64,7 @@ public class GetDailyReportedTimeSteps {
 //		}
 		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date);
 		System.out.println(timeRegistrations);
-//		assertTrue(!timeRegistrations.isEmpty());
+		assertTrue(!timeRegistrations.isEmpty());
 	}
 
 	@When("I ask for my daily used time")
@@ -79,10 +79,36 @@ public class GetDailyReportedTimeSteps {
 		}
 	}
 
-	@Then("I get the time used across all activities across all projects")
-	public void iGetTheTimeUsedAcrossAllActivitiesAcrossAllProjects() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
+    @Then("I get the time used across all activities across all projects")
+    public void iGetTheTimeUsedAcrossAllActivitiesAcrossAllProjects() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
+    }
+    
+    @Given("no time report for date {int}\\/{int}\\/{int} exists")
+    public void noTimeReportForDateExists(Integer day, Integer month, Integer year) throws OperationNotAllowedException, TimeRegistrationNotFoundException {
+    	PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		employee = employeeHolder.getEmployee();
+		date = new GregorianCalendar(year, month, day);
+//		try {
+		List<Project> projects = planningApp.getProjects();
+//		} catch (OperationNotAllowedException e) {
+//			// jaaa... 
+//		}
+//		for(Project p : projects) {
+//			List<Activity> activities = p.getAktivities();
+//			for(Activity a : activities) {
+//				timeRegistrations.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
+//			}
+//		}
+		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date);
+		System.out.println(timeRegistrations);
+		assertTrue(timeRegistrations.isEmpty());
+    }
+
+    @Then("I get zero")
+    public void iGetZero() {
+        assertTrue(dut == 0);
+    }
 
 }
