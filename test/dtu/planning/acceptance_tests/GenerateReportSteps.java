@@ -1,9 +1,11 @@
 package dtu.planning.acceptance_tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
@@ -46,5 +48,10 @@ public class GenerateReportSteps {
 	public void aReportOverTheProjectIsGenerated() {
 		// Check that some report is genereated
 	    assertFalse(report==null);
+	}
+	
+	@Then("A report over the project is generated with {int} hours reported on activity with name {string}")
+	public void aReportOverTheProjectIsGeneratedWithHoursReportedOnActivityWithName(int hours, String activityName) throws ActivityNotFoundException {
+		assertEquals(report.getReportedTimeForActivity(activityName),hours);
 	}
 }
