@@ -4,12 +4,14 @@ import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
 //import dtu.planning.app.OperationNotAllowedException;
@@ -21,7 +23,8 @@ public class MainScreen {
 	ProjectsScreen projectsScreen;
 	CreateProjectScreen createProjectScreen;
 	EditProjectScreen editProjectScreen;
-	CreateActivitiesScreen createActivitiesScreen;
+	RegularActivitiesScreen regularActivitiesScreen;
+	CreateRegularActivityScreen createRegularActivityScreen;
 
 	private JFrame frame;
 	private JPanel panelMenu;
@@ -54,17 +57,24 @@ public class MainScreen {
 
 	private void createExampleData() throws Exception {
 		planningApp.addEmployee(new Employee("Lars Larsen", "LL"));
-		Employee empJohn = planningApp.createEmployee("John Doe");
-		Employee empJane = planningApp.createEmployee("Jane Doe");
+		planningApp.addEmployee(new Employee("John Doe", "JD"));
+		planningApp.addEmployee(new Employee("Jane Doe", "JaD"));
+		planningApp.addEmployee(new Employee("Christian Knudsen", "CK"));
 		
 		planningApp.createProject("Test Project", true);
 		planningApp.createProject("Test Project external", false);
 		Project p1 = planningApp.createProject("Mow the lawn", true);
-		planningApp.setProjectLeader(p1.getProjectNumber(), empJohn.getEmployeeId());
+		planningApp.setProjectLeader(p1.getProjectNumber(), "LL");
 		Project p2 = planningApp.createProject("Take out the trash", true);
-		planningApp.setProjectLeader(p2.getProjectNumber(), empJane.getEmployeeId());
+		planningApp.setProjectLeader(p2.getProjectNumber(), "JD");
 		Project p3 = planningApp.createProject("Do the dishes", true);
-		planningApp.setProjectLeader(p3.getProjectNumber(), empJohn.getEmployeeId());
+		planningApp.setProjectLeader(p3.getProjectNumber(), "JaD");
+		// FIX
+		GregorianCalendar startWeek = new GregorianCalendar();
+		startWeek.setWeekDate(2019, 2, GregorianCalendar.SUNDAY);
+		GregorianCalendar endWeek = new GregorianCalendar();
+		endWeek.setWeekDate(2020, 4, GregorianCalendar.SATURDAY);
+		planningApp.addRegularActivity(new Activity("Sickness", startWeek, endWeek), "CK");
 	}
 
 	/**
@@ -97,8 +107,8 @@ public class MainScreen {
 		JButton btnRegularActivities = new JButton("Regular Activities");
 		btnRegularActivities.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				setVisible(false);
-//				regularActivitiesScreen.setVisible(true);
+				setVisible(false);
+				regularActivitiesScreen.setVisible(true);
 			}
 
 		});
@@ -119,7 +129,8 @@ public class MainScreen {
 		projectsScreen = new ProjectsScreen(planningApp, this);
 		createProjectScreen = new CreateProjectScreen(planningApp, projectsScreen);
 		editProjectScreen = new EditProjectScreen(planningApp, projectsScreen);
-		createActivitiesScreen = new CreateActivitiesScreen(planningApp, projectsScreen);
+		regularActivitiesScreen = new RegularActivitiesScreen(planningApp, this);
+		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, regularActivitiesScreen);
 	}
 	
 	public void setVisible(boolean aFlag) {

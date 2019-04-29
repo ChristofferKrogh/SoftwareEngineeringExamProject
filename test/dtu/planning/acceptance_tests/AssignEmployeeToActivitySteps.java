@@ -38,7 +38,7 @@ public class AssignEmployeeToActivitySteps {
 	}
 
 	@Given("employee with initials {string} exists")
-	public void employeeWithInitialsExists(String initials) {
+	public void employeeWithInitialsExists(String initials) throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		
 		// Employee name doesn't matter, so it is set to null.
@@ -46,7 +46,12 @@ public class AssignEmployeeToActivitySteps {
 		employeeHolder.setEmployee(employee);
 		
 		// Add this employee to the company
-		planningApp.addEmployee(employee);
+		try {
+			planningApp.addEmployee(employee);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		
 	}
 
 	@Given("the project with id {int} exists")
@@ -75,7 +80,7 @@ public class AssignEmployeeToActivitySteps {
 	@Given("the actor is project leader for the project")
 	public void theProjectLeaderIsProjectLeaderForTheProject() throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Employee actor = new Employee("John Smith", "JS");
+		Employee actor = new Employee("The Current Actor", "TCA");
 		planningApp.addEmployee(actor);
 		actorHolder.setActor(actor);
 		try {
