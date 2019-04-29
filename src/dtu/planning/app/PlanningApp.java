@@ -222,4 +222,8 @@ public class PlanningApp {
 		// Add time registration to that activity
 		activity.registerTime(timeRegistration);
 	}
+
+	public void generateReport(Project project, Employee projectLeader) throws NotProjectLeaderException {
+		project.generateReport(projectLeader);
+	}
 }
