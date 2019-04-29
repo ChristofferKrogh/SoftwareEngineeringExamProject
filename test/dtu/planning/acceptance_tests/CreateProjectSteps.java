@@ -108,7 +108,7 @@ public class CreateProjectSteps {
 	@When("an employee edits the start date of the project to {int}\\/{int}\\/{int}")
 	public void anEmployeeEditsTheStartDateOfTheProjectTo(Integer day, Integer month, Integer year) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		GregorianCalendar date = new GregorianCalendar(year, month, day);
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
 	    Project project = projectHolder.getProject();
 	    try {
 	    	planningApp.editStartDateOfProject(date, project.getProjectNumber());
@@ -121,14 +121,14 @@ public class CreateProjectSteps {
 	@Then("the start date of the project is {int}\\/{int}\\/{int}")
 	public void theStartDateOfTheProjectWithIdIs(Integer day, Integer month, Integer year) throws Exception {
 		Project project = projectHolder.getProject();
-		GregorianCalendar date = new GregorianCalendar(year, month, day);
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
 	    assertTrue(project.getStartDate().equals(date));
 	}
 	
 	@When("an employee edits the end date of the project to {int}\\/{int}\\/{int}")
 	public void anEmployeeEditsTheEndDateOfTheProjectTo(Integer day, Integer month, Integer year) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		GregorianCalendar date = new GregorianCalendar(year, month, day);
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
 		Project project = projectHolder.getProject();
 		try {
 			planningApp.editEndDateOfProject(date, project.getProjectNumber());
@@ -141,7 +141,7 @@ public class CreateProjectSteps {
 	@Then("the end date of the project is {int}\\/{int}\\/{int}")
 	public void theEndDateOfTheProjectWithIdIs(Integer day, Integer month, Integer year) throws Exception {
 		Project project = projectHolder.getProject();
-		GregorianCalendar date = new GregorianCalendar(year, month, day);
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
 	    assertTrue(project.getEndDate().equals(date));
 	}
 	

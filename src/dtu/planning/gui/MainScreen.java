@@ -25,6 +25,8 @@ public class MainScreen {
 	EditProjectScreen editProjectScreen;
 	RegularActivitiesScreen regularActivitiesScreen;
 	CreateRegularActivityScreen createRegularActivityScreen;
+	private int firstYear = 2000;
+	private int lastYear = 2040;
 
 	private JFrame frame;
 	private JPanel panelMenu;
@@ -69,7 +71,6 @@ public class MainScreen {
 		planningApp.setProjectLeader(p2.getProjectNumber(), "JD");
 		Project p3 = planningApp.createProject("Do the dishes", true);
 		planningApp.setProjectLeader(p3.getProjectNumber(), "JaD");
-		// FIX
 		GregorianCalendar startWeek = new GregorianCalendar();
 		startWeek.setWeekDate(2019, 2, GregorianCalendar.SUNDAY);
 		GregorianCalendar endWeek = new GregorianCalendar();
@@ -118,8 +119,8 @@ public class MainScreen {
 		projectsScreen = new ProjectsScreen(planningApp, this);
 		createProjectScreen = new CreateProjectScreen(planningApp, projectsScreen);
 		editProjectScreen = new EditProjectScreen(planningApp, projectsScreen);
-		regularActivitiesScreen = new RegularActivitiesScreen(planningApp, this);
-		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, regularActivitiesScreen);
+		regularActivitiesScreen = new RegularActivitiesScreen(planningApp, this, firstYear, lastYear);
+		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, regularActivitiesScreen, firstYear, lastYear);
 	}
 	
 	public void setVisible(boolean aFlag) {

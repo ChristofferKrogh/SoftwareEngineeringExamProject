@@ -135,11 +135,12 @@ public class PlanningApp {
 		return projects;
 	}
 	
-	public void addRegularActivity(Activity activity, String initials) throws OperationNotAllowedException {
+	public Activity addRegularActivity(Activity activity, String initials) throws OperationNotAllowedException {
 		Employee employee = searchForEmployee(initials);
 		activity.assignEmployee(employee);
 		activity.setName(activity.getName() + " - " + employee.getName());
 		regularActivities.add(activity);
+		return activity;
 	}
 	
 	public List<Activity> getRegularActivities() {
