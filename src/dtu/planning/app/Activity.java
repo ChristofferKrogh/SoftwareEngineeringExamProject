@@ -105,6 +105,15 @@ public class Activity {
 	public List<TimeRegistration> getTimeRegistrations() {
 		return timeRegistrations;
 	}
+	
+	public TimeRegistration getTimeRegistrationForEmployeeOnDate (Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
+		for (TimeRegistration t : this.timeRegistrations) {
+			if (t.getEmployee()==employee && t.getDate()==date) {
+				return t;
+			}
+		}
+		throw new TimeRegistrationNotFoundException("The employee has not registered time for this activity");
+	}
 
 	
 	// TODO: there are no tests for the method below

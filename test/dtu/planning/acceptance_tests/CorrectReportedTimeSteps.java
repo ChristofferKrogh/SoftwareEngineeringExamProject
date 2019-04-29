@@ -17,7 +17,7 @@ import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
-import dtu.planning.app.TimeRegistrationNotFundException;
+import dtu.planning.app.TimeRegistrationNotFoundException;
 
 public class CorrectReportedTimeSteps {
 	
@@ -25,10 +25,12 @@ public class CorrectReportedTimeSteps {
 	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
-	private ErrorMessageHolder errorMessage;
+	private ErrorMessageHolder errorMessageHolder;
 //	private ActorHolder actorHolder;
+	private ActivityHolder activityHolder;
 	
 	private Employee employee;
+	private Project project;
 	private Activity activity;
 	
 	private TimeRegistration time;
@@ -41,102 +43,91 @@ public class CorrectReportedTimeSteps {
 	// Private variables, will give problems when otheres need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
-	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder) {
+	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {//ActorHolder actorHolder
 		this.planningAppHolder = planningAppHolder;
-		this.errorMessage = errorMessageHolder;
+		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 //		this.actorHolder = actorHolder;
+		this.activityHolder = activityHolder;
 	}
 	
 
 	@Given("the employee with initials {string} has reported {int} hours for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year)  throws Exception{
+	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 		activityName = nameActivity; 
 		timereg = new TimeRegistration(employee, date, hours, TimeRegistration.timeUnits.HOURS);
 		timeregOld = timereg.getAmountOfTime();
+		TimeRegistration timer = null;
 		try {
+			project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 			activity = projectHolder.getProject().getActivityByName(activityName);
 			activity.registerTime(timereg);
+			timer = activity.getTimeRegistrationForEmployeeOnDate(employee, date);
 		} catch (ActivityNotFoundException e) {
-			errorMessage.setErrorMessage(e.getMessage());
-//		} catch (OperationNotAllowedException e) {
-//			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
-		List<TimeRegistration> timeregistrations = activity.getTimeRegistrations();
-		
-		for (TimeRegistration t : timeregistrations) {
-			if (t.getEmployee()==employee && t.getDate()==date) {
-				time = t;
-			}
-		}
-		
-		assertTrue(activity.getTimeRegistrations().contains(time));
+		System.out.println("Timer: "+timer);
+		System.out.println("Activity: "+activity);
+		assertTrue(activity.getTimeRegistrations().contains(timer));
+
 	}
 
-	@When("I update time used by adding {int} hours")
-	public void iUpdatedeTimeUsedByAddingHours(Integer numHours) {
+	@When("I update time used to {int} hours")
+	public void iUpdatedeTimeUsedByAddingHours(Integer amountOfTime) throws Exception{
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		int amountOfTime = time.getAmountOfTime() + numHours;
-		
-		// Create new time registration object 
-		// should not make new, but should correct already existing 
-//		timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime, TimeRegistration.timeUnits.HOURS);
-		
-		time.correctTime(amountOfTime);
-		
+		try {
+//			int amountOfTime = activity.getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime() + numHours;
+			activity.getTimeRegistrationForEmployeeOnDate(employee, date).correctTime(amountOfTime);
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 		// Register the time
 		try {
-			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,time);
+			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,activity.getTimeRegistrationForEmployeeOnDate(employee, date));
 		} catch (ActivityNotFoundException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 
 	@Then("the updated time report is saved to activity with name {string}")
-	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName) throws ActivityNotFoundException{
+	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName){
 		
 		// Check that the time registration is in the list of time registration for the activity by that name. Contains object check
-		
-		assertTrue(timeregOld != time.getAmountOfTime());
-		assertTrue(activity.getTimeRegistrations().contains(time));
+		try {
+		assertTrue(timeregOld != activity.getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime());
+		assertTrue(activity.getTimeRegistrations().contains(activity.getTimeRegistrationForEmployeeOnDate(employee, date)));
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
 
 	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year) {
+	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year){
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 		activityName = nameActivity; 
-		
-		timereg = new TimeRegistration(employee, date, 0, TimeRegistration.timeUnits.HOURS);
-		timeregOld = timereg.getAmountOfTime();
-		
 		try {
 			activity = projectHolder.getProject().getActivityByName(activityName);
-			activity.registerTime(timereg);
+			activity.getTimeRegistrationForEmployeeOnDate(employee, date);
 		} catch (ActivityNotFoundException e) {
-			errorMessage.setErrorMessage(e.getMessage());
-//		} catch (TimeRegistrationNotFundException e) {
-//			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		
-		List<TimeRegistration> timeregistrations = activity.getTimeRegistrations();
-		
-		for (TimeRegistration t : timeregistrations) {
-			if (t.getEmployee()==employee && t.getDate()==date) {
-				time = t;
-			}
-		}
-//		assertTrue(time.getAmountOfTime()==0);
-//		assertTrue(activity.getTimeRegistrations().contains(time));
-//	    throw new OperationNotAllowedException("The employee has not registered time for this activity");
 
 	}
 

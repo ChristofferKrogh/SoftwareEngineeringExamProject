@@ -28,13 +28,15 @@ public class AssignEmployeeToActivitySteps {
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private ActorHolder actorHolder;
+	private ActivityHolder activityHolder;
 	
-	public AssignEmployeeToActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder) {
+	public AssignEmployeeToActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 		this.actorHolder = actorHolder;
+		this.activityHolder = activityHolder;
 	}
 
 	@Given("employee with initials {string} exists")
@@ -104,21 +106,26 @@ public class AssignEmployeeToActivitySteps {
 	}
 	
 	@Given("the activity {string} doesn't exist")
-	public void theActivityDoesnTExist(String activityName) throws OperationNotAllowedException {
+	public void theActivityDoesnTExist(String activityName) {
 		// Get current program state
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		
-		// Current project
-		Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
+		
 		
 		try {
+			// Current project
+			Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 			// Check activity is not present
 			Activity activity = project.getActivityByName(activityName);
+			activityHolder.setActivity(activity);
 			
 			// The activity should not have the same name as asked not to.
 			assertFalse(activity.getName().equals(activityName));
 		} catch (ActivityNotFoundException e) {
 			// Everything is ok, exception is to be expected here.
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 

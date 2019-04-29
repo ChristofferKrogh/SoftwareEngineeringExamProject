@@ -127,11 +127,14 @@ public class PlanningApp {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
 			projectNumbers.add(p.getProjectNumber());
+//			if (!p.isPresent()) {
+//				throw new OperationNotAllowedException("The project does not exist");
+//			}
 		}
 		return projectNumbers;
 	}
 	
-	public List<Project> getProjects() {
+	public List<Project> getProjects() throws OperationNotAllowedException{	
 		return projects;
 	}
 	
@@ -184,7 +187,7 @@ public class PlanningApp {
 			      .filter(b -> b.getInitials().equals(employee.getInitials()))
 			      .findFirst();
 		if (!r.isPresent()) {
-		throw new OperationNotAllowedException("The employee does not exist");
+			throw new OperationNotAllowedException("The employee does not exist");
 		}	
 	}
 
