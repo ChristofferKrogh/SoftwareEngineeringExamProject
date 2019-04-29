@@ -21,6 +21,7 @@ public class MainScreen {
 	ProjectsScreen projectsScreen;
 	CreateProjectScreen createProjectScreen;
 	EditProjectScreen editProjectScreen;
+	CreateActivitiesScreen createActivitiesScreen;
 
 	private JFrame frame;
 	private JPanel panelMenu;
@@ -118,6 +119,7 @@ public class MainScreen {
 		projectsScreen = new ProjectsScreen(planningApp, this);
 		createProjectScreen = new CreateProjectScreen(planningApp, projectsScreen);
 		editProjectScreen = new EditProjectScreen(planningApp, projectsScreen);
+		createActivitiesScreen = new CreateActivitiesScreen(planningApp, projectsScreen);
 	}
 	
 	public void setVisible(boolean aFlag) {

@@ -171,16 +171,48 @@ public class PlanningApp {
 		}	
 	}
 
-	public void addActivity(int projectNumber, String activityName, int expectedStart, int expectedEnd, int expectedAmountOfHours) throws OperationNotAllowedException {
+	public Activity addActivity(int projectNumber, String activityName, GregorianCalendar  expectedStart, GregorianCalendar  expectedEnd, int expectedAmountOfHours) throws OperationNotAllowedException{
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
 		// Create new activity
-		Activity activity = new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, project.getProjectNumber());
-		
+		Activity newActivity = new Activity(activityName,projectNumber);
+		/*
+		if (expectedEnd == null && expectedStart == null){
+			newActivity = new Activity(activityName,project.getProjectNumber());
+		} else {
+			newActivity = new Activity(activityName, expectedStart, expectedEnd, expectedAmountOfHours, project.getProjectNumber());
+		}*/
+
 		// Add activity to that project
-		project.addActivity(activity);
-		
+		project.addActivity(newActivity);
+		return newActivity;
+	}
+
+	// TODO no test for the method below
+	public void editStartDateOfActivity(GregorianCalendar startDate, int projectNumber, String name) throws ActivityNotFoundException{
+		searchForActivity(projectNumber, name).setExpectedStart(startDate);
+	}
+
+	// TODO no test for the method below
+	public void editEndDateOfActivity(GregorianCalendar endDate, int projectNumber, String name) throws ActivityNotFoundException {
+		searchForActivity(projectNumber, name).setExpectedEnd(endDate);
+	}
+
+	// TODO no test for the method below
+	public void editExpectedAmountOfHoursForActivity(int hours, int projectNumber, String name)throws ActivityNotFoundException {
+		searchForActivity(projectNumber, name).setExpectedAmountOfHours(hours);
+	}
+
+	// TODO no test for the method below
+	public Activity searchForActivity(int projectNumber, String name) throws ActivityNotFoundException {
+		for (Project p : projects) {
+			if (p.getProjectNumber() == projectNumber) {
+				Activity a = p.getActivityByName(name);
+				return a;
+			}
+		}
+		throw new  ActivityNotFoundException("The activity does not exist");
 	}
 	
 	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException {

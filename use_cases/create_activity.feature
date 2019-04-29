@@ -2,14 +2,22 @@ Feature: Create activity
     Description: activities for a project are created
     Actors: Project leader
     
-#Scenario: Create activity successfully 
-#    Given project with id "201795" exists
-# 	 And the project leader has initials "BS"
+Scenario: Create activity successfully
+    Given project with id 201795 exists
+	And project leader has initials "BS"
+    When the project leader creates an activity "Project design"
+    Then the activity "Project design" is created for the project
+
+#Scenario: Create activity successfully with start date, end date and expected amount of hours
+#    Given project with id 201795 exists
+#	 And project leader has initials "BS"
+#
 #    When the project leader creates an activity "Project design"
 #    Then the activity "Project design" is created for the project
 
+
 #Scenario: Create activity when not project leader
-#	 Given project with id "201795" exists
+#	 Given project with id 201795 exists
 #	 When an employee "AP" creates an activity "Project design"
 #	 Then get the error message "It is only the project leader who can add activities."
 
