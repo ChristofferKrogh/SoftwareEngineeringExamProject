@@ -36,5 +36,9 @@ public class TimeRegistration {
 	public timeUnits getTimeUnit() {
 		return timeUnit;
 	}
+	
+	public void correctTime(int amountOfTime) {
+		this.amountOfTime = amountOfTime;
+	}
  	
 }

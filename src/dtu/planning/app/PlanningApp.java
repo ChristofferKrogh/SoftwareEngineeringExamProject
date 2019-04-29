@@ -12,14 +12,27 @@ public class PlanningApp {
 	// Storage for the projects
 	private List<Project> projects = new ArrayList<>();
 	
+	// Regular activities. These include all the regular activities
+	// fx vacation and sickness
+	private List<Activity> regularActivities = new ArrayList<>();
+	
 	// Storage for the list of employees that work for the company
 	private List<Employee> employees = new ArrayList<>();
+	
+	private List<TimeRegistration> timeRegistration = new ArrayList<>();
 	
 	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 	
 	public void createProject(Project project) {
 		projects.add(project);
+		projectCount++;
+	}
+	
+	// TODO: der mangler test for nedenstående metode
+	public void createProject(String name, boolean isProjectInternal) {
+		Project newProject = new Project(name, isProjectInternal, projectCount);
+		projects.add(newProject);
 		projectCount++;
 	}
 	
@@ -40,6 +53,17 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 	
+	// TODO: der mangler test for nedenstående metode
+	public List<Project> searchForProjectsByName(String name) {
+		List<Project> searchResults = new ArrayList<>();
+		for (Project p : projects) {
+			if (p.match(name)) {
+				searchResults.add(p);
+			}
+		}
+		return searchResults;
+	}
+	
 	public Employee searchForEmployee(String initials) throws OperationNotAllowedException {
 		for (Employee e : employees) {
 			if (e.getInitials() == initials) {
@@ -49,14 +73,16 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The employee does not exist");
 	}
 	
-//	public Activity searchForTimeRegistration(Employee employee, GregorianCalendar date) {
-//		for ( TimeRegistration t : Activity.timeRegistrations) {
-//			if (t.getEmployee() == employee && t.getDate() == date) {
-//				return t;
-//			}
-//		}
-//		throw new OperationNotAllowedException("The employee has not registered time for this activity");
-//	}
+	// TODO: der mangler test for nedenstående metode
+		public List<Employee> searchForEmployeesByName(String name) {
+			List<Employee> searchResults = new ArrayList<>();
+			for (Employee e : employees) {
+				if (e.match(name)) {
+					searchResults.add(e);
+				}
+			}
+			return searchResults;
+		}
 	
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
@@ -68,6 +94,14 @@ public class PlanningApp {
 	
 	public List<Project> getProjects() {
 		return projects;
+	}
+	
+	public void addRegularActivity(Activity activity) {
+		regularActivities.add(activity);
+	}
+	
+	public List<Activity> getRegularActivities() {
+		return regularActivities;
 	}
 
 	public void addEmployee(Employee employee) {

@@ -18,9 +18,3 @@
 #    Given employee does not exists
 #    When I ask for my daily used time
 #    Then I get the error message "The employee does not exist"
-#    
-#Scenario: Fail get time for activity that does not exist
-#    Given employee exists
-#    And time report does not exists
-#    When I ask for my daily used time
-#    Then I get the error message "The activity does not exist"

@@ -50,6 +50,8 @@ public class CreateProjectSteps {
 
 	@When("an employee creates the project")
 	public void anEmployeeCreatesTheProject() throws Exception {
+		// There is no need to check whether the actor is an employee since we assume
+		// that only employee will have access to this system
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		Project project = projectHolder.getProject();
 		planningApp.createProject(project);

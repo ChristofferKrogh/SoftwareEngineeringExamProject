@@ -1,14 +1,13 @@
-#Feature: Assign employee to regular activity
-#    Description: the employee assign it self to a regular activity
-#    Actor: Employee
-#    
-#Scenario: An employee is assigned to the regular activity successfully
-#    Given the employee exists
-#    And I have the regular activity with name "Sick" exists
-#    And employee gives start date and end date 
-#    When I assign an employee to the regular activity "Sick"
-#    Then the employee is assigned to the regular activity "Sick" with start and end date
-# 
+Feature: Assign employee to regular activity
+    Description: the employee assigns itself to a regular activity
+    Actor: Employee
+    
+Scenario: An employee is assigned to a regular activity successfully
+    Given employee with initials "JD" exists
+    And I have the regular activity with name "Sickness" start week 2 end week 4
+    When I create the regular activity and assign the employee to it
+    Then the regular activity is created and the employee is assigned to it
+ 
 #Scenario: An employee is assigned to the regular activity and wants to prolong it 
 #    Given the employee exists
 #    And the employee is assign to the regular activity "Sick"
