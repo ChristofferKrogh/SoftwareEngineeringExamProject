@@ -24,5 +24,4 @@ Feature: Create activity
 #	Given project "Test Project 2" doesn't exist 
 #	And actor have and activity "Project design" 
 #	When the project leader creates an activity 
-#	Then get the error message "The activity is not part of a project." 
- 
+#	Then get the error message "The activity is not part of a project."

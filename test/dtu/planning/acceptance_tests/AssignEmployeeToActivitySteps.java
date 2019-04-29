@@ -127,6 +127,11 @@ public class AssignEmployeeToActivitySteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
+		
+		if (activityHolder.getActivity() == null) {
+			// The 2nd and 3rd arguments are set to 0 as they are not important here.
+			activityHolder.setActivity(new Activity(activityName, 0, 0));
+		}
 	}
 
 

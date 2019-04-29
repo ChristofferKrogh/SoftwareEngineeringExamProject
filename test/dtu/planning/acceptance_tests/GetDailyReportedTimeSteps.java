@@ -76,6 +76,8 @@ public class GetDailyReportedTimeSteps {
 			dut = planningApp.getDailyUsedTime(employee, date);
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
+//		} catch (OperationNotAllowedException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 
@@ -102,7 +104,7 @@ public class GetDailyReportedTimeSteps {
 //			}
 //		}
 		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date);
-		System.out.println(timeRegistrations);
+//		System.out.println(timeRegistrations);
 		assertTrue(timeRegistrations.isEmpty());
     }
 
