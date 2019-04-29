@@ -3,6 +3,7 @@ package dtu.planning.app;
 import java.util.GregorianCalendar;
 
 public class TimeRegistration {
+	// TODO: we need resolution of half hour. So increase resolution.
 	public enum timeUnits {
 		HOURS,
 		DAYS
@@ -37,6 +38,8 @@ public class TimeRegistration {
 		return timeUnit;
 	}
 	
+	
+	// TODO: shouldn't this method include a timeUnit?
 	public void correctTime(int amountOfTime) {
 		this.amountOfTime = amountOfTime;
 	}

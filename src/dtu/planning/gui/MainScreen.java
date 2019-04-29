@@ -25,6 +25,7 @@ public class MainScreen {
 	EditProjectScreen editProjectScreen;
 	RegularActivitiesScreen regularActivitiesScreen;
 	CreateRegularActivityScreen createRegularActivityScreen;
+	ReportTimeScreen reportTimeScreen;
 	private int firstYear = 2000;
 	private int lastYear = 2040;
 
@@ -116,11 +117,45 @@ public class MainScreen {
 		btnRegularActivities.setBounds(104, 90, 193, 29);
 		panelMenu.add(btnRegularActivities);
 		
+		JButton btnReportTime = new JButton("Report Time");
+		btnReportTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				reportTimeScreen.setVisible(true);
+			}
+
+		});
+		btnReportTime.setBounds(104, 190, 193, 29);
+		panelMenu.add(btnReportTime);
+		
+		JButton btnCorrectTime = new JButton("Correct Reported Time");
+		btnReportTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+//				regularActivitiesScreen.setVisible(true);
+			}
+
+		});
+		btnCorrectTime.setBounds(104, 238, 193, 29);
+		panelMenu.add(btnCorrectTime);
+		
+		JButton btnGetTime = new JButton("Get Daily Reported Time");
+		btnGetTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+//				regularActivitiesScreen.setVisible(true);
+			}
+
+		});
+		btnGetTime.setBounds(104, 286, 193, 29);
+		panelMenu.add(btnGetTime);
+		
 		projectsScreen = new ProjectsScreen(planningApp, this);
 		createProjectScreen = new CreateProjectScreen(planningApp, projectsScreen);
 		editProjectScreen = new EditProjectScreen(planningApp, projectsScreen);
 		regularActivitiesScreen = new RegularActivitiesScreen(planningApp, this, firstYear, lastYear);
 		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, regularActivitiesScreen, firstYear, lastYear);
+		reportTimeScreen = new ReportTimeScreen(planningApp, this);
 	}
 	
 	public void setVisible(boolean aFlag) {
