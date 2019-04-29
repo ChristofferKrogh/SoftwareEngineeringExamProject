@@ -75,8 +75,9 @@ public class CorrectReportedTimeSteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
-		System.out.println("Timer: "+timer);
-		System.out.println("Activity: "+activity);
+//				System.out.println("Timer: "+timer);
+//				System.out.println("Activity: "+activity);
+		
 		assertTrue(activity.getTimeRegistrations().contains(timer));
 
 	}

@@ -57,6 +57,10 @@ public class Project {
 		activities.add(activity);
 	}
 	
+	public List<Activity> getAktivities() {
+		return activities;
+	}
+	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException, ActivityNotFoundException {
 		// Check that projectleader is projectleader for this project. If not stop!
 		if (this.projectLeader != projectLeader) {

@@ -263,4 +263,22 @@ public class PlanningApp {
 		Project project = this.searchForProject(projectNumber);
 		project.generateReport(projectLeader);
 	}
+	
+	public List<TimeRegistration> getAllTimeRegistrationsForEmployeeOnDate(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
+		for(Project p : projects) {
+			List<Activity> activities = p.getAktivities();
+			for(Activity a : activities) {
+					timeRegistration.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
+			}
+		}
+		return timeRegistration;
+	}
+	
+	public int getDailyUsedTime(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
+		int dut = 0;
+		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(employee, date)) {
+			dut += t.getAmountOfTime();
+		}
+		return dut;
+	};
 }

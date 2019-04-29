@@ -42,13 +42,13 @@ public class Activity {
 		this.expectedAmountOfHours = 0;
 	}
 	
-	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek) {
-		this.name = name;
-		this.startWeek = startWeek;
-		this.endWeek = endWeek;
-		this.expectedAmountOfHours = 0; 
-		this.associatedProjectNumber = 0; 
-	}
+//	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek) {
+//		this.name = name;
+//		this.startWeek = startWeek;
+//		this.endWeek = endWeek;
+//		this.expectedAmountOfHours = 0; 
+//		this.associatedProjectNumber = 0; 
+//	}
 	
 	public String getName() {
 		return name; 
