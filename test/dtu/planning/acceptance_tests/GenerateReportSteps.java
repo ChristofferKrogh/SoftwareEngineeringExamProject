@@ -2,6 +2,7 @@ package dtu.planning.acceptance_tests;
 
 import cucumber.api.java.en.When;
 import dtu.planning.app.NotProjectLeaderException;
+import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.TimeRegistration;
 
@@ -28,8 +29,10 @@ public class GenerateReportSteps {
 	public void theActorGeneratesAReportForTheProject() {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
-			planningApp.generateReport(projectHolder.getProject(), actorHolder.getActor());
+			planningApp.generateReport(projectHolder.getProject().getProjectNumber(), actorHolder.getActor());
 		} catch (NotProjectLeaderException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
