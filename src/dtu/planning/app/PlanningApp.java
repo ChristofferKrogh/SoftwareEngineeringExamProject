@@ -19,6 +19,8 @@ public class PlanningApp {
 	// Storage for the list of employees that work for the company
 	private List<Employee> employees = new ArrayList<>();
 	
+	private List<TimeRegistration> timeRegistration = new ArrayList<>();
+	
 	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 	
@@ -219,5 +221,9 @@ public class PlanningApp {
 		
 		// Add time registration to that activity
 		activity.registerTime(timeRegistration);
+	}
+
+	public void generateReport(Project project, Employee projectLeader) throws NotProjectLeaderException {
+		project.generateReport(projectLeader);
 	}
 }
