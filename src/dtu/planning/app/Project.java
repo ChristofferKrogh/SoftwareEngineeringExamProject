@@ -15,7 +15,7 @@ public class Project {
 	private Employee projectLeader;
 	private List<Activity> activities = new ArrayList<>();
 	private int number;
-	private GregorianCalendar startDate = new GregorianCalendar(0001, 1, 1);
+	private GregorianCalendar startDate = new GregorianCalendar(1000, 1, 1);
 	private GregorianCalendar endDate = new GregorianCalendar(3000, 1, 1);
 
 	public Project(String name, boolean isProjectInternal, int projectCount) {
@@ -28,8 +28,16 @@ public class Project {
 		return name;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public boolean isProjectInternal() {
 		return this.isProjectInternal;
+	}
+	
+	public void setInternal(boolean isProjectInternal) {
+		this.isProjectInternal = isProjectInternal;
 	}
 	
 	public void setProjectLeader(Employee employee) {
@@ -82,9 +90,12 @@ public class Project {
 	    return (Activity) r.get();
 	}
 	
-//	public boolean hasProjectLeader() {
-//		return false;
-//	}
+	public boolean hasProjectLeader() {
+		if (projectLeader == null) {
+			return false;
+		}
+		return true;
+	}
 	
 	public void setStartDate(GregorianCalendar newStartDate) throws OperationNotAllowedException {
 		if (newStartDate.after(endDate)) {
@@ -123,9 +134,8 @@ public class Project {
 	}
 	
 	private int generateNumber(int projectCount) {
-		// TODO: Describe the assumption in the report
-		// Assumption: There will never be created more than 10000 projects in the span
-		// 			   of 1 year.
+		// Assumption: There will never be created more than 10000 
+		// 			   projects in the span of 1 year.
 		int projectNumber = projectCount % 10000;
 		
 		Date date = new Date();
@@ -137,8 +147,27 @@ public class Project {
 		return projectNumber;
 	}
 	
+	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
-		return this.name.contains(searchText);	
+		searchText = searchText.toLowerCase();
+		String name = this.name.toLowerCase();
+		if (searchText.contains("external")) {
+			return !isProjectInternal;
+		} else if (searchText.contains("internal")) {
+			return isProjectInternal;
+		} else if (projectLeader != null) {
+			 return name.contains(searchText) ||
+						Integer.toString(number).contains(searchText) ||
+						projectLeader.match(searchText); // It might be overkill to include the project leader in the search
+		} else {
+			return name.contains(searchText) ||
+					Integer.toString(number).contains(searchText);	
+		}
+	}
+	
+	// TODO: there are no tests for the method below
+	public String toString() {
+		return this.name + " - " + this.number;
 	}
 
 }

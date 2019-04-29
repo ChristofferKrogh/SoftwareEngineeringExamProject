@@ -1,9 +1,9 @@
 package dtu.planning.app;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+//import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 //import java.util.stream.Collectors;
@@ -30,10 +30,19 @@ public class PlanningApp {
 	}
 	
 	// TODO: der mangler test for nedenstående metode
-	public void createProject(String name, boolean isProjectInternal) {
+	public Project createProject(String name, boolean isProjectInternal) {
 		Project newProject = new Project(name, isProjectInternal, projectCount);
 		projects.add(newProject);
 		projectCount++;
+		return newProject;
+	}
+	
+	public void setNameOfProject(String name, int projectNumber) throws OperationNotAllowedException {
+		searchForProject(projectNumber).setName(name);
+	}
+	
+	public void setProjectInternal(boolean isProjectInternal, int projectNumber) throws OperationNotAllowedException {
+		searchForProject(projectNumber).setInternal(isProjectInternal);
 	}
 	
 	public void editStartDateOfProject(GregorianCalendar startDate, int projectNumber) throws OperationNotAllowedException {
@@ -42,6 +51,14 @@ public class PlanningApp {
 	
 	public void editEndDateOfProject(GregorianCalendar endDate, int projectNumber) throws OperationNotAllowedException {
 		searchForProject(projectNumber).setEndDate(endDate);
+	}
+	
+	public void editStartWeekOfRegular(GregorianCalendar startWeek, String regularActivityName) throws OperationNotAllowedException {
+		searchForRegActivity(regularActivityName).setStartWeek(startWeek);
+	}
+	
+	public void editEndWeekOfRegular(GregorianCalendar endWeek, String regularActivityName) throws OperationNotAllowedException {
+		searchForRegActivity(regularActivityName).setEndWeek(endWeek);
 	}
 	
 	public Project searchForProject(int projectNumber) throws OperationNotAllowedException {
@@ -73,7 +90,29 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The employee does not exist");
 	}
 	
-	// TODO: der mangler test for nedenstående metode
+	public Activity searchForRegActivity(String name) throws OperationNotAllowedException {
+		for (Activity a : regularActivities) {
+			if (a.getName().equals(name)) {
+				return a;
+			}
+		}
+		throw new OperationNotAllowedException("The regular activity does not exist");
+	}
+	
+	// TODO: there are no tests for the method below
+	public List<Activity> searchForRegActivitiesByName(String searchText) {
+		List<Activity> searchResults = new ArrayList<>();
+		for (Activity a : regularActivities) {
+			if (a.match(searchText)) {
+				searchResults.add(a);
+			}
+		}
+		
+		return searchResults;
+	}
+	
+	
+	// TODO: there are no tests for this method
 		public List<Employee> searchForEmployeesByName(String name) {
 			List<Employee> searchResults = new ArrayList<>();
 			for (Employee e : employees) {
@@ -96,7 +135,10 @@ public class PlanningApp {
 		return projects;
 	}
 	
-	public void addRegularActivity(Activity activity) {
+	public void addRegularActivity(Activity activity, String initials) throws OperationNotAllowedException {
+		Employee employee = searchForEmployee(initials);
+		activity.assignEmployee(employee);
+		activity.setName(activity.getName() + " - " + employee.getName());
 		regularActivities.add(activity);
 	}
 	
@@ -104,7 +146,12 @@ public class PlanningApp {
 		return regularActivities;
 	}
 
-	public void addEmployee(Employee employee) {
+	public void addEmployee(Employee employee) throws OperationNotAllowedException {
+		for (Employee e : employees) {
+			if (e.getInitials().equals(employee.getInitials())) {
+				throw new OperationNotAllowedException("An employee with the same initials is already in the system");
+			}
+		}
 		employees.add(employee);
 	}
 	
@@ -153,7 +200,7 @@ public class PlanningApp {
 		
 	}
 	
-	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException { // String initials
+	public void setProjectLeader(int projectNumber, String initials) throws OperationNotAllowedException {
 		// Find employee from initials
 		Employee employee = this.searchForEmployee(initials);
 		// Find project from id

@@ -26,6 +26,7 @@ public class ProjectsScreen {
 	private MainScreen parentWindow;
 	private PlanningApp planningApp;
 	private CreateProjectScreen createProjectScreen;
+	private EditProjectScreen editProjectScreen;
 	private JPanel panelProjects;
 	private JTextField searchField;
 	private JList<Project> listSearchResult;
@@ -74,18 +75,41 @@ public class ProjectsScreen {
 				createProjectScreen.setVisible(true);
 			}
 		});
-		btnCreateProject.setBounds(225, 385, 150, 50);
+		btnCreateProject.setBounds(270, 385, 110, 50);
 		panelProjects.add(btnCreateProject);
 		
 		JButton btnEditProject = new JButton("Edit Project");
 		btnEditProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				if (listSearchResult.getSelectedIndex() == -1) {
+					System.out.println("You need to select a project");
+				} else {
+					editProjectScreen.setProject(listSearchResult.getSelectedValue());
+					setVisible(false);
+					clear();
+					editProjectScreen.setVisible(true);
+				}
 			}
 		});
-		btnEditProject.setBounds(25, 385, 150, 50);
+		btnEditProject.setBounds(20, 385, 110, 50);
 		panelProjects.add(btnEditProject);
+		
+		JButton btnCreateActivity = new JButton("Create Activity");
+		btnCreateActivity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (listSearchResult.getSelectedIndex() == -1) {
+					System.out.println("You need to select a project");
+				} else {
+					// Jeg forestiller mig, at det bliver noget i stil med:
+//					createActivityScreen.setProject(listSearchResult.getSelectedValue());
+//					setVisible(false);
+//					clear();
+//					createActivityScreen.setVisible(true);
+				}
+			}
+		});
+		btnCreateActivity.setBounds(145, 385, 110, 50);
+		panelProjects.add(btnCreateActivity);
 		
 		searchResults = new DefaultListModel<>();
 		listSearchResult = new JList<Project>(searchResults);
@@ -137,6 +161,7 @@ public class ProjectsScreen {
 		panelProjects.add(btnBack);
 		
 		createProjectScreen = new CreateProjectScreen(planningApp, this);
+		editProjectScreen = new EditProjectScreen(planningApp, this);
 
 	}
 	protected void searchProjects() {

@@ -3,11 +3,11 @@ package dtu.planning.app;
 public class Employee {
 
 	private String name; 
-	private String initials; 
+	private String initials;
 	
 	public Employee(String name, String initials) {
 		this.name = name; 
-		this.initials = initials; 
+		this.initials = initials;
 	}
 	
 	public String getName() {
@@ -19,8 +19,15 @@ public class Employee {
 	}
 	
 	public boolean match(String searchText) {
-		return this.name.contains(searchText) || this.initials.contains(searchText);
+		searchText = searchText.toLowerCase();
+		String name = this.name.toLowerCase();
+		String initials = this.initials.toLowerCase();
+		return name.contains(searchText) ||
+				initials.contains(searchText);
 	}
 	
+	public String toString() {
+		return this.name + "  (" + this.initials + ")";
+	}
 	
 }
