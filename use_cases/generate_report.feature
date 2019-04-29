@@ -14,7 +14,8 @@ Scenario: An employee that is not project leader for the project tries to genera
     When The actor generates a report for the project
     Then I get the error message "You are not the project leader for this project"
 
-#Scenario: An employee tries to generate a report for a project that does not exist
-#    Given the project does not exist
-#    When I generate a report
-#    Then I get the error message "The project does not exist"
+Scenario: An employee tries to generate a report for a project that does not exist
+    Given employee with initials "JS" exists
+    And project with id 1 does not exist
+    When The actor generates a report for the project
+    Then I get the error message "The project does not exist"

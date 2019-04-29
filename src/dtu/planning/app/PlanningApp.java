@@ -255,7 +255,9 @@ public class PlanningApp {
 		activity.registerTime(timeRegistration);
 	}
 
-	public void generateReport(Project project, Employee projectLeader) throws NotProjectLeaderException {
+	public void generateReport(int projectNumber, Employee projectLeader) throws NotProjectLeaderException, OperationNotAllowedException {
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
 		project.generateReport(projectLeader);
 	}
 }
