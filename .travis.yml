@@ -1,1 +1,6 @@
 language: java
+
+jdk:
+#  - oraclejdk8 #Removed because it makes Travis CI test slow
+#  - oraclejdk11 #Removed because it makes Travis CI test slow
+  - openjdk8

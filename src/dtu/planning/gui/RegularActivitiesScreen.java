@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -26,6 +27,7 @@ import dtu.planning.app.OperationNotAllowedException;
 public class RegularActivitiesScreen {
 	
 	private MainScreen parentWindow;
+	private CreateRegularActivityScreen createRegularActivityScreen;
 	private PlanningApp planningApp;
 	private JPanel panelRegular;
 	private JTextField searchField;
@@ -40,6 +42,8 @@ public class RegularActivitiesScreen {
 	private JLabel lblEditDates;
 	private boolean editDatesMode = false;
 	private Activity regularActivity;
+	private JPanel panelEditDates;
+	private AbstractButton btnEditRegActivity;
 
 	
 	public RegularActivitiesScreen(PlanningApp planningApp, MainScreen parentWindow) {
@@ -134,7 +138,7 @@ public class RegularActivitiesScreen {
 		
 		
 		// --------------------- Edit Dates Panel --------------------
-		JPanel panelEditDates = new JPanel();
+		panelEditDates = new JPanel();
 		panelEditDates.setBounds(21, 295, 361, 80);
 		panelRegular.add(panelEditDates);
 		panelEditDates.setBorder(BorderFactory.createTitledBorder(
@@ -149,7 +153,7 @@ public class RegularActivitiesScreen {
 		endWeekField.setBounds(165, 45, 35, 30);
 		panelEditDates.add(endWeekField);
 		
-		Integer[] comboBoxItems = {2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024,
+		Integer[] comboBoxItems = {2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024,
 				2025, 2026, 2027};
 		startYearComboBox = new JComboBox<>(comboBoxItems);
 		startYearComboBox.setBounds(225, 13, 85, 30);
@@ -170,15 +174,15 @@ public class RegularActivitiesScreen {
 		JButton btnCreateRegActivity = new JButton("Create Regular Activity");
 		btnCreateRegActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				setVisible(false);
-//				clear();
-//				createProjectScreen.setVisible(true);
+				setVisible(false);
+				clear();
+				createRegularActivityScreen.setVisible(true);
 			}
 		});
 		btnCreateRegActivity.setBounds(225, 385, 160, 50);
 		panelRegular.add(btnCreateRegActivity);
 		
-		JButton btnEditRegActivity = new JButton("Edit Expected Start and End");
+		btnEditRegActivity = new JButton("Edit Expected Start and End");
 		btnEditRegActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (editDatesMode) {
@@ -207,6 +211,8 @@ public class RegularActivitiesScreen {
 		btnEditRegActivity.setBounds(20, 385, 190, 50);
 		panelRegular.add(btnEditRegActivity);
 		
+		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, this);
+		
 	}
 	
 	protected void searchRegActivities() {
@@ -222,6 +228,9 @@ public class RegularActivitiesScreen {
 	public void clear() {
 		searchField.setText("");
 		searchResults.clear();
+		panelEditDates.setVisible(false);
+		editDatesMode = false;
+		btnEditRegActivity.setText("Edit Expected Start and End");
 	}
 	
 	private void setEditDatesPanel(Activity regularActivity) {

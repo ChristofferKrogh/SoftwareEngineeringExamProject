@@ -26,6 +26,7 @@ public class ProjectsScreen {
 	private MainScreen parentWindow;
 	private PlanningApp planningApp;
 	private CreateProjectScreen createProjectScreen;
+    private CreateActivitiesScreen createActivitiesScreen;
 	private EditProjectScreen editProjectScreen;
 	private JPanel panelProjects;
 	private JTextField searchField;
@@ -101,10 +102,10 @@ public class ProjectsScreen {
 					System.out.println("You need to select a project");
 				} else {
 					// Jeg forestiller mig, at det bliver noget i stil med:
-//					createActivityScreen.setProject(listSearchResult.getSelectedValue());
-//					setVisible(false);
-//					clear();
-//					createActivityScreen.setVisible(true);
+					createActivitiesScreen.setProject(listSearchResult.getSelectedValue());
+					setVisible(false);
+					clear();
+					createActivitiesScreen.setVisible(true);
 				}
 			}
 		});
@@ -162,6 +163,7 @@ public class ProjectsScreen {
 		
 		createProjectScreen = new CreateProjectScreen(planningApp, this);
 		editProjectScreen = new EditProjectScreen(planningApp, this);
+		createActivitiesScreen = new CreateActivitiesScreen(planningApp, this);
 
 	}
 	protected void searchProjects() {
