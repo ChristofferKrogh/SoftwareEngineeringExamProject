@@ -20,7 +20,7 @@ import dtu.planning.app.TimeRegistration;
 import dtu.planning.app.TimeRegistrationNotFoundException;
 
 public class CorrectReportedTimeSteps {
-	
+
 	// "Global" variable holders so steps can be used across features
 	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
@@ -28,18 +28,18 @@ public class CorrectReportedTimeSteps {
 	private ErrorMessageHolder errorMessageHolder;
 //	private ActorHolder actorHolder;
 	private ActivityHolder activityHolder;
-	
+
 	private Employee employee;
 	private Project project;
 	private Activity activity;
-	
+
 	private TimeRegistration time;
 	private TimeRegistration timereg;
 	private int timeregOld;
 
 	private String activityName;
 	private GregorianCalendar date;
-	
+
 	// Private variables, will give problems when otheres need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
@@ -51,14 +51,14 @@ public class CorrectReportedTimeSteps {
 //		this.actorHolder = actorHolder;
 		this.activityHolder = activityHolder;
 	}
-	
+
 
 	@Given("the employee with initials {string} has reported {int} hours for the activity with name {string} on the date {int}\\/{int}\\/{int}")
 	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
-		activityName = nameActivity; 
+		activityName = nameActivity;
 		timereg = new TimeRegistration(employee, date, hours, TimeRegistration.timeUnits.HOURS);
 		timeregOld = timereg.getAmountOfTime();
 		TimeRegistration timer = null;
@@ -74,7 +74,7 @@ public class CorrectReportedTimeSteps {
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		
+
 		System.out.println("Timer: "+timer);
 		System.out.println("Activity: "+activity);
 		assertTrue(activity.getTimeRegistrations().contains(timer));
@@ -104,7 +104,7 @@ public class CorrectReportedTimeSteps {
 
 	@Then("the updated time report is saved to activity with name {string}")
 	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName){
-		
+
 		// Check that the time registration is in the list of time registration for the activity by that name. Contains object check
 		try {
 		assertTrue(timeregOld != activity.getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime());
@@ -119,7 +119,7 @@ public class CorrectReportedTimeSteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
-		activityName = nameActivity; 
+		activityName = nameActivity;
 		try {
 			activity = projectHolder.getProject().getActivityByName(activityName);
 			activity.getTimeRegistrationForEmployeeOnDate(employee, date);

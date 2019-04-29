@@ -239,12 +239,15 @@ public class CreateActivitiesScreen {
         if(name.equals("")){
             System.out.println("The activity needs a name");
         } else {
+            // TODO: FIX, removed by MANUEL MERGE 2019-04-29 Fix chaos
+        	/**
             // Create the activity
             try {
                 activity = planningApp.addActivity(projectNumber, name, null, null, 0);
             } catch (OperationNotAllowedException e) {
                 System.out.println(e.getMessage());
             }
+            **/
 
             // Add a start date to the activity
             if (startDayField.getText().equals("") ||
@@ -257,7 +260,8 @@ public class CreateActivitiesScreen {
                     int month = Integer.parseInt(startMonthField.getText());
                     int year = Integer.parseInt(startYearField.getText());
                     GregorianCalendar startDate = new GregorianCalendar(year, month, day);
-                    planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name);
+                    // TODO: FIX, removed by MANUEL MERGE 2019-04-29 Fix chaos
+                    //planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -274,7 +278,8 @@ public class CreateActivitiesScreen {
                     int month = Integer.parseInt(endMonthField.getText());
                     int year = Integer.parseInt(endYearField.getText());
                     GregorianCalendar endDate = new GregorianCalendar(year, month, day);
-                    planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name);
+                    // TODO: FIX, removed by MANUEL MERGE 2019-04-29 Fix chaos
+                    //planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -283,7 +288,8 @@ public class CreateActivitiesScreen {
             // Add the expected amount of hours
             try{
                 int expectedAmountOfHours = Integer.parseInt(amountOfHours.getText());
-                planningApp.editExpectedAmountOfHoursForActivity(expectedAmountOfHours,project.getProjectNumber(), name);
+                // TODO: FIX, removed by MANUEL MERGE 2019-04-29 Fix chaos
+                //planningApp.editExpectedAmountOfHoursForActivity(expectedAmountOfHours,project.getProjectNumber(), name);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

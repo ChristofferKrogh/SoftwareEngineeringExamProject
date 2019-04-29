@@ -106,14 +106,14 @@ public class CreateProjectScreen {
 		
 		JButton btnCreateActivity = new JButton("Create Activity");
 		btnCreateActivity.setBounds(25, 385, 150, 50);
-		panelCreateProject.add(btnCreateActivity);
+		panelCreateProjectSuccess.add(btnCreateActivity);
 		btnCreateActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Jeg forestiller mig, at det bliver noget i stil med:
-//				CreateActivitiesScreen.setProject(project);
+//				createActivityScreen.setProject(project);
 //				panelCreateProjectSuccess.setVisible(false);
 //				clear();
-				panelCreateProject.setVisible(true);
+//				createActivityScreen.setVisible(true);
 			}
 				
 		});

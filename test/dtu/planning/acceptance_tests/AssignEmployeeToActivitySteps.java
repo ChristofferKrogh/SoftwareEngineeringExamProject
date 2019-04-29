@@ -22,14 +22,14 @@ import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 
 public class AssignEmployeeToActivitySteps {
-	
+
 	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private ActorHolder actorHolder;
 	private ActivityHolder activityHolder;
-	
+
 	public AssignEmployeeToActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
@@ -42,18 +42,18 @@ public class AssignEmployeeToActivitySteps {
 	@Given("employee with initials {string} exists")
 	public void employeeWithInitialsExists(String initials) throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		
+
 		// Employee name doesn't matter, so it is set to null.
 		Employee employee = new Employee(null,initials);
 		employeeHolder.setEmployee(employee);
-		
+
 		// Add this employee to the company
 		try {
 			planningApp.addEmployee(employee);
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		
+
 	}
 
 	@Given("the project with id {int} exists")
@@ -63,7 +63,7 @@ public class AssignEmployeeToActivitySteps {
 		// Please note: Planning app API naming. Here createProject is not creating a new project. It adds the project in question to the planning app.
 		Project project = new Project(null, false, projectCount);
 		planningApp.createProject(project);
-		
+
 		projectHolder.setProject(project);
 	}
 
@@ -73,7 +73,7 @@ public class AssignEmployeeToActivitySteps {
 		// The values 0, 1, 2, 3 are chosen as an example.
 		// Activity does not test that the assigned project id, actually exists or is the id that it is assigned to
 		try {
-			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, null, null, 2);
+			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, 0, 1, 2);
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -91,34 +91,34 @@ public class AssignEmployeeToActivitySteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
-	
+
 	@Given("the actor is not project leader for the project")
 	public void theActorIsNotProjectLeaderForTheOverlyingProject() {
 		Employee actor = new Employee("Jane Doe", "JD");
 		actorHolder.setActor(actor);
 	}
-	
+
 	@Given("the employee doesn't exist")
 	public void theEmployeeDoesnTExist() {
 		// Creating a employee with no name and no initials. That should not be possible to match anywhere.
 		Employee employee = new Employee(null,null);
 		employeeHolder.setEmployee(employee);
 	}
-	
+
 	@Given("the activity {string} doesn't exist")
 	public void theActivityDoesnTExist(String activityName) {
 		// Get current program state
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		
-		
-		
+
+
+
 		try {
 			// Current project
 			Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 			// Check activity is not present
 			Activity activity = project.getActivityByName(activityName);
 			activityHolder.setActivity(activity);
-			
+
 			// The activity should not have the same name as asked not to.
 			assertFalse(activity.getName().equals(activityName));
 		} catch (ActivityNotFoundException e) {
@@ -129,7 +129,7 @@ public class AssignEmployeeToActivitySteps {
 		}
 	}
 
-	
+
 	@When("the actor assign the employee to the activity {string}")
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
@@ -143,7 +143,7 @@ public class AssignEmployeeToActivitySteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
-	
+
 	@Then("the employee {string} is assigned to the activity {string}")
 	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException, ActivityNotFoundException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
@@ -151,7 +151,7 @@ public class AssignEmployeeToActivitySteps {
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
 		assertTrue(project.getEmployeesAssignedToActivity(activityName).contains(employeeHolder.getEmployee()));
 	}
-	
+
 	@Then("I get the error message {string}")
 	public void iGetTheErrorMessage(String error) {
 		// Credit: Library application example error message holder by Hubert Baumeister, Associate Professor, DTU Compute, 02161 F19 Lectures
