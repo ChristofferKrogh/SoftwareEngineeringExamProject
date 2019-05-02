@@ -41,6 +41,11 @@ public class ToStringSteps {
 		savedString = employeeHolder.getEmployee().toString();
 	}
 	
+	@When("I get the string representation of the activity")
+	public void iGetTheStringRepresentationOfTheActivity() {
+		savedString = activityHolder.getActivity().toString();
+	}
+	
 	@When("I match the employee with {string}")
 	public void iMatchTheEmployeeWith(String matchString) {
 	    isMatched = employeeHolder.getEmployee().match(matchString);
