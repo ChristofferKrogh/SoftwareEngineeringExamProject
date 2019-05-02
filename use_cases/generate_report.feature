@@ -33,14 +33,6 @@ Scenario: Show time reported for activity in report with multiple time registrat
     When The actor generates a report for the project
     Then A report over the project is generated with 8 hours reported on activity with name "Some Activity" 
 
-
-# Scenario: Report show only requested week's time estimated (Create projects with estimated time)
-
-# Scenario: Report shows correct time left for project
-
-# Scenario to test hours/days/week - time unit. That is not tested yet, a bad "nice to have".
-# Alternativ: Lav en test som viser at uger bliver ændret til 24*7 timer= 168 timer
-
 Scenario: An employee that is not project leader for the project tries to generate a report
     Given the project with id 1 exists
     And the actor is not project leader for the project
