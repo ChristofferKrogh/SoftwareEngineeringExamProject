@@ -111,6 +111,12 @@ public class ToStringSteps {
 	    isMatched = activityHolder.getActivity().match(matchString);
 	}
 	
+	@When("I match the project with {string}")
+	public void iMatchTheProjectWith(String matchString) {
+	    isMatched = projectHolder.getProject().match(matchString);
+	}
+
+	
 	@Then("I get the string {string}")
 	public void iGetTheString(String wantedString) {
 		assertEquals(savedString,wantedString);

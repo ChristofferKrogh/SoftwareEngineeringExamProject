@@ -79,3 +79,14 @@ Scenario: Represent an project as a string
     When I get the string representation of the project
     Then I get the string "Test project - 190001"
     
+Scenario: Match internal project
+    Given there is an internal project with name "Test project"
+    When I match the project with "internal"
+    Then I get a match
+    
+Scenario: Match external project
+    Given there is an external project with name "Test project"
+    When I match the project with "external"
+    Then I get a match
+    
+# Fail match project

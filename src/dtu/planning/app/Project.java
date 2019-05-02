@@ -173,7 +173,6 @@ public class Project {
 		}
 	}
 	
-	// TODO: there are no tests for the method below
 	public String toString() {
 		return this.name + " - " + this.number;
 	}
