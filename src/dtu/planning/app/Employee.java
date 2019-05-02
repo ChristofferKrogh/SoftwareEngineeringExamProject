@@ -9,6 +9,10 @@ public class Employee {
 		this.name = name; 
 		this.initials = initials;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public String getName() {
 		return name; 
@@ -21,15 +25,20 @@ public class Employee {
 	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
 		searchText = searchText.toLowerCase();
-		String name = this.name.toLowerCase();
+		String name;
+		// In case that no name has been set
+		if (this.name != null) {
+			name = this.name.toLowerCase();
+		} else {
+			name = "";
+		}
 		String initials = this.initials.toLowerCase();
 		return name.contains(searchText) ||
 				initials.contains(searchText);
 	}
 	
-	// TODO: there are no tests for the method below
 	public String toString() {
-		return this.name + "  (" + this.initials + ")";
+		return this.name + " (" + this.initials + ")";
 	}
 	
 }

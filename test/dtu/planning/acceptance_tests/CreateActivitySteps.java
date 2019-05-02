@@ -68,14 +68,6 @@ public class CreateActivitySteps {
 		assertThat(project.getProjectLeader(),is(equalTo(employee))); // There could be an error
 		Activity activity = new Activity(name, null, null, 0, 1);
 		project.addActivity(activity);
-	}
-
-	@Then("get the error message {string}")
-	public void getTheErrorMessage(String string) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new cucumber.api.PendingException();
-	}
-	
-	
+	}	
 		
 }
