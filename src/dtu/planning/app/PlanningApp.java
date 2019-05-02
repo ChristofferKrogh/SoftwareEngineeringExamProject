@@ -107,7 +107,6 @@ public class PlanningApp {
 				searchResults.add(a);
 			}
 		}
-
 		return searchResults;
 	}
 
@@ -235,8 +234,8 @@ public class PlanningApp {
 	
 	public List<TimeRegistration> getAllTimeRegistrationsForEmployeeOnDate(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
 		for(Project p : projects) {
-			List<Activity> activities = p.getAktivities();
-			for(Activity a : activities) {
+			regularActivities = p.getAktivities();
+			for(Activity a : regularActivities) {
 					timeRegistration.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
 			}
 		}
@@ -244,10 +243,10 @@ public class PlanningApp {
 	}
 	
 	public int getDailyUsedTime(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
-		int dut = 0;
+		int dailyUsedTime = 0;
 		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(employee, date)) {
-			dut += t.getAmountOfTime();
+			dailyUsedTime += t.getAmountOfTime();
 		}
-		return dut;
+		return dailyUsedTime;
 	};
 }

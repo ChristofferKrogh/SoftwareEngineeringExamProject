@@ -32,7 +32,7 @@ public class GetDailyReportedTimeSteps {
 		private Activity activity;
 		private GregorianCalendar date;
 		
-		private int dut;
+		private int dailyUsedTime;
 		
 		private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
@@ -49,10 +49,10 @@ public class GetDailyReportedTimeSteps {
 	@Given("time report exists for the date {int}\\/{int}\\/{int}")
 	public void timeReportExistsForTheDate(Integer day, Integer month, Integer year) throws TimeRegistrationNotFoundException, OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		employee = employeeHolder.getEmployee();
+//		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 //		try {
-		List<Project> projects = planningApp.getProjects();
+//		List<Project> projects = planningApp.getProjects();
 //		} catch (OperationNotAllowedException e) {
 //			// jaaa... 
 //		}
@@ -62,7 +62,7 @@ public class GetDailyReportedTimeSteps {
 //				timeRegistrations.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
 //			}
 //		}
-		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date);
+		timeRegistrations = planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
 		System.out.println(timeRegistrations);
 		assertTrue(!timeRegistrations.isEmpty());
 	}
@@ -73,7 +73,7 @@ public class GetDailyReportedTimeSteps {
 //	    throw new cucumber.api.PendingException();
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
-			dut = planningApp.getDailyUsedTime(employee, date);
+			dailyUsedTime = planningApp.getDailyUsedTime(employeeHolder.getEmployee(), date);
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 //		} catch (OperationNotAllowedException e) {
@@ -90,7 +90,7 @@ public class GetDailyReportedTimeSteps {
     @Given("no time report for date {int}\\/{int}\\/{int} exists")
     public void noTimeReportForDateExists(Integer day, Integer month, Integer year) throws OperationNotAllowedException, TimeRegistrationNotFoundException {
     	PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		employee = employeeHolder.getEmployee();
+//		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 //		try {
 		List<Project> projects = planningApp.getProjects();
@@ -103,14 +103,14 @@ public class GetDailyReportedTimeSteps {
 //				timeRegistrations.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
 //			}
 //		}
-		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date);
+		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
 //		System.out.println(timeRegistrations);
 		assertTrue(timeRegistrations.isEmpty());
     }
 
     @Then("I get zero")
     public void iGetZero() {
-        assertTrue(dut == 0);
+        assertTrue(dailyUsedTime == 0);
     }
 
 }
