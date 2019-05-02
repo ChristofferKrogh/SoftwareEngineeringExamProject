@@ -25,7 +25,7 @@ public class GenerateReportSteps {
 	private ActivityHolder activityHolder;
 	private Report report;
 
-	// Private variables, will give problems when otheres need to use them. Create holder then?
+	// Private variables, will give problems when others need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
 	public GenerateReportSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
