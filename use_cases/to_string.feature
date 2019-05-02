@@ -89,4 +89,13 @@ Scenario: Match external project
     When I match the project with "external"
     Then I get a match
     
-# Fail match project
+Scenario: Match external project on name
+    Given the project with id 190001 exists
+    And the project has the name name "Test project"
+    When I match the project with "test"
+    Then I get a match
+    
+Scenario: Fail match project
+    Given the project with id 190001 exists
+    When I match the project with "test"
+    Then I do not get a match

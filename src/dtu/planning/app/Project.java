@@ -158,19 +158,34 @@ public class Project {
 	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
 		searchText = searchText.toLowerCase();
-		String name = this.name.toLowerCase();
+		
+		// Search external
 		if (searchText.contains("external")) {
 			return !isProjectInternal;
-		} else if (searchText.contains("internal")) {
+		} 
+		
+		// Search internal
+		if (searchText.contains("internal")) {
 			return isProjectInternal;
-		} else if (projectLeader != null) {
-			 return name.contains(searchText) ||
-						Integer.toString(number).contains(searchText) ||
-						projectLeader.match(searchText); // It might be overkill to include the project leader in the search
-		} else {
-			return name.contains(searchText) ||
-					Integer.toString(number).contains(searchText);	
 		}
+		
+		// Search name
+		if (this.name != null && this.name.toLowerCase().contains(searchText)) {
+			return true;
+		}
+		
+		// Search project-number
+		if (Integer.toString(this.number).contains(searchText)) {
+			return true;
+		}
+		
+		// Search project-leader
+		// It might be overkill to include the project leader in the search
+		if (this.hasProjectLeader() && projectLeader.match(searchText)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public String toString() {
