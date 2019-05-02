@@ -1,5 +1,6 @@
 package dtu.planning.acceptance_tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Given;
@@ -60,6 +61,6 @@ public class SearchSteps {
 	
 	@Then("I get an activity with name {string}")
 	public void iGetAnActivityWithName(String activityName) {
-		assertTrue(activityHolder.getActivity().getName().equals(activityName));
+		assertEquals(activityHolder.getActivity().getName(),activityName);
 	}
 }

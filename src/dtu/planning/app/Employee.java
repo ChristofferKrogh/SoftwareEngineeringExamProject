@@ -9,6 +9,10 @@ public class Employee {
 		this.name = name; 
 		this.initials = initials;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public String getName() {
 		return name; 
@@ -29,7 +33,7 @@ public class Employee {
 	
 	// TODO: there are no tests for the method below
 	public String toString() {
-		return this.name + "  (" + this.initials + ")";
+		return this.name + " (" + this.initials + ")";
 	}
 	
 }
