@@ -30,9 +30,9 @@ Scenario: Fail report used time for employee that does not exist
     When the employee report 1 hour on "Some Activity" on 1/1/2019
     Then I get the error message "The project does not exist"
     
-#Scenario: Fail  report used time for employee that reports negative hours
-#	Given employee with initials "JS" exists
-#    And the project with id 1 exists
-#    And the activity with name "Some Activity" exists for project
-#    When the employee report -1 hour on "Some Activity" on 1/1/2019
-#    Then I get the error message "You cannot report negative hours"
+Scenario: Fail  report used time for employee that reports negative hours
+	Given employee with initials "JS" exists
+    And the project with id 1 exists
+    And the activity with name "Some Activity" exists for project
+    When the employee report -1 hour on "Some Activity" on 1/1/2019
+    Then I get the error message "You cannot report negative hours"

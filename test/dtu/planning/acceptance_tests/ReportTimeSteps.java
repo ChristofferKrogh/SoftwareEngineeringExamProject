@@ -41,11 +41,11 @@ public class ReportTimeSteps {
 		// Parse date
 		GregorianCalendar date = new GregorianCalendar(year, month, day);
 		
-		// Create new time registration object
-		timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime);
-		
-		// Register the time
 		try {
+			// Create new time registration object
+			timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime);
+			
+			// Register the time
 			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,timeRegistration);
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
