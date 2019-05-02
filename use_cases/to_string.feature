@@ -58,4 +58,18 @@ Scenario: Fail match activity
     When I match the activity with "Captain America"
     Then I do not get a match
 
-# Match activity on employee name in activity
+Scenario: Match activity on employee intitials
+    Given the project with id 1 exists
+    And the activity with name "Some Activity" exists for project
+    And employee with initials "JD" is assigned to the activity
+    When I match the activity with "jd"
+    Then I get a match
+    
+Scenario: Match activity on employee first name
+    Given the project with id 1 exists
+    And the activity with name "Some Activity" exists for project
+    And employee with initials "JD" is assigned to the activity
+    And the employee has the name "John Doe"
+    When I match the activity with "john"
+    Then I get a match
+    

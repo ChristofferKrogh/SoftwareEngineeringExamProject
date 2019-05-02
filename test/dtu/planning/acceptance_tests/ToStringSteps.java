@@ -9,6 +9,10 @@ import java.util.GregorianCalendar;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dtu.planning.app.ActivityNotFoundException;
+import dtu.planning.app.Employee;
+import dtu.planning.app.NotProjectLeaderException;
+import dtu.planning.app.Project;
 import dtu.planning.app.Report;
 
 public class ToStringSteps {
@@ -51,8 +55,21 @@ public class ToStringSteps {
 	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SUNDAY);
 	    activityHolder.getActivity().setEndWeek(end);
 	}
-
-
+	
+	@Given("employee with initials {string} is assigned to the activity")
+	public void employeeWithInitialsIsAssignedToTheActivity(String initials) throws NotProjectLeaderException, ActivityNotFoundException {
+		Project project = projectHolder.getProject();
+		
+		Employee employee = new Employee(null,initials);
+		employeeHolder.setEmployee(employee);
+		
+		Employee projectLeader = new Employee(null, null);
+		
+		// If this step is used by other features than to-string this might prevent a proper setup since is overrides projectleader that might be set by anohter given
+		project.setProjectLeader(projectLeader);
+		
+	    project.assignEmployee(activityHolder.getActivity().getName(), projectLeader, employee);
+	}
 	
 	@When("I get the string representation of the employee")
 	public void iGetTheStringRepresentationOfTheEmployee() {
