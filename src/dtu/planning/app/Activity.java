@@ -1,14 +1,12 @@
 package dtu.planning.app;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class Activity {
 
 	private String name;
-	private int expectedStart;
-	private int expectedEnd;
 	private GregorianCalendar startWeek;
 	private GregorianCalendar endWeek;
 	private int expectedAmountOfHours;
@@ -16,22 +14,14 @@ public class Activity {
 	private List<Employee> employees = new ArrayList<>();
 	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
-	public Activity(String name, int expectedStart, int expectedEnd, int expectedAmountOfHours, int associatedProjectNumber) {
+	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, int associatedProjectNumber) {
 		this.name = name;
-		this.expectedStart = expectedStart;
-		this.expectedEnd = expectedEnd;
+		this.startWeek = startWeek;
+		this.endWeek = endWeek;
 		this.expectedAmountOfHours = expectedAmountOfHours;
 		this.associatedProjectNumber = associatedProjectNumber;
 	}
 
-	// TODO: there are no tests for the method below
-	public Activity(String name, int startWeek, int endWeek) {
-		this.name = name;
-		this.expectedStart = startWeek;
-		this.expectedEnd = endWeek;
-		this.expectedAmountOfHours = 0;
-		this.associatedProjectNumber = 0;
-	}
 
 	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek) {
 		this.name = name;
@@ -45,15 +35,6 @@ public class Activity {
 		return name;
 	}
 
-	// TODO: there are no tests for the method below
-	public int getExpectedStart() {
-		return expectedStart;
-	}
-	
-	// TODO: there are no tests for the method below
-	public int getExpectedEnd() {
-		return expectedEnd;
-	}
 
 	// TODO: there are no tests for the method below
 	public int getExpectedAmountOfHours() {
@@ -136,6 +117,12 @@ public class Activity {
 	// TODO: there are no tests for the method below
 	public String toString() {
 		return name;
+	}
+
+
+	public void setExpectedAmountOfHours(int hours) {
+		this.expectedAmountOfHours = hours; 
+		
 	}
 
 }

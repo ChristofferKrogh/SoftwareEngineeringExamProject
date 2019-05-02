@@ -68,12 +68,13 @@ public class AssignEmployeeToActivitySteps {
 	}
 
 	@Given("the activity with name {string} exists for project")
-	public void theActivityWithNameExists(String activityName) throws OperationNotAllowedException {
+	public void theActivityWithNameExists(String activityName) throws ActivityNotFoundException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		// The values 0, 1, 2, 3 are chosen as an example.
 		// Activity does not test that the assigned project id, actually exists or is the id that it is assigned to
 		try {
-			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, 0, 1, 2);
+			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, null, null, 2);
+			activityHolder.setActivity(planningApp.searchForProject(projectHolder.getProject().getProjectNumber()).getActivityByName(activityName));
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -130,7 +131,7 @@ public class AssignEmployeeToActivitySteps {
 		
 		if (activityHolder.getActivity() == null) {
 			// The 2nd and 3rd arguments are set to 0 as they are not important here.
-			activityHolder.setActivity(new Activity(activityName, 0, 0));
+			activityHolder.setActivity(new Activity(activityName,null,null,0,0));
 		}
 	}
 
