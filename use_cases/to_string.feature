@@ -73,3 +73,9 @@ Scenario: Match activity on employee first name
     When I match the activity with "john"
     Then I get a match
     
+Scenario: Represent an project as a string
+    Given the project with id 190001 exists
+    And the project has the name name "Test project"
+    When I get the string representation of the project
+    Then I get the string "Test project - 190001"
+    

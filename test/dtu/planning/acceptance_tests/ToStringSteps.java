@@ -71,6 +71,11 @@ public class ToStringSteps {
 	    project.assignEmployee(activityHolder.getActivity().getName(), projectLeader, employee);
 	}
 	
+	@Given("the project has the name name {string}")
+	public void theProjectHasTheNameName(String projectName) {
+	    projectHolder.getProject().setName(projectName);
+	}
+	
 	@When("I get the string representation of the employee")
 	public void iGetTheStringRepresentationOfTheEmployee() {
 		savedString = employeeHolder.getEmployee().toString();
@@ -89,6 +94,11 @@ public class ToStringSteps {
 	@When("I get the string representation the end week of the activity")
 	public void iGetTheStringRepresentationTheEndWeekOfTheActivity() {
 		savedString = activityHolder.getActivity().getEndWeekString();
+	}
+	
+	@When("I get the string representation of the project")
+	public void iGetTheStringRepresentationOfTheProject() {
+	    savedString = projectHolder.getProject().toString();
 	}
 	
 	@When("I match the employee with {string}")
