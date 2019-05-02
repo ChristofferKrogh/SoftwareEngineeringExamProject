@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.GregorianCalendar;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -36,6 +38,22 @@ public class ToStringSteps {
 		employeeHolder.getEmployee().setName(name);
 	}
 	
+	@Given("the activity starts in week {int} of {int}")
+	public void theActivityStartsInWeekOf(Integer startWeek, Integer startYear) {
+		GregorianCalendar start = new GregorianCalendar();
+	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
+	    activityHolder.getActivity().setStartWeek(start);
+	}
+	
+	@Given("the activity ends in week {int} of {int}")
+	public void theActivityEndsInWeekOf(Integer endWeek, Integer endYear) {
+		GregorianCalendar end = new GregorianCalendar();
+	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SUNDAY);
+	    activityHolder.getActivity().setEndWeek(end);
+	}
+
+
+	
 	@When("I get the string representation of the employee")
 	public void iGetTheStringRepresentationOfTheEmployee() {
 		savedString = employeeHolder.getEmployee().toString();
@@ -44,6 +62,16 @@ public class ToStringSteps {
 	@When("I get the string representation of the activity")
 	public void iGetTheStringRepresentationOfTheActivity() {
 		savedString = activityHolder.getActivity().toString();
+	}
+	
+	@When("I get the string representation the start week of the activity")
+	public void iGetTheStringRepresentationTheStartWeekOfTheActivity() {
+		savedString = activityHolder.getActivity().getStartWeekString();
+	}
+	
+	@When("I get the string representation the end week of the activity")
+	public void iGetTheStringRepresentationTheEndWeekOfTheActivity() {
+		savedString = activityHolder.getActivity().getEndWeekString();
 	}
 	
 	@When("I match the employee with {string}")
