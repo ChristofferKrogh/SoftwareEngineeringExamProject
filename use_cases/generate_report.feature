@@ -24,23 +24,22 @@ Scenario: Show time reported for activity in report
     When The actor generates a report for the project
     Then A report over the project is generated with 3 hours reported on activity with name "Some Activity" 
 
-#Scenario: Report show time reported with multiple time registrations
-#    Given the project with id 1 exists
-#    And the activity with name "Some Activity" exists for project
-#    And the employee with initials "ABCD" has reported 9 hours for the activity with name "Some Activity" on the date 31/12/2018
-#    And the employee with initials "ABCD" has reported 3 hours for the activity with name "Some Activity" on the date 1/1/2019
-#    And the employee with initials "EFGH" has reported 5 hours for the activity with name "Some Activity" on the date 2/1/2019
-#    And the actor is project leader for the project
-#    When The actor generates a report for the project for week 1 of 2019
-#    Then A report over the project is generated with 8 hours reported on activity with name "Some Activity" 
+Scenario: Show time reported for activity in report with multiple time registrations
+    Given the project with id 1 exists
+    And the activity with name "Some Activity" exists for project
+    And the employee with initials "ABCD" has reported 3 hours for the activity with name "Some Activity" on the date 1/1/2019
+    And the employee with initials "EFGH" has reported 5 hours for the activity with name "Some Activity" on the date 1/1/2019
+    And the actor is project leader for the project
+    When The actor generates a report for the project
+    Then A report over the project is generated with 8 hours reported on activity with name "Some Activity" 
 
 
 # Scenario: Report show only requested week's time estimated (Create projects with estimated time)
 
-
 # Scenario: Report shows correct time left for project
 
 # Scenario to test hours/days/week - time unit. That is not tested yet, a bad "nice to have".
+# Alternativ: Lav en test som viser at uger bliver ændret til 24*7 timer= 168 timer
 
 Scenario: An employee that is not project leader for the project tries to generate a report
     Given the project with id 1 exists
