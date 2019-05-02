@@ -12,6 +12,7 @@ import cucumber.api.java.en.When;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
+import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.Project;
 import dtu.planning.app.Report;
 
@@ -80,6 +81,20 @@ public class ToStringSteps {
 	public void theEmployeeIsProjectLeader() {
 	    projectHolder.getProject().setProjectLeader(employeeHolder.getEmployee());
 	}
+	
+	@Given("the project start date is {int}\\/{int}\\/{int}")
+	public void theProjectStartDateIs(Integer day, Integer month, Integer year) throws OperationNotAllowedException {
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
+		Project project = projectHolder.getProject();
+		project.setStartDate(date);
+	}
+	
+	@Given("the project end date is {int}\\/{int}\\/{int}")
+	public void theProjectEndDateIs(Integer day, Integer month, Integer year) throws OperationNotAllowedException {
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
+		Project project = projectHolder.getProject();
+		project.setEndDate(date);
+	}
 
 	
 	@When("I get the string representation of the employee")
@@ -100,6 +115,16 @@ public class ToStringSteps {
 	@When("I get the string representation the end week of the activity")
 	public void iGetTheStringRepresentationTheEndWeekOfTheActivity() {
 		savedString = activityHolder.getActivity().getEndWeekString();
+	}
+	
+	@When("I get the string representation the start week of the project")
+	public void iGetTheStringRepresentationTheStartWeekOfTheProject() {
+	    savedString = projectHolder.getProject().getEndDateString();
+	}
+	
+	@When("I get the string representation the end week of the project")
+	public void iGetTheStringRepresentationTheEndWeekOfTheProject() {
+	    savedString = projectHolder.getProject().getEndDateString();
 	}
 	
 	@When("I get the string representation of the project")

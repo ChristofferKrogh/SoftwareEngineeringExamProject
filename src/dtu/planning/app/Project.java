@@ -155,7 +155,6 @@ public class Project {
 		return projectNumber;
 	}
 	
-	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
 		searchText = searchText.toLowerCase();
 		
