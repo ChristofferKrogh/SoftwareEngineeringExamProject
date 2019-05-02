@@ -75,7 +75,7 @@ Scenario: Match activity on employee first name
     
 Scenario: Represent an project as a string
     Given the project with id 190001 exists
-    And the project has the name name "Test project"
+    And the project has the name "Test project"
     When I get the string representation of the project
     Then I get the string "Test project - 190001"
     
@@ -89,10 +89,30 @@ Scenario: Match external project
     When I match the project with "external"
     Then I get a match
     
-Scenario: Match external project on name
+Scenario: Match project on name
     Given the project with id 190001 exists
-    And the project has the name name "Test project"
+    And the project has the name "Test project"
     When I match the project with "test"
+    Then I get a match
+    
+Scenario: Match project on project number
+    Given the project with id 190001 exists
+    When I match the project with "190001"
+    Then I get a match
+    
+Scenario: Match project on employee intitials
+    Given the project with id 1 exists
+	And employee with initials "JD" exists
+	And the employee is project leader
+    When I match the project with "jd"
+    Then I get a match
+    
+Scenario: Match project on employee first name
+    Given the project with id 1 exists
+	And employee with initials "JD" exists
+    And the employee has the name "John Doe"
+	And the employee is project leader
+    When I match the project with "john"
     Then I get a match
     
 Scenario: Fail match project

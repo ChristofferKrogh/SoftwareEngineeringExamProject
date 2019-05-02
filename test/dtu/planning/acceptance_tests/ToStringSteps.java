@@ -71,10 +71,16 @@ public class ToStringSteps {
 	    project.assignEmployee(activityHolder.getActivity().getName(), projectLeader, employee);
 	}
 	
-	@Given("the project has the name name {string}")
-	public void theProjectHasTheNameName(String projectName) {
+	@Given("the project has the name {string}")
+	public void theProjectHasTheName(String projectName) {
 	    projectHolder.getProject().setName(projectName);
 	}
+	
+	@Given("the employee is project leader")
+	public void theEmployeeIsProjectLeader() {
+	    projectHolder.getProject().setProjectLeader(employeeHolder.getEmployee());
+	}
+
 	
 	@When("I get the string representation of the employee")
 	public void iGetTheStringRepresentationOfTheEmployee() {
