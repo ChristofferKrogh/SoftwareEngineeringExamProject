@@ -31,7 +31,6 @@ public class Employee {
 				initials.contains(searchText);
 	}
 	
-	// TODO: there are no tests for the method below
 	public String toString() {
 		return this.name + " (" + this.initials + ")";
 	}

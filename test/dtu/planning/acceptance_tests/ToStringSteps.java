@@ -1,6 +1,7 @@
 package dtu.planning.acceptance_tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Given;
@@ -19,6 +20,7 @@ public class ToStringSteps {
 	private Report report;
 	
 	private String savedString;
+	private boolean isMatched;
 
 	public ToStringSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
 		this.planningAppHolder = planningAppHolder;
@@ -39,8 +41,24 @@ public class ToStringSteps {
 		savedString = employeeHolder.getEmployee().toString();
 	}
 	
+	@When("I match the employee with {string}")
+	public void iMatchTheEmployeeWith(String matchString) {
+	    isMatched = employeeHolder.getEmployee().match(matchString);
+	}
+
+	
 	@Then("I get the string {string}")
 	public void iGetTheString(String wantedString) {
 		assertEquals(savedString,wantedString);
+	}
+	
+	@Then("I get a match")
+	public void iGetAMatch() {
+	    assertTrue(isMatched);
+	}
+	
+	@Then("I do not get a match")
+	public void iDoNotGetAMatch() {
+	    assertFalse(isMatched);
 	}
 }

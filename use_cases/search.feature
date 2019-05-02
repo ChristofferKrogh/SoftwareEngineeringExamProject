@@ -8,7 +8,6 @@ Scenario: Search for activity successfully
     When I search an activity with name "Some Activity"
     Then I get an activity with name "Some Activity"
 
-
 Scenario: Search for activity that does not exist
     Given the project with id 1 exists
     And the activity with name "Some Activity" does not exists for project

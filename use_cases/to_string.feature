@@ -8,3 +8,20 @@ Scenario: Represent an employee as a string
     When I get the string representation of the employee
     Then I get the string "John Doe (JD)"
 
+Scenario: Match employee intitials
+    Given employee with initials "JD" exists
+    And the employee has the name "John Doe"
+    When I match the employee with "jd"
+    Then I get a match
+    
+Scenario: Match employee first name
+    Given employee with initials "JD" exists
+    And the employee has the name "John Doe"
+    When I match the employee with "john"
+    Then I get a match
+    
+Scenario: Fail match employee
+    Given employee with initials "JD" exists
+    And the employee has the name "John Doe"
+    When I match the employee with "jane"
+    Then I do not get a match
