@@ -78,7 +78,11 @@ public class ToStringSteps {
 	public void iMatchTheEmployeeWith(String matchString) {
 	    isMatched = employeeHolder.getEmployee().match(matchString);
 	}
-
+	
+	@When("I match the activity with {string}")
+	public void iMatchTheActivityWith(String matchString) {
+	    isMatched = activityHolder.getActivity().match(matchString);
+	}
 	
 	@Then("I get the string {string}")
 	public void iGetTheString(String wantedString) {

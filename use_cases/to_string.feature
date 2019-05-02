@@ -45,3 +45,17 @@ Scenario: Represent an activity end week as a string
     And the activity ends in week 3 of 2019
     When I get the string representation the end week of the activity
     Then I get the string "week 3 of 2019"
+    
+Scenario: Match activity on name
+    Given the project with id 1 exists
+    And the activity with name "Some Activity" exists for project
+    When I match the activity with "some"
+    Then I get a match
+    
+Scenario: Fail match activity
+    Given the project with id 1 exists
+    And the activity with name "Some Activity" exists for project
+    When I match the activity with "Captain America"
+    Then I do not get a match
+
+# Match activity on employee name in activity
