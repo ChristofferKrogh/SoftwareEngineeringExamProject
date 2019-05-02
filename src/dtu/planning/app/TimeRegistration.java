@@ -3,23 +3,15 @@ package dtu.planning.app;
 import java.util.GregorianCalendar;
 
 public class TimeRegistration {
-	// TODO: we need resolution of half hour. So increase resolution.
-	public enum timeUnits {
-		HOURS,
-		DAYS
-	}
-	
 	private GregorianCalendar date;
 	private int amountOfTime;
-	private timeUnits timeUnit;
 	private Employee employee;
 	
 	// We have chosen to make the key the day for an employee for an activity 
-	public TimeRegistration (Employee employee, GregorianCalendar date, int amountOfTime, timeUnits timeUnit) {
+	public TimeRegistration (Employee employee, GregorianCalendar date, int amountOfTime) {
 		this.employee = employee;
 		this.date = date;
 		this.amountOfTime = amountOfTime;
-		this.timeUnit = timeUnit;
 	}
 	
 	public Employee getEmployee () {
@@ -34,12 +26,6 @@ public class TimeRegistration {
 		return amountOfTime;
 	}
 	
-	public timeUnits getTimeUnit() {
-		return timeUnit;
-	}
-	
-	
-	// TODO: shouldn't this method include a timeUnit?
 	public void correctTime(int amountOfTime) {
 		this.amountOfTime = amountOfTime;
 	}

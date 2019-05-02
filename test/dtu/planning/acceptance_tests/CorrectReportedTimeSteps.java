@@ -17,126 +17,125 @@ import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
-import dtu.planning.app.TimeRegistrationNotFundException;
+import dtu.planning.app.TimeRegistrationNotFoundException;
 
 public class CorrectReportedTimeSteps {
-	
+
 	// "Global" variable holders so steps can be used across features
 	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
-	private ErrorMessageHolder errorMessage;
+	private ErrorMessageHolder errorMessageHolder;
 //	private ActorHolder actorHolder;
-	
+	private ActivityHolder activityHolder;
+
 	private Employee employee;
-	private Activity activity;
-	
+	private Project project;
+	//private Activity activity;
+
 	private TimeRegistration time;
-	private TimeRegistration timereg;
+	//private TimeRegistration timereg;
 	private int timeregOld;
 
 	private String activityName;
 	private GregorianCalendar date;
-	
+
 	// Private variables, will give problems when otheres need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
-	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder) {
+	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {//ActorHolder actorHolder
 		this.planningAppHolder = planningAppHolder;
-		this.errorMessage = errorMessageHolder;
+		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 //		this.actorHolder = actorHolder;
+		this.activityHolder = activityHolder;
 	}
-	
 
 	@Given("the employee with initials {string} has reported {int} hours for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year)  throws Exception{
+	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
-		activityName = nameActivity; 
-		timereg = new TimeRegistration(employee, date, hours, TimeRegistration.timeUnits.HOURS);
+		activityName = nameActivity;
+		TimeRegistration timereg = new TimeRegistration(employee, date, hours);
 		timeregOld = timereg.getAmountOfTime();
 		try {
-			activity = projectHolder.getProject().getActivityByName(activityName);
+			project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
+			activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
+			Activity activity = activityHolder.getActivity();
 			activity.registerTime(timereg);
+			TimeRegistration timer = projectHolder.getProject().getActivityByName(nameActivity).getTimeRegistrationForEmployeeOnDate(employee, date);
+			assertTrue(activityHolder.getActivity().getTimeRegistrations().contains(timer));
+			//System.out.println("Check timereg: "+)
 		} catch (ActivityNotFoundException e) {
-			errorMessage.setErrorMessage(e.getMessage());
-//		} catch (OperationNotAllowedException e) {
-//			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
-		List<TimeRegistration> timeregistrations = activity.getTimeRegistrations();
+				//System.out.println("Timer: "+timer);
+//				System.out.println("Activity: "+activityHolder.getActivity());
 		
-		for (TimeRegistration t : timeregistrations) {
-			if (t.getEmployee()==employee && t.getDate()==date) {
-				time = t;
-			}
-		}
 		
-		assertTrue(activity.getTimeRegistrations().contains(time));
+
 	}
 
-	@When("I update time used by adding {int} hours")
-	public void iUpdatedeTimeUsedByAddingHours(Integer numHours) {
+	@When("I update time used to {int} hours")
+	public void iUpdatedeTimeUsedToHours(Integer amountOfTime) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		int amountOfTime = time.getAmountOfTime() + numHours;
-		
-		// Create new time registration object 
-		// should not make new, but should correct already existing 
-//		timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime, TimeRegistration.timeUnits.HOURS);
-		
-		time.correctTime(amountOfTime);
-		
+		try {
+//			int amountOfTime = activity.getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime() + numHours;
+//			System.out.println("update: " + activityHolder.getActivity());
+			projectHolder.getProject().getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date).correctTime(amountOfTime);
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (ActivityNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 		// Register the time
 		try {
-			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,time);
+			planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
+			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,projectHolder.getProject().getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date));
 		} catch (ActivityNotFoundException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
-			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 
 	@Then("the updated time report is saved to activity with name {string}")
-	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName) throws ActivityNotFoundException{
-		
+	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName){
+
 		// Check that the time registration is in the list of time registration for the activity by that name. Contains object check
-		
-		assertTrue(timeregOld != time.getAmountOfTime());
-		assertTrue(activity.getTimeRegistrations().contains(time));
+		try {
+		assertTrue(timeregOld != activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime());
+		assertTrue(projectHolder.getProject().getActivityByName(activityName).getTimeRegistrations().contains(activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date)));
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (ActivityNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
 
 	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year) {
+	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year){
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
-		activityName = nameActivity; 
-		
-		timereg = new TimeRegistration(employee, date, 0, TimeRegistration.timeUnits.HOURS);
-		timeregOld = timereg.getAmountOfTime();
-		
+		activityName = nameActivity;
 		try {
-			activity = projectHolder.getProject().getActivityByName(activityName);
-			activity.registerTime(timereg);
+			activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
+			projectHolder.getProject().getActivityByName(nameActivity).getTimeRegistrationForEmployeeOnDate(employee, date);
 		} catch (ActivityNotFoundException e) {
-			errorMessage.setErrorMessage(e.getMessage());
-//		} catch (TimeRegistrationNotFundException e) {
-//			errorMessage.setErrorMessage(e.getMessage());
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (TimeRegistrationNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		
-		List<TimeRegistration> timeregistrations = activity.getTimeRegistrations();
-		
-		for (TimeRegistration t : timeregistrations) {
-			if (t.getEmployee()==employee && t.getDate()==date) {
-				time = t;
-			}
-		}
-//		assertTrue(time.getAmountOfTime()==0);
-//		assertTrue(activity.getTimeRegistrations().contains(time));
-//	    throw new OperationNotAllowedException("The employee has not registered time for this activity");
 
 	}
 

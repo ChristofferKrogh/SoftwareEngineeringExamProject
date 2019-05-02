@@ -57,6 +57,11 @@ public class Project {
 		activities.add(activity);
 	}
 	
+	// TODO: there are no tests for the method below
+	public List<Activity> getAktivities() {
+		return activities;
+	}
+	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException, ActivityNotFoundException {
 		// Check that projectleader is projectleader for this project. If not stop!
 		if (this.projectLeader != projectLeader) {
@@ -90,6 +95,7 @@ public class Project {
 	    return (Activity) r.get();
 	}
 	
+	// TODO: there are no tests for the method below
 	public boolean hasProjectLeader() {
 		if (projectLeader == null) {
 			return false;
@@ -119,6 +125,7 @@ public class Project {
 		return endDate;
 	}
 	
+	// TODO: there are no tests for the method below
 	public String getStartDateString() {
 		int year = startDate.get(Calendar.YEAR);
 		int month = startDate.get(Calendar.MONTH) + 1;
@@ -126,6 +133,7 @@ public class Project {
 		return date + "/" + month + "/" + year;
 	}
 	
+	// TODO: there are no tests for the method below
 	public String getEndDateString() {
 		int year = endDate.get(Calendar.YEAR);
 		int month = endDate.get(Calendar.MONTH) + 1;
@@ -170,12 +178,13 @@ public class Project {
 		return this.name + " - " + this.number;
 	}
 
-	public void generateReport(Employee projectLeader) throws NotProjectLeaderException {
-		// TODO Auto-generated method stub
+	public Report generateReport(Employee projectLeader) throws NotProjectLeaderException {
 		// Check that projectleader is projectleader for this project. If not stop!
 		if (this.projectLeader != projectLeader) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
+		
+		return new Report(this);
 	}
 
 }
