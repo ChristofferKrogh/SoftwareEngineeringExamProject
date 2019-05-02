@@ -79,16 +79,16 @@ Scenario: Represent an project as a string
     When I get the string representation of the project
     Then I get the string "Test project - 190001"
     
-#Scenario: Represent a project start week as a string
-#    Given the project with id 1 exists
-#    And the project start date is 2/1/2019
-#    When I get the string representation the start week of the project
-#    Then I get the string "2/1/2019"
+Scenario: Represent a project start date as a string
+    Given the project with id 1 exists
+    And the project start date is 2/1/2019
+    When I get the string representation the start date of the project
+    Then I get the string "2/1/2019"
     
-Scenario: Represent a project end week as a string
+Scenario: Represent a project end date as a string
     Given the project with id 1 exists
     And the project end date is 7/1/2019
-    When I get the string representation the end week of the project
+    When I get the string representation the end date of the project
     Then I get the string "7/1/2019"
     
 Scenario: Match internal project

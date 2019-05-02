@@ -222,7 +222,6 @@ public class PlanningApp {
 		searchForActivity(projectNumber, name).setExpectedAmountOfHours(hours);
 	}
 
-	// TODO no test for the method below
 	public Activity searchForActivity(int projectNumber, String name) throws ActivityNotFoundException, OperationNotAllowedException {
 		Project project = searchForProject(projectNumber);
 		return project.getActivityByName(name);

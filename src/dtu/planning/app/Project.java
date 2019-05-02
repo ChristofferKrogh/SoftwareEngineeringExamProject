@@ -133,7 +133,6 @@ public class Project {
 		return date + "/" + month + "/" + year;
 	}
 	
-	// TODO: there are no tests for the method below
 	public String getEndDateString() {
 		int year = endDate.get(Calendar.YEAR);
 		int month = endDate.get(Calendar.MONTH) + 1;
