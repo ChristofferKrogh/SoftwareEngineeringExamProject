@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 //import java.util.stream.Collectors;
 
+import javax.swing.DefaultListModel;
+
 public class PlanningApp {
 	// Storage for the projects
 	private List<Project> projects = new ArrayList<>();
@@ -182,6 +184,21 @@ public class PlanningApp {
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);
 	}
+	
+	// TODO: there are no tests for the method below
+	public void assignEmployee(int projectNumber, String activityName, Employee projectLeader, String employeeInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+		Employee employee = searchForEmployee(employeeInitials);
+		
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
+
+		// Check that the employee given exists, if not throw exception
+		this.checkEmployeeExist(employee);
+
+		// Assign employee to the activity
+		project.assignEmployee(activityName, projectLeader, employee);
+		
+	};
 
 	private void checkEmployeeExist(Employee employee) throws OperationNotAllowedException {
 		Optional<Employee> r = employees
@@ -279,5 +296,17 @@ public class PlanningApp {
 			dut += t.getAmountOfTime();
 		}
 		return dut;
-	};
+	}
+
+	public DefaultListModel<Activity> getAllRelevantActivitiesForEmployee(Employee employee) {
+		DefaultListModel<Activity> relevantActivities = new DefaultListModel<>();
+		for (Project p : projects) {
+			for (Activity a : p.getAktivities()) {
+				if (a.getAssignedEmployees().contains(employee)) {
+					relevantActivities.addElement(a);
+				}
+			}
+		}
+		return relevantActivities;
+	}
 }

@@ -77,6 +77,8 @@ public class MainScreen {
 		GregorianCalendar endWeek = new GregorianCalendar();
 		endWeek.setWeekDate(2020, 4, GregorianCalendar.SATURDAY);
 		planningApp.addRegularActivity(new Activity("Sickness", startWeek, endWeek), "CK");
+		planningApp.addActivity(p1.getProjectNumber(), "Buy lawnmower", startWeek, endWeek, 4);
+		planningApp.assignEmployee(p1.getProjectNumber(), "Buy lawnmower", p1.getProjectLeader(), "JaD");
 	}
 
 	/**

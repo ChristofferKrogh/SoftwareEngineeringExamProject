@@ -172,6 +172,7 @@ public class ReportTimeScreen {
 					System.out.println("You need to select an employee");
 				} else {
 					employee = listSearchResult.getSelectedValue();
+					findRelevantActivities();
 					panelSelectEmployee.setVisible(false);
 					panelSelectActivity.setVisible(true);
 				}
@@ -208,7 +209,7 @@ public class ReportTimeScreen {
 		listRelevantActivities = new JList<Activity>(relevantActivities);
 		listRelevantActivities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listRelevantActivities.setSelectedIndex(0);
-		// TODO: implement details about activities
+//		 TODO: implement details about activities
 //		listRelevantActivities.addListSelectionListener(new ListSelectionListener() {
 //			public void valueChanged(ListSelectionEvent e) {
 //				if (listRelevantActivities.getSelectedIndex() == -1) {
@@ -263,6 +264,11 @@ public class ReportTimeScreen {
 		panelGiveTime.setVisible(false);
 		// ----------------------------------------
 
+	}
+
+	private void findRelevantActivities() {
+		relevantActivities = planningApp.getAllRelevantActivitiesForEmployee(employee);
+		
 	}
 
 	protected void searchEmployees() {
