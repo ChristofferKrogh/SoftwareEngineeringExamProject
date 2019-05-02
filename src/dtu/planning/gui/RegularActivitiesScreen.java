@@ -44,11 +44,15 @@ public class RegularActivitiesScreen {
 	private Activity regularActivity;
 	private JPanel panelEditDates;
 	private AbstractButton btnEditRegActivity;
+	private int firstYear;
+	private int lastYear;
 
 	
-	public RegularActivitiesScreen(PlanningApp planningApp, MainScreen parentWindow) {
+	public RegularActivitiesScreen(PlanningApp planningApp, MainScreen parentWindow, int firstYear, int lastYear) {
 		this.planningApp = planningApp;
 		this.parentWindow = parentWindow;
+		this.firstYear = firstYear;
+		this.lastYear = lastYear;
 		initialize();
 	}
 
@@ -153,8 +157,10 @@ public class RegularActivitiesScreen {
 		endWeekField.setBounds(165, 45, 35, 30);
 		panelEditDates.add(endWeekField);
 		
-		Integer[] comboBoxItems = {2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024,
-				2025, 2026, 2027};
+		Integer[] comboBoxItems = new Integer[lastYear-firstYear];
+		for (int i = 0; i < lastYear - firstYear; i++) {
+			comboBoxItems[i] = firstYear + i;
+		}
 		startYearComboBox = new JComboBox<>(comboBoxItems);
 		startYearComboBox.setBounds(225, 13, 85, 30);
 		panelEditDates.add(startYearComboBox);
@@ -211,7 +217,7 @@ public class RegularActivitiesScreen {
 		btnEditRegActivity.setBounds(20, 385, 190, 50);
 		panelRegular.add(btnEditRegActivity);
 		
-		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, this);
+		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, this, firstYear, lastYear);
 		
 	}
 	
@@ -256,6 +262,8 @@ public class RegularActivitiesScreen {
 		end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
 		if (end.before(start)) {
 			throw new OperationNotAllowedException("End week must be after start week");
+		} else if (end.after(new GregorianCalendar(lastYear - 1, 11, 31))) {
+			throw new OperationNotAllowedException("The regular activity must end before " + lastYear);
 		}
 		planningApp.editStartWeekOfRegular(start, regularActivity.getName());
 		planningApp.editEndWeekOfRegular(end, regularActivity.getName());
