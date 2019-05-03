@@ -271,9 +271,9 @@ public class PlanningApp {
 		return timeRegistration;
 	}
 	
-	public int getDailyUsedTime(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
+	public int getDailyUsedTime(String initials, GregorianCalendar date) throws TimeRegistrationNotFoundException, OperationNotAllowedException {
 		int dailyUsedTime = 0;
-		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(employee, date)) {
+		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(searchForEmployee(initials), date)) {
 			dailyUsedTime += t.getAmountOfTime();
 		}
 		return dailyUsedTime;

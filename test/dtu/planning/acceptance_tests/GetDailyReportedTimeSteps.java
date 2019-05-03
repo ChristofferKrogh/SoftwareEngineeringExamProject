@@ -10,6 +10,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.planning.app.Activity;
+import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
@@ -27,9 +28,6 @@ public class GetDailyReportedTimeSteps {
 //		private ActorHolder actorHolder;
 		private ActivityHolder activityHolder;
 		
-		private Employee employee;
-		private Project project;
-		private Activity activity;
 		private GregorianCalendar date;
 		
 		private int dailyUsedTime;
@@ -49,60 +47,71 @@ public class GetDailyReportedTimeSteps {
 	@Given("time report exists for the date {int}\\/{int}\\/{int}")
 	public void timeReportExistsForTheDate(Integer day, Integer month, Integer year) throws TimeRegistrationNotFoundException, OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-//		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
-//		try {
-//		List<Project> projects = planningApp.getProjects();
-//		} catch (OperationNotAllowedException e) {
-//			// jaaa... 
-//		}
-//		for(Project p : projects) {
-//			List<Activity> activities = p.getAktivities();
-//			for(Activity a : activities) {
-//				timeRegistrations.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
-//			}
-//		}
+		// assume that a time registration exist for project with id 1 and activity with name "Some activity"
+		// the project and activity chosen is only relevant for the purpose of a test 
+		TimeRegistration timeReg = new TimeRegistration(employeeHolder.getEmployee(), date, 1, TimeRegistration.timeUnits.HOURS);
+		
+		// Register the time
+		try {
+			planningApp.registerTime(1,"Some activity",timeReg);
+//			timeRegistrations = planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
+//			System.out.println(timeRegistrations);
+		} catch (ActivityNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 		timeRegistrations = planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
+		
 		System.out.println(timeRegistrations);
 		assertTrue(!timeRegistrations.isEmpty());
 	}
+	
+	
+	
+//	#    And at least 1 hour is reported for the employee on activity "Some activity" for project with id 1
+//	@Given("at least {int} hour is reported for the employee on activity {string} for project with id {int}")
+//	public void atLeastHourIsReportedForTheEmployeeOnActivityForProjectWithId(Integer amountOfTime, String activityName, Integer id) throws TimeRegistrationNotFoundException {
+//		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+//		
+//		// Create new time registration object
+//		TimeRegistration timeReg = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime, TimeRegistration.timeUnits.HOURS);
+//		
+//		// Register the time
+//		try {
+//			planningApp.registerTime(id,activityName,timeReg);
+//			System.out.println(planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date));
+//		} catch (ActivityNotFoundException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		} catch (OperationNotAllowedException e) {
+//			errorMessageHolder.setErrorMessage(e.getMessage());
+//		}
+//	}
 
 	@When("I ask for my daily used time")
 	public void iAskForMyDailyUsedTime() {
-	    // Write code here that turns the phrase above into concrete actions
-//	    throw new cucumber.api.PendingException();
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
-			dailyUsedTime = planningApp.getDailyUsedTime(employeeHolder.getEmployee(), date);
+			dailyUsedTime = planningApp.getDailyUsedTime(employeeHolder.getEmployee().getInitials(), date);
+//			System.out.println(dailyUsedTime);
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
-//		} catch (OperationNotAllowedException e) {
-//			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
 
     @Then("I get the time used across all activities across all projects")
     public void iGetTheTimeUsedAcrossAllActivitiesAcrossAllProjects() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new cucumber.api.PendingException();
+        assertTrue(dailyUsedTime!=0);
     }
     
     @Given("no time report for date {int}\\/{int}\\/{int} exists")
     public void noTimeReportForDateExists(Integer day, Integer month, Integer year) throws OperationNotAllowedException, TimeRegistrationNotFoundException {
     	PlanningApp planningApp = planningAppHolder.getPlanningApp();
-//		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
-//		try {
 		List<Project> projects = planningApp.getProjects();
-//		} catch (OperationNotAllowedException e) {
-//			// jaaa... 
-//		}
-//		for(Project p : projects) {
-//			List<Activity> activities = p.getAktivities();
-//			for(Activity a : activities) {
-//				timeRegistrations.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
-//			}
-//		}
 		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
 //		System.out.println(timeRegistrations);
 		assertTrue(timeRegistrations.isEmpty());
