@@ -14,7 +14,6 @@ import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
-import dtu.planning.app.TimeRegistration.timeUnits;
 
 public class ReportTimeSteps {
 	// "Global" variable holders so steps can be used across features
@@ -42,11 +41,11 @@ public class ReportTimeSteps {
 		// Parse date
 		GregorianCalendar date = new GregorianCalendar(year, month, day);
 		
-		// Create new time registration object
-		timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime, TimeRegistration.timeUnits.HOURS);
-		
-		// Register the time
 		try {
+			// Create new time registration object
+			timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime);
+			
+			// Register the time
 			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,timeRegistration);
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());

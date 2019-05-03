@@ -46,10 +46,14 @@ public class CreateRegularActivityScreen {
 	private DefaultListModel<Employee> searchResults;
 	private JButton btnBack;
 	private Activity regActivity;
+	private int firstYear;
+	private int lastYear;
 	
-	public CreateRegularActivityScreen(PlanningApp planningApp, RegularActivitiesScreen parentWindow) {
+	public CreateRegularActivityScreen(PlanningApp planningApp, RegularActivitiesScreen parentWindow, int firstYear, int lastYear) {
 		this.planningApp = planningApp;
 		this.parentWindow = parentWindow;
+		this.firstYear = firstYear;
+		this.lastYear = lastYear;
 		initialize();
 	}
 
@@ -107,8 +111,10 @@ public class CreateRegularActivityScreen {
 		endWeekField.setBounds(242, 140, 35, 30);
 		panelCreateRegActivity.add(endWeekField);
 		
-		Integer[] comboBoxItems = {2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024,
-				2025, 2026, 2027};
+		Integer[] comboBoxItems = new Integer[lastYear-firstYear];
+		for (int i = 0; i < lastYear - firstYear; i++) {
+			comboBoxItems[i] = firstYear + i;
+		}
 		startYearComboBox = new JComboBox<>(comboBoxItems);
 		startYearComboBox.setBounds(302, 108, 85, 30);
 		startYearComboBox.setSelectedItem(2019);
@@ -193,6 +199,24 @@ public class CreateRegularActivityScreen {
 		});
 		btnBack.setBounds(21, 28, 59, 29);
 		panelCreateRegActivitySuccess.add(btnBack);
+		
+		lblSuccessMessage = new JLabel();
+		lblSuccessMessage.setVerticalAlignment(SwingConstants.TOP);
+		lblSuccessMessage.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSuccessMessage.setBounds(80, 80, 300, 200);
+		panelCreateRegActivitySuccess.add(lblSuccessMessage);
+		
+		JButton btnOK = new JButton("OK"); // Same as btnBack
+		btnOK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				panelCreateRegActivitySuccess.setVisible(false);
+				clear();
+				parentWindow.setVisible(true);
+			}
+		});
+		btnOK.setBounds(160, 260, 100, 40);
+		panelCreateRegActivitySuccess.add(btnOK);
 		// -------------------------------------------------
 	}
 	
@@ -208,8 +232,11 @@ public class CreateRegularActivityScreen {
 	}
 
 	protected void setSuccessMessage() {
-		// TODO Auto-generated method stub
-		
+		StringBuffer b = new StringBuffer();
+		b.append("<html><h2>The regular activity called</h2><h1>\"");
+		b.append(regActivity.getName());
+		b.append("\"</h1><h2>was created!</h1></html>");	
+		lblSuccessMessage.setText(b.toString());
 	}
 
 	protected void createRegActivity() throws Exception {
@@ -218,20 +245,31 @@ public class CreateRegularActivityScreen {
 			throw new OperationNotAllowedException("The regular activity needs a name");
 		}
 		GregorianCalendar start = new GregorianCalendar();
-		int startWeek = Integer.parseInt(startWeekField.getText());
+		int startWeek;
+		try {
+			startWeek = Integer.parseInt(startWeekField.getText());
+		} catch (Exception e) {
+			throw new OperationNotAllowedException("The start week must be an integer");
+		}
 		int startYear = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
 		start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
 		GregorianCalendar end = new GregorianCalendar();
-		int endWeek = Integer.parseInt(endWeekField.getText());
+		int endWeek;
+		try {
+			endWeek = Integer.parseInt(endWeekField.getText());
+		} catch (Exception e) {
+			throw new OperationNotAllowedException("The end week must be an integer");
+		}
 		int endYear = Integer.parseInt(endYearComboBox.getSelectedItem().toString());
 		end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
 		if (end.before(start)) {
 			throw new OperationNotAllowedException("The expected end must be after the expected start");
-		}
-		if (listSearchResult.getSelectedIndex() == -1) {
-			throw new OperationNotAllowedException("You need to select an Employee");
+		} else if (end.after(new GregorianCalendar(lastYear - 1, 11, 31))) {
+			throw new OperationNotAllowedException("The activity must end before " + lastYear);
+		} else if (listSearchResult.getSelectedIndex() == -1) {
+			throw new OperationNotAllowedException("You need to select an employee");
 		} else {
-			planningApp.addRegularActivity(new Activity(regActivityNameField.getText(), start, end), listSearchResult.getSelectedValue().getInitials());
+			regActivity = planningApp.addRegularActivity(new Activity(regActivityNameField.getText(), start, end), listSearchResult.getSelectedValue().getInitials());
 		}
 	}
 
@@ -249,5 +287,4 @@ public class CreateRegularActivityScreen {
 		endYearComboBox.setSelectedItem(2019);
 		employeeReminderField.setText("");
 	}
-
 }

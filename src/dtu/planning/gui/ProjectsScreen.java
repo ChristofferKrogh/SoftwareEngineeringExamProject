@@ -1,5 +1,6 @@
 package dtu.planning.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,6 +34,10 @@ public class ProjectsScreen {
 	private DefaultListModel<Project> searchResults;
 	private JLabel lblSearchResultDetail;
 	private JButton btnBack;
+	private JButton btnCreateProject;
+	private JButton btnEditProject;
+	private JButton btnCreateActivity;
+	private JButton btnGenerateReport;
 	
 	public ProjectsScreen(PlanningApp planningApp, MainScreen parentWindow) {
 		this.planningApp = planningApp;
@@ -67,7 +72,10 @@ public class ProjectsScreen {
 		panelProjects.add(btnSearch);
 		btnSearch.getRootPane().setDefaultButton(btnSearch);
 		
-		JButton btnCreateProject = new JButton("Create Project");
+		btnCreateProject = new JButton();
+		StringBuffer b = new StringBuffer();
+		b.append("<html><b>Create<br>Project</b></html>");
+		btnCreateProject.setText(b.toString());
 		btnCreateProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
@@ -75,10 +83,11 @@ public class ProjectsScreen {
 				createProjectScreen.setVisible(true);
 			}
 		});
-		btnCreateProject.setBounds(270, 385, 110, 50);
+		btnCreateProject.setBounds(292, 28, 90, 69);
+		btnCreateProject.setBackground(Color.green);
 		panelProjects.add(btnCreateProject);
 		
-		JButton btnEditProject = new JButton("Edit Project");
+		btnEditProject = new JButton("Edit Project");
 		btnEditProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
@@ -92,9 +101,10 @@ public class ProjectsScreen {
 			}
 		});
 		btnEditProject.setBounds(20, 385, 110, 50);
+		btnEditProject.setVisible(false);
 		panelProjects.add(btnEditProject);
 		
-		JButton btnCreateActivity = new JButton("Create Activity");
+		btnCreateActivity = new JButton("Create Activity");
 		btnCreateActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
@@ -109,7 +119,22 @@ public class ProjectsScreen {
 			}
 		});
 		btnCreateActivity.setBounds(145, 385, 110, 50);
+		btnCreateActivity.setVisible(false);
 		panelProjects.add(btnCreateActivity);
+		
+		btnGenerateReport = new JButton("Generate Report");
+		btnGenerateReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (listSearchResult.getSelectedIndex() == -1) {
+					System.out.println("You need to select a project");
+				} else {
+					// Generate Report
+				}
+			}
+		});
+		btnGenerateReport.setBounds(270, 385, 115, 50);
+		btnGenerateReport.setVisible(false);
+		panelProjects.add(btnGenerateReport);
 		
 		searchResults = new DefaultListModel<>();
 		listSearchResult = new JList<Project>(searchResults);
@@ -125,6 +150,7 @@ public class ProjectsScreen {
 		            	lblSearchResultDetail.setText("");
 
 		            } else {
+		            	projectSelected(true);
 		            	lblSearchResultDetail.setText(new ProjectPrinter(listSearchResult.getSelectedValue()).printDetail());
 		            }
 		        }
@@ -137,7 +163,7 @@ public class ProjectsScreen {
 		panelProjects.add(listScrollPane);
 		
 		JPanel panelSearchResult = new JPanel();
-		panelSearchResult.setBounds(21, 230, 361, 135);
+		panelSearchResult.setBounds(21, 230, 365, 135);
 		panelProjects.add(panelSearchResult);
 		panelSearchResult.setBorder(BorderFactory.createTitledBorder(
                 "Detail"));
@@ -165,6 +191,7 @@ public class ProjectsScreen {
 
 	}
 	protected void searchProjects() {
+		projectSelected(false);
 		searchResults.clear();
 		planningApp.searchForProjectsByName(searchField.getText())
 		.forEach((m) -> {searchResults.addElement(m);});
@@ -177,9 +204,16 @@ public class ProjectsScreen {
 	public void clear() {
 		searchField.setText("");
 		searchResults.clear();
+		projectSelected(false);
 	}
 	
 	public void addPanel(JPanel panel) {
 		parentWindow.addPanel(panel);
+	}
+	
+	private void projectSelected(boolean isProjectSelected) {
+		btnEditProject.setVisible(isProjectSelected);
+		btnCreateActivity.setVisible(isProjectSelected);
+		btnGenerateReport.setVisible(isProjectSelected);
 	}
 }
