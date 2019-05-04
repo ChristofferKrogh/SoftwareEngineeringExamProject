@@ -18,6 +18,7 @@ Scenario: Project leader generates report successfully
 
 Scenario: Show time reported for activity in report
     Given the project with id 1 exists
+    And "BS" is project leader for the project
     And the activity with name "Some Activity" exists for project
     And the employee with initials "ABCD" has reported 3 hours for the activity with name "Some Activity" on the date 1/1/2019
     And the actor is project leader for the project

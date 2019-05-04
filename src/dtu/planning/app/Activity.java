@@ -9,12 +9,12 @@ public class Activity {
 	private String name;
 	private GregorianCalendar startWeek;
 	private GregorianCalendar endWeek;
-	private int expectedAmountOfHours;
+	private double expectedAmountOfHours;
 	private int associatedProjectNumber;
 	private List<Employee> employees = new ArrayList<>();
 	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
-	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, int associatedProjectNumber) {
+	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, double expectedAmountOfHours, int associatedProjectNumber) {
 		this.name = name;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
@@ -37,7 +37,7 @@ public class Activity {
 
 
 	// TODO: there are no tests for the method below
-	public int getExpectedAmountOfHours() {
+	public double getExpectedAmountOfHours() {
 		return expectedAmountOfHours;
 	}
 
@@ -120,7 +120,7 @@ public class Activity {
 	}
 
 
-	public void setExpectedAmountOfHours(int hours) {
+	public void setExpectedAmountOfHours(double hours) {
 		this.expectedAmountOfHours = hours; 
 		
 	}

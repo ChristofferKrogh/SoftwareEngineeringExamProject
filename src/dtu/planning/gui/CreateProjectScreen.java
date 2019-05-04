@@ -35,6 +35,7 @@ public class CreateProjectScreen {
 	private PlanningApp planningApp;
 	private JPanel panelCreateProject;
 	private JPanel panelCreateProjectSuccess;
+	private JPanel panelCreateActivity; 
 	private JTextField searchField;
 	private JTextField projectNameField;
 	private JLabel leaderReminderField;
@@ -109,11 +110,10 @@ public class CreateProjectScreen {
 		panelCreateProjectSuccess.add(btnCreateActivity);
 		btnCreateActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Jeg forestiller mig, at det bliver noget i stil med:
-//				createActivityScreen.setProject(project);
-//				panelCreateProjectSuccess.setVisible(false);
-//				clear();
-//				createActivityScreen.setVisible(true);
+				// CreateActivitiesScreen.setProject(project);
+				// frpanelCreateProjectSuccess.setVisible(false);
+				// clear();
+				// panelCreateActivity.setVisible(true);
 			}
 				
 		});

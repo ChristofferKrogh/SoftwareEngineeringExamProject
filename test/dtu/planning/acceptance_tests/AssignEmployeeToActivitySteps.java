@@ -68,12 +68,11 @@ public class AssignEmployeeToActivitySteps {
 	}
 
 	@Given("the activity with name {string} exists for project")
-	public void theActivityWithNameExists(String activityName) throws OperationNotAllowedException {
+	public void theActivityWithNameExists(String activityName) throws OperationNotAllowedException, NotProjectLeaderException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		// The values 0, 1, 2, 3 are chosen as an example.
-		// Activity does not test that the assigned project id, actually exists or is the id that it is assigned to
 		try {
-			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, null, null, 2);
+			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), activityName, null, null, 2,projectHolder.getProject().getProjectLeader().getInitials());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -162,4 +161,16 @@ public class AssignEmployeeToActivitySteps {
 		// Credit: Library application example error message holder by Hubert Baumeister, Associate Professor, DTU Compute, 02161 F19 Lectures
 		assertEquals(errorMessageHolder.getErrorMessage(), error);
 	}
+	@Given("{string} is project leader for the project") // Doesnt work..
+	public void isProjectLeaderForTheProject(String initials) throws OperationNotAllowedException {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		Employee actor = new Employee("The Current Project Leader", initials);
+		planningApp.addEmployee(actor);
+		try {
+			planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(), actor.getInitials()); // actor.getInitials()
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
 }
