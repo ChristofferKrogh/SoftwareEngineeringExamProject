@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -20,18 +19,15 @@ import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
-import dtu.planning.app.Project;
 
 public class CreateActivitySteps {
 		
 	private PlanningApp planningApp;
-	private PlanningAppHolder planningAppHolder; 
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
-	private EmployeeHolder employeeHolder; 
-	private ActivityHolder activityHolder; 
-	private ActorHolder actorHolder; 
-	private Project project;
+	private EmployeeHolder employeeHolder;
+	private ActivityHolder activityHolder;
+	private ActorHolder actorHolder;
 		
 	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, ActorHolder actorHolder) {
 		this.planningApp = planningApp; 
