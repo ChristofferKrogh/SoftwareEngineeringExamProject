@@ -31,9 +31,6 @@ public class CorrectReportedTimeSteps {
 	private String activityName;
 	private GregorianCalendar date;
 
-	// Private variables, will give problems when others need to use them. Create holder then?
-	private TimeRegistration timeRegistration;
-
 	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {//ActorHolder actorHolder
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
