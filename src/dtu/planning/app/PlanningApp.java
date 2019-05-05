@@ -197,7 +197,7 @@ public class PlanningApp {
 		Project project = this.searchForProject(projectNumber);
 		
 		// Create new activity
-		Activity activity = new Activity(activityName, startWeek, endWeek, expectedAmountOfHours, project.getProjectNumber());
+		Activity activity = new Activity(activityName, startWeek, endWeek, expectedAmountOfHours);
 
 		
 		// Add activity to that project

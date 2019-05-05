@@ -36,7 +36,7 @@ public class SearchSteps {
 		}
 		
 		// The 2nd and 3rd arguments are set to 0 as they are not important here.
-		activityHolder.setActivity(new Activity(activityName,null,null,0,0));
+		activityHolder.setActivity(new Activity(activityName,null,null,0));
 		
 		// Null is expected. If any activity is found the activity given with the name would exist and the given would not be fulfilled.
 		assertTrue(activity==null);

@@ -51,7 +51,7 @@ public class CreateActivitySteps {
 	@When("the project leader {string} creates an activity {string}")
 	public void theProjectLeaderCreatesAnActivity(String initials, String name) {
 		assertTrue(projectHolder.getProject().getProjectLeader().getInitials().equals(initials));
-		Activity activity = new Activity(name, null, null, 0.0, projectHolder.getProject().getProjectNumber());
+		Activity activity = new Activity(name, null, null, 0.0);
 		
 		try {
 			projectHolder.getProject().addActivity(activity,initials);
@@ -70,7 +70,7 @@ public class CreateActivitySteps {
 	
 		Employee employee = new Employee(null,initials);
 		try {
-			Activity activity = new Activity(name, null, null, 0, projectHolder.getProject().getProjectNumber());
+			Activity activity = new Activity(name, null, null, 0);
 			projectHolder.getProject().addActivity(activity,employee.getInitials());
 			assertTrue(false);
 		} catch (NotProjectLeaderException|OperationNotAllowedException e) {

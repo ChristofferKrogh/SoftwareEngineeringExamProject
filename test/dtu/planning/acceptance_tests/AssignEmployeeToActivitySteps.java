@@ -68,7 +68,7 @@ public class AssignEmployeeToActivitySteps {
 		Project project = projectHolder.getProject(); 
 		// The values 0, 1, 2, 3 are chosen as an example.
 		try {
-			Activity activity = new Activity(activityName, null, null, 2.0, projectHolder.getProject().getProjectNumber()); 
+			Activity activity = new Activity(activityName, null, null, 2.0); 
 			project.addActivity(activity,projectHolder.getProject().getProjectLeader().getInitials());
 			activityHolder.setActivity(activity);
 		} catch (OperationNotAllowedException e) {
@@ -124,7 +124,7 @@ public class AssignEmployeeToActivitySteps {
 		
 		if (activityHolder.getActivity() == null) {
 			// The 2nd and 3rd arguments are set to 0 as they are not important here.
-			activityHolder.setActivity(new Activity(activityName,null,null,0,0));
+			activityHolder.setActivity(new Activity(activityName,null,null,0));
 		}
 	}
 
