@@ -67,13 +67,9 @@ public class AssignEmployeeToActivitySteps {
 	public void theActivityWithNameExists(String activityName) throws OperationNotAllowedException, NotProjectLeaderException {
 		Project project = projectHolder.getProject(); 
 		// The values 0, 1, 2, 3 are chosen as an example.
-		try {
-			Activity activity = new Activity(activityName, null, null, 2.0); 
-			project.addActivity(activity,projectHolder.getProject().getProjectLeader().getInitials());
-			activityHolder.setActivity(activity);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		Activity activity = new Activity(activityName, null, null, 2.0); 
+		project.addActivity(activity,projectHolder.getProject().getProjectLeader().getInitials());
+		activityHolder.setActivity(activity);
 	}
 
 	@Given("the actor is project leader for the project")
@@ -82,11 +78,7 @@ public class AssignEmployeeToActivitySteps {
 		Employee actor = new Employee("The Current Actor", "TCA");
 		planningApp.addEmployee(actor);
 		actorHolder.setActor(actor);
-		try {
-			planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(), actorHolder.getActor().getInitials()); // actor.getInitials()
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(), actorHolder.getActor().getInitials());
 	}
 
 	@Given("the actor is not project leader for the project")
@@ -103,7 +95,7 @@ public class AssignEmployeeToActivitySteps {
 	}
 
 	@Given("the activity {string} doesn't exist")
-	public void theActivityDoesnTExist(String activityName) {
+	public void theActivityDoesnTExist(String activityName) throws OperationNotAllowedException {
 		// Get current program state
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
@@ -117,8 +109,6 @@ public class AssignEmployeeToActivitySteps {
 			assertFalse(activity.getName().equals(activityName));
 		} catch (ActivityNotFoundException e) {
 			// Everything is ok, exception is to be expected here.
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
@@ -159,11 +149,7 @@ public class AssignEmployeeToActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		Employee actor = new Employee("The Current Project Leader", initials);
 		planningApp.addEmployee(actor);
-		try {
-			planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(), actor.getInitials()); // actor.getInitials()
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(), actor.getInitials()); // actor.getInitials()
 	}
 	
 }

@@ -85,14 +85,6 @@ public class CreateProjectSteps {
 		Project project = new Project(name, false, planningApp.projectCount);
 		projectHolder.setProject(project);
 	}
-	
-	@Given("there is a project with id {int}")
-	public void thereIsAProjectWithId(Integer projectNumber) throws Exception {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = new Project("Test Project", true, projectNumber);
-		projectHolder.setProject(project);
-		planningApp.createProject(project);
-	}
 
 	@When("an employee edits the start date of the project to {int}\\/{int}\\/{int}")
 	public void anEmployeeEditsTheStartDateOfTheProjectTo(Integer day, Integer month, Integer year) throws Exception {

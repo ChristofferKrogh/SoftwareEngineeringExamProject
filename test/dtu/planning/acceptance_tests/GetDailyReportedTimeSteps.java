@@ -42,7 +42,7 @@ public class GetDailyReportedTimeSteps {
 	}
 	
 	@Given("time report exists for the date {int}\\/{int}\\/{int}")
-	public void timeReportExistsForTheDate(Integer day, Integer month, Integer year) throws TimeRegistrationNotFoundException, OperationNotAllowedException, ActivityNotFoundException {
+	public void timeReportExistsForTheDate(Integer day, Integer month, Integer year) throws TimeRegistrationNotFoundException, OperationNotAllowedException, ActivityNotFoundException, NotProjectLeaderException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		date = new GregorianCalendar(year, month, day);
 		// assume that a time registration exist for project with id 1 and activity with name "Some activity"
@@ -53,27 +53,17 @@ public class GetDailyReportedTimeSteps {
 		projectHolder.setProject(project);
 		planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(),employeeHolder.getEmployee().getInitials());
 		// Register the time 
-		try {
-			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), "Some activity", null, null, 2, employeeHolder.getEmployee().getInitials()); //2 hours are expected
-			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),"Some activity",timeReg);
-		} catch (ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (NotProjectLeaderException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningApp.addActivity(projectHolder.getProject().getProjectNumber(), "Some activity", null, null, 2, employeeHolder.getEmployee().getInitials()); //2 hours are expected
+		planningApp.registerTime(projectHolder.getProject().getProjectNumber(),"Some activity",timeReg);
 		timeRegistrations = planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
 		assertTrue(!timeRegistrations.isEmpty());
 	}
 
 	@When("I ask for my daily used time")
-	public void iAskForMyDailyUsedTime() {
+	public void iAskForMyDailyUsedTime() throws TimeRegistrationNotFoundException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
 			dailyUsedTime = planningApp.getDailyUsedTime(employeeHolder.getEmployee().getInitials(), date);
-		} catch (TimeRegistrationNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}

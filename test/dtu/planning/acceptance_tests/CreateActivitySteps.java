@@ -33,13 +33,7 @@ public class CreateActivitySteps {
 		this.employeeHolder = employeeHolder; 
 		this.activityHolder = activityHolder; 
 	}
-		
-		
-	@Given("project with id {int} exists")
-	public void projectWithIdExists(int id) {
-		project = new Project("Random name", false, id);
-		projectHolder.setProject(project);
-	}
+
 
 	@Given("project leader has initials {string}")
 	public void projectLeaderHasInitials(String initials){
@@ -49,15 +43,10 @@ public class CreateActivitySteps {
 	}
 
 	@When("the project leader {string} creates an activity {string}")
-	public void theProjectLeaderCreatesAnActivity(String initials, String name) {
+	public void theProjectLeaderCreatesAnActivity(String initials, String name) throws NotProjectLeaderException, OperationNotAllowedException {
 		assertTrue(projectHolder.getProject().getProjectLeader().getInitials().equals(initials));
 		Activity activity = new Activity(name, null, null, 0.0);
-		
-		try {
-			projectHolder.getProject().addActivity(activity,initials);
-		} catch (Throwable e) {
-			assertTrue(false);
-		}
+		projectHolder.getProject().addActivity(activity,initials);
 	}
 
 	@Then("the activity {string} is created for the project")
@@ -73,7 +62,9 @@ public class CreateActivitySteps {
 			Activity activity = new Activity(name, null, null, 0);
 			projectHolder.getProject().addActivity(activity,employee.getInitials());
 			assertTrue(false);
-		} catch (NotProjectLeaderException|OperationNotAllowedException e) {
+		} catch (NotProjectLeaderException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}

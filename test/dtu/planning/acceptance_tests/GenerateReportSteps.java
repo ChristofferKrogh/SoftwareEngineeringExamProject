@@ -1,7 +1,7 @@
 package dtu.planning.acceptance_tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -63,14 +63,16 @@ public class GenerateReportSteps {
 	@Then("A report over the project is generated with {int} hours estimated on activity with name {string}")
 	public void aReportOverTheProjectIsGeneratedWithHoursEstimatedOnActivityWithName(Integer hours, String activityName) throws ActivityNotFoundException {
 		double hours1 = new Double(hours); 
-		assertTrue(report.getEstimatedTimeForActivity(activityName) == hours1);
+		// Third argument in assert equals with doubble is delta
+		assertEquals(report.getEstimatedTimeForActivity(activityName),hours1,0);
 	}
 	
 	
 	@Then("A report over the project is generated with {int} hours reported on activity with name {string}")
 	public void aReportOverTheProjectIsGeneratedWithHoursReportedOnActivityWithName(Integer hours, String activityName) throws ActivityNotFoundException{
 		double hours1 = new Double(hours); 
-		assertTrue(report.getReportedTimeForActivity(activityName) == hours1);	
+		// Third argument in assert equals with doubble is delta
+		assertEquals(report.getReportedTimeForActivity(activityName),hours1,0);	
 	}
 	
 	@Given("the project with id {int} exists with project leader {string}")

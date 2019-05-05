@@ -39,12 +39,8 @@ public class RegularActivitySteps {
 	}
 	
 	@Given("the regular activity is in the system")
-	public void theRegularActivityIsInTheSystem() {
-		try {
-			planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+	public void theRegularActivityIsInTheSystem() throws OperationNotAllowedException {
+		planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
 	}
 	
 	@Given("the regular activity is not in the system")
@@ -54,12 +50,8 @@ public class RegularActivitySteps {
 	}
 
 	@When("I create the regular activity and assign the employee to it")
-	public void iCreateTheRegularActivityAndAssignTheEmployeeToIt() {
-		try {
-		    planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+	public void iCreateTheRegularActivityAndAssignTheEmployeeToIt() throws OperationNotAllowedException {
+		planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
 	}
 	
 	@When("I change the start week of the regular activity to week {int} of year {int}")

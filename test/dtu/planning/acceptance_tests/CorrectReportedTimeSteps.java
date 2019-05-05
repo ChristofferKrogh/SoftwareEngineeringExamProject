@@ -41,7 +41,7 @@ public class CorrectReportedTimeSteps {
 	}
 
 	@Given("the employee with initials {string} has reported {int} hours for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year) {
+	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year) throws TimeRegistrationNotFoundException, OperationNotAllowedException {
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 		activityName = nameActivity;
@@ -54,10 +54,6 @@ public class CorrectReportedTimeSteps {
 			TimeRegistration timer = projectHolder.getProject().getActivityByName(nameActivity).getTimeRegistrationForEmployeeOnDate(employee, date);
 			assertTrue(activityHolder.getActivity().getTimeRegistrations().contains(timer));
 		} catch (ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
@@ -86,33 +82,18 @@ public class CorrectReportedTimeSteps {
 	}
 
 	@Then("the updated time report is saved to activity with name {string}")
-	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName){
-
+	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName) throws TimeRegistrationNotFoundException, ActivityNotFoundException {
 		// Check that the time registration is in the list of time registration for the activity by that name. Contains object check
-		try {
 		assertTrue(timeregOld != activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime());
 		assertTrue(projectHolder.getProject().getActivityByName(activityName).getTimeRegistrations().contains(activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date)));
-		} catch (TimeRegistrationNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
 	}
 
 	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year){
+	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year) throws ActivityNotFoundException{
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 		activityName = nameActivity;
-		try {
-			activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
-			projectHolder.getProject().getActivityByName(nameActivity).getTimeRegistrationForEmployeeOnDate(employee, date);
-		} catch (ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (TimeRegistrationNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-
+		activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
 	}
 
 
