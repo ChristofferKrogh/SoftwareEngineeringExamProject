@@ -19,7 +19,6 @@ import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
-import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
 public class CreateActivitySteps {
@@ -32,11 +31,6 @@ public class CreateActivitySteps {
 	private ActivityHolder activityHolder; 
 	private ActorHolder actorHolder; 
 	private Project project;
-	private Activity activity; 
-	private int projectNumber;
-	private GregorianCalendar date;
-	private Employee employee; 
-	private Employee projectLeader; 
 		
 	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, ActorHolder actorHolder) {
 		this.planningApp = planningApp; 
@@ -46,13 +40,7 @@ public class CreateActivitySteps {
 		this.activityHolder = activityHolder; 
 		this.actorHolder = actorHolder;
 	}
-		
-		
-	@Given("project with id {int} exists")
-	public void projectWithIdExists(int id) {
-		project = new Project("Random name", false, id);
-		projectHolder.setProject(project);
-	}
+
 
 	@Given("project leader has initials {string}")
 	public void projectLeaderHasInitials(String initials){
@@ -62,15 +50,10 @@ public class CreateActivitySteps {
 	}
 
 	@When("the project leader {string} creates an activity {string}")
-	public void theProjectLeaderCreatesAnActivity(String initials, String name) {
+	public void theProjectLeaderCreatesAnActivity(String initials, String name) throws NotProjectLeaderException, OperationNotAllowedException {
 		assertTrue(projectHolder.getProject().getProjectLeader().getInitials().equals(initials));
-		Activity activity = new Activity(name, null, null, 0.0, projectHolder.getProject().getProjectNumber());
-		
-		try {
-			projectHolder.getProject().addActivity(activity,initials,projectHolder.getProject().getProjectNumber());
-		} catch (Throwable e) {
-			assertTrue(false);
-		}
+		Activity activity = new Activity(name, null, null, 0.0);
+		projectHolder.getProject().addActivity(activity,initials);
 	}
 
 	@Then("the activity {string} is created for the project")
@@ -83,10 +66,12 @@ public class CreateActivitySteps {
 	
 		Employee employee = new Employee(null,initials);
 		try {
-			Activity activity = new Activity(name, null, null, 0, projectHolder.getProject().getProjectNumber());
-			projectHolder.getProject().addActivity(activity,employee.getInitials(),projectHolder.getProject().getProjectNumber());
+			Activity activity = new Activity(name, null, null, 0);
+			projectHolder.getProject().addActivity(activity,employee.getInitials());
 			assertTrue(false);
-		} catch (NotProjectLeaderException|OperationNotAllowedException e) {
+		} catch (NotProjectLeaderException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
@@ -105,7 +90,8 @@ public class CreateActivitySteps {
 		GregorianCalendar compareWeek = new GregorianCalendar();
         compareWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
 		
-		assertEquals(compareWeek,activityHolder.getActivity().getStartWeek()); 
+		assertEquals(compareWeek.get(Calendar.WEEK_OF_YEAR),activityHolder.getActivity().getStartWeek().get(Calendar.WEEK_OF_YEAR)); 
+		assertEquals(compareWeek.get(Calendar.YEAR),activityHolder.getActivity().getStartWeek().get(Calendar.YEAR)); 
 	}
 
 	@When("the project leader edits the end week of the project to {int}\\/{int}")

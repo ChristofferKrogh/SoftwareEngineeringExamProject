@@ -107,7 +107,6 @@ public class PlanningApp {
 				searchResults.add(a);
 			}
 		}
-
 		return searchResults;
 	}
 
@@ -196,14 +195,13 @@ public class PlanningApp {
 	public Activity addActivity(int projectNumber, String activityName, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, String actorInitials) throws OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
-		String projectLeaderInitials = project.getProjectLeader().getInitials(); 
 		
 		// Create new activity
-		Activity activity = new Activity(activityName, startWeek, endWeek, expectedAmountOfHours, project.getProjectNumber());
+		Activity activity = new Activity(activityName, startWeek, endWeek, expectedAmountOfHours);
 
 		
 		// Add activity to that project
-		project.addActivity(activity, actorInitials, projectNumber);
+		project.addActivity(activity, actorInitials);
 		return activity;
 	}
     
@@ -268,11 +266,11 @@ public class PlanningApp {
 		return timeRegistration;
 	}
 	
-	public int getDailyUsedTime(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
-		int dut = 0;
-		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(employee, date)) {
-			dut += t.getAmountOfTime();
+	public int getDailyUsedTime(String initials, GregorianCalendar date) throws TimeRegistrationNotFoundException, OperationNotAllowedException {
+		int dailyUsedTime = 0;
+		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(searchForEmployee(initials), date)) {
+			dailyUsedTime += t.getAmountOfTime();
 		}
-		return dut;
+		return dailyUsedTime;
 	};
 }

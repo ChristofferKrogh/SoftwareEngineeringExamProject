@@ -1,9 +1,7 @@
 package dtu.planning.acceptance_tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -16,26 +14,20 @@ import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 import dtu.planning.app.Report;
-import dtu.planning.app.TimeRegistration;
 
 public class GenerateReportSteps {
 	// "Global" variable holders so steps can be used across features
 	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
-	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private ActorHolder actorHolder;
 	private ActivityHolder activityHolder;
 	private Report report;
 
-	// Private variables, will give problems when others need to use them. Create holder then?
-	private TimeRegistration timeRegistration;
-
-	public GenerateReportSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
+	public GenerateReportSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
-		this.employeeHolder = employeeHolder;
 		this.actorHolder = actorHolder;
 		this.activityHolder = activityHolder;
 	}
@@ -71,14 +63,16 @@ public class GenerateReportSteps {
 	@Then("A report over the project is generated with {int} hours estimated on activity with name {string}")
 	public void aReportOverTheProjectIsGeneratedWithHoursEstimatedOnActivityWithName(Integer hours, String activityName) throws ActivityNotFoundException {
 		double hours1 = new Double(hours); 
-		assertTrue(report.getEstimatedTimeForActivity(activityName) == hours1);
+		// Third argument in assert equals with doubble is delta
+		assertEquals(report.getEstimatedTimeForActivity(activityName),hours1,0);
 	}
 	
 	
 	@Then("A report over the project is generated with {int} hours reported on activity with name {string}")
 	public void aReportOverTheProjectIsGeneratedWithHoursReportedOnActivityWithName(Integer hours, String activityName) throws ActivityNotFoundException{
 		double hours1 = new Double(hours); 
-		assertTrue(report.getReportedTimeForActivity(activityName) == hours1);	
+		// Third argument in assert equals with doubble is delta
+		assertEquals(report.getReportedTimeForActivity(activityName),hours1,0);	
 	}
 	
 	@Given("the project with id {int} exists with project leader {string}")

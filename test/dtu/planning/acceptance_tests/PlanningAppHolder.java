@@ -13,7 +13,4 @@ public class PlanningAppHolder {
 		return planningApp;
 	}
 
-	public void setPlanningApp(PlanningApp planningApp) {
-		this.planningApp = planningApp;
-	}
 }

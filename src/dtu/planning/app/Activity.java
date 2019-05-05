@@ -10,16 +10,14 @@ public class Activity {
 	private GregorianCalendar startWeek;
 	private GregorianCalendar endWeek;
 	private double expectedAmountOfHours;
-	private int associatedProjectNumber;
 	private List<Employee> employees = new ArrayList<>();
 	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
-	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, double expectedAmountOfHours, int associatedProjectNumber) {
+	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, double expectedAmountOfHours) {
 		this.name = name;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
 		this.expectedAmountOfHours = expectedAmountOfHours;
-		this.associatedProjectNumber = associatedProjectNumber;
 	}
 
 	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek) {
@@ -27,7 +25,6 @@ public class Activity {
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
 		this.expectedAmountOfHours = 0;
-		this.associatedProjectNumber = 0;
 	}
 
 	public String getName() {

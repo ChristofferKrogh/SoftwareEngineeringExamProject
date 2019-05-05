@@ -9,24 +9,18 @@ import cucumber.api.java.en.When;
 import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.OperationNotAllowedException;
-import dtu.planning.app.Report;
 
 public class SearchSteps {
 	// "Global" variable holders so steps can be used across features
 	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
-	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
-	private ActorHolder actorHolder;
 	private ActivityHolder activityHolder;
-	private Report report;
 
-	public SearchSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
+	public SearchSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, ActivityHolder activityHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
-		this.employeeHolder = employeeHolder;
-		this.actorHolder = actorHolder;
 		this.activityHolder = activityHolder;
 	}
 	
@@ -42,7 +36,7 @@ public class SearchSteps {
 		}
 		
 		// The 2nd and 3rd arguments are set to 0 as they are not important here.
-		activityHolder.setActivity(new Activity(activityName,null,null,0,0));
+		activityHolder.setActivity(new Activity(activityName,null,null,0));
 		
 		// Null is expected. If any activity is found the activity given with the name would exist and the given would not be fulfilled.
 		assertTrue(activity==null);

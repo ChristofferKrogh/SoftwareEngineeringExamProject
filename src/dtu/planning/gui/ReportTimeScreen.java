@@ -2,13 +2,11 @@ package dtu.planning.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-//import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -17,17 +15,11 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
-//import javax.swing.SwingConstants;
-//import javax.swing.event.ListSelectionEvent;
-//import javax.swing.event.ListSelectionListener;
-//import javax.xml.stream.events.StartDocument;
 import javax.swing.event.ListSelectionListener;
 
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
-import dtu.planning.app.Project;
-import dtu.planning.app.OperationNotAllowedException;
 
 public class ReportTimeScreen {
 	// flow idea: 
