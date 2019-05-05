@@ -134,10 +134,6 @@ public class CreateProjectSteps {
 		Project project = projectHolder.getProject();
 		try {
 			planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-		try {
 			planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -152,10 +148,6 @@ public class CreateProjectSteps {
 		Project project = projectHolder.getProject();
 		try {
 			planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-		try {
 			planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());

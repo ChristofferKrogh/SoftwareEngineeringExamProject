@@ -96,19 +96,17 @@ public class AssignEmployeeToActivitySteps {
 
 	@Given("the activity {string} doesn't exist")
 	public void theActivityDoesnTExist(String activityName) throws OperationNotAllowedException {
+	
+		
 		// Get current program state
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		
+		// Current project
+		Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
+		// Check activity is not present
 		try {
-			// Current project
-			Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
-			// Check activity is not present
-			Activity activity = project.getActivityByName(activityName);
-			activityHolder.setActivity(activity);
-
-			// The activity should not have the same name as asked not to.
-			assertFalse(activity.getName().equals(activityName));
+			project.getActivityByName(activityName);
 		} catch (ActivityNotFoundException e) {
-			// Everything is ok, exception is to be expected here.
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
