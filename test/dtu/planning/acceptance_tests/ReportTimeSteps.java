@@ -1,6 +1,5 @@
 package dtu.planning.acceptance_tests;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.GregorianCalendar;
@@ -9,10 +8,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
-import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
-import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
 
 public class ReportTimeSteps {
@@ -23,7 +20,7 @@ public class ReportTimeSteps {
 	private ErrorMessageHolder errorMessageHolder;
 	private ActorHolder actorHolder;
 	
-	// Private variables, will give problems when otheres need to use them. Create holder then?
+	// Private variables, will give problems when others need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
 	public ReportTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder) {

@@ -4,12 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.util.GregorianCalendar;
-import java.util.NoSuchElementException;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -150,8 +145,6 @@ public class AssignEmployeeToActivitySteps {
 
 	@Then("the employee {string} is assigned to the activity {string}")
 	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException, ActivityNotFoundException {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
 	}
 

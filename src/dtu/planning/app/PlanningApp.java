@@ -195,7 +195,6 @@ public class PlanningApp {
 	public Activity addActivity(int projectNumber, String activityName, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, String actorInitials) throws OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
-		String projectLeaderInitials = project.getProjectLeader().getInitials(); 
 		
 		// Create new activity
 		Activity activity = new Activity(activityName, startWeek, endWeek, expectedAmountOfHours, project.getProjectNumber());

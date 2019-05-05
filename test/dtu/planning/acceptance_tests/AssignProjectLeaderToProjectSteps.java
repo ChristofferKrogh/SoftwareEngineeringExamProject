@@ -4,26 +4,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
-import dtu.planning.app.TimeRegistration;
 
 public class AssignProjectLeaderToProjectSteps {
 	
@@ -32,7 +21,6 @@ public class AssignProjectLeaderToProjectSteps {
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private Project project;
-	private Employee projectLeader;
 	private Employee employee;
 	private ErrorMessageHolder errorMessage;
 	

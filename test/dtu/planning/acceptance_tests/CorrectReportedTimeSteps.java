@@ -28,11 +28,14 @@ public class CorrectReportedTimeSteps {
 	private Employee employee;
 	private Project project;
 
+	private TimeRegistration time;
 	private int timeregOld;
 
 	private String activityName;
 	private GregorianCalendar date;
 
+	// Private variables, will give problems when others need to use them. Create holder then?
+	private TimeRegistration timeRegistration;
 
 	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {//ActorHolder actorHolder
 		this.planningAppHolder = planningAppHolder;
@@ -106,6 +109,7 @@ public class CorrectReportedTimeSteps {
 
 	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
 	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year){
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 		activityName = nameActivity;

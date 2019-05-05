@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -17,25 +16,17 @@ import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
-import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
 public class CreateActivitySteps {
 		
-	private PlanningApp planningApp = new PlanningApp();
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder; 
 	private ActivityHolder activityHolder; 
 	private Project project;
-	private Activity activity; 
-	private int projectNumber;
-	private GregorianCalendar date;
-	private Employee employee; 
-	private Employee projectLeader; 
 		
-	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
-		this.planningApp = planningApp; 
+	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
 		this.errorMessageHolder = errorMessageHolder; 
 		this.projectHolder = projectHolder; 
 		this.employeeHolder = employeeHolder; 
