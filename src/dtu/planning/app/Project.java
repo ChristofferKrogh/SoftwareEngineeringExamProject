@@ -52,14 +52,11 @@ public class Project {
 		return number;
 	}
 
-	public void addActivity(Activity activity, String actorInitials, int projectNumber) throws NotProjectLeaderException, OperationNotAllowedException {
+	public void addActivity(Activity activity, String actorInitials) throws NotProjectLeaderException, OperationNotAllowedException {
 		if(!this.projectLeader.getInitials().equals(actorInitials)) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
 		
-		if(this.number != projectNumber) {
-			throw new OperationNotAllowedException("The projectID of the activity must match the project which it is being assigned"); 
-		}
 		activities.add(activity);
 	}
 	

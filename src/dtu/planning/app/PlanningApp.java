@@ -202,7 +202,7 @@ public class PlanningApp {
 
 		
 		// Add activity to that project
-		project.addActivity(activity, actorInitials, projectNumber);
+		project.addActivity(activity, actorInitials);
 		return activity;
 	}
     

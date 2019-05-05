@@ -62,7 +62,7 @@ public class CreateActivitySteps {
 		Activity activity = new Activity(name, null, null, 0.0, projectHolder.getProject().getProjectNumber());
 		
 		try {
-			projectHolder.getProject().addActivity(activity,initials,projectHolder.getProject().getProjectNumber());
+			projectHolder.getProject().addActivity(activity,initials);
 		} catch (Throwable e) {
 			assertTrue(false);
 		}
@@ -79,7 +79,7 @@ public class CreateActivitySteps {
 		Employee employee = new Employee(null,initials);
 		try {
 			Activity activity = new Activity(name, null, null, 0, projectHolder.getProject().getProjectNumber());
-			projectHolder.getProject().addActivity(activity,employee.getInitials(),projectHolder.getProject().getProjectNumber());
+			projectHolder.getProject().addActivity(activity,employee.getInitials());
 			assertTrue(false);
 		} catch (NotProjectLeaderException|OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
