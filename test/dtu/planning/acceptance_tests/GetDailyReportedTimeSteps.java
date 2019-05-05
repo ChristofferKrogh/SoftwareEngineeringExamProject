@@ -26,8 +26,6 @@ public class GetDailyReportedTimeSteps {
 		private ProjectHolder projectHolder;
 		private EmployeeHolder employeeHolder;
 		private ErrorMessageHolder errorMessageHolder;
-//		private ActorHolder actorHolder;
-		private ActivityHolder activityHolder;
 		
 		private GregorianCalendar date;
 		
@@ -36,13 +34,11 @@ public class GetDailyReportedTimeSteps {
 		private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
 	
-	public GetDailyReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {//ActorHolder actorHolder
+	public GetDailyReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
-//		this.actorHolder = actorHolder;
-		this.activityHolder = activityHolder;
 	}
 	
 	@Given("time report exists for the date {int}\\/{int}\\/{int}")
@@ -76,7 +72,6 @@ public class GetDailyReportedTimeSteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
 			dailyUsedTime = planningApp.getDailyUsedTime(employeeHolder.getEmployee().getInitials(), date);
-//			System.out.println(dailyUsedTime);
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
@@ -93,7 +88,6 @@ public class GetDailyReportedTimeSteps {
     public void noTimeReportForDateExists(Integer day, Integer month, Integer year) throws OperationNotAllowedException, TimeRegistrationNotFoundException {
     	PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		date = new GregorianCalendar(year, month, day);
-//		List<Project> projects = planningApp.getProjects();
 		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
 		assertTrue(timeRegistrations.isEmpty());
     }

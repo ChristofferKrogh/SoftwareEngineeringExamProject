@@ -153,8 +153,6 @@ public class AssignEmployeeToActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
-		System.out.println(project.getEmployeesAssignedToActivity(activityName).contains(employeeHolder.getEmployee()));
-		//assertTrue(project.getEmployeesAssignedToActivity(activityName).contains(employeeHolder.getEmployee()));
 	}
 
 	@Then("I get the error message {string}")

@@ -1,11 +1,8 @@
 package dtu.planning.acceptance_tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -26,22 +23,16 @@ public class CorrectReportedTimeSteps {
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
-//	private ActorHolder actorHolder;
 	private ActivityHolder activityHolder;
 
 	private Employee employee;
 	private Project project;
-	//private Activity activity;
 
-	private TimeRegistration time;
-	//private TimeRegistration timereg;
 	private int timeregOld;
 
 	private String activityName;
 	private GregorianCalendar date;
 
-	// Private variables, will give problems when otheres need to use them. Create holder then?
-	private TimeRegistration timeRegistration;
 
 	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {//ActorHolder actorHolder
 		this.planningAppHolder = planningAppHolder;
@@ -67,7 +58,6 @@ public class CorrectReportedTimeSteps {
 			activity.registerTime(timereg);
 			TimeRegistration timer = projectHolder.getProject().getActivityByName(nameActivity).getTimeRegistrationForEmployeeOnDate(employee, date);
 			assertTrue(activityHolder.getActivity().getTimeRegistrations().contains(timer));
-			//System.out.println("Check timereg: "+)
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
@@ -75,20 +65,12 @@ public class CorrectReportedTimeSteps {
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-		
-				//System.out.println("Timer: "+timer);
-//				System.out.println("Activity: "+activityHolder.getActivity());
-		
-		
-
 	}
 
 	@When("I update time used to {int} hours")
 	public void iUpdatedeTimeUsedToHours(Integer amountOfTime) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		try {
-//			int amountOfTime = activity.getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime() + numHours;
-//			System.out.println("update: " + activityHolder.getActivity());
 			projectHolder.getProject().getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date).correctTime(amountOfTime);
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -124,7 +106,6 @@ public class CorrectReportedTimeSteps {
 
 	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
 	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year){
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 		activityName = nameActivity;
