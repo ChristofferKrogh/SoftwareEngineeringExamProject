@@ -4,7 +4,8 @@ Feature: Correct reported time
 
 Scenario: Successfully correct time
     Given employee with initials "ABCD" exists
-    And the project with id 1 exists
+    And the project with id 1 exists    
+	And "BS" is project leader for the project
     And the activity with name "Some Activity" exists for project
     And the employee with initials "ABCD" has reported 0 hours for the activity with name "Some Activity" on the date 1/2/2019
     When I update time used to 2 hours
@@ -13,6 +14,7 @@ Scenario: Successfully correct time
 Scenario: Fail if the time report does not exist
     Given employee with initials "ABCD" exists
     And the project with id 1 exists
+    And the actor is project leader for the project
     And the activity with name "Some Activity" exists for project
     And the employee with initials "ABCD" does not have reported time for the activity with name "Some Activity" on the date 1/2/2019
     When I update time used to 2 hours
@@ -21,6 +23,7 @@ Scenario: Fail if the time report does not exist
 Scenario: Fail if the employee doesn't exist
     Given employee with initials "ABCD" does not exist
     And the project with id 1 exists
+    And "BS" is project leader for the project
     And the activity with name "Some Activity" exists for project
     And the employee with initials "ABCD" has reported 0 hours for the activity with name "Some Activity" on the date 1/2/2019
     When I update time used to 2 hours

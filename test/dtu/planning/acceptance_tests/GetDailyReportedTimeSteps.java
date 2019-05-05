@@ -11,6 +11,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 //import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
+import dtu.planning.app.NotProjectLeaderException;
 //import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
@@ -54,14 +55,16 @@ public class GetDailyReportedTimeSteps {
 		Project project = new Project(null, false, 1);
 		planningApp.createProject(project);
 		projectHolder.setProject(project);
-		
+		planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(),employeeHolder.getEmployee().getInitials());
 		// Register the time 
 		try {
-			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), "Some activity", null, null, 2); //2 hours are expected
+			planningApp.addActivity(projectHolder.getProject().getProjectNumber(), "Some activity", null, null, 2, employeeHolder.getEmployee().getInitials()); //2 hours are expected
 			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),"Some activity",timeReg);
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		timeRegistrations = planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
