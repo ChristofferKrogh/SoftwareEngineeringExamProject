@@ -11,10 +11,10 @@ Scenario: An employee is assigned to the activity successfully
     Then the employee "JS" is assigned to the activity "Some Activity"
 
 Scenario: A non-project leader tries to assign an employee to an activity
-	Given employee with initials "JS" exists
-    And the project with id 1 exists
+	Given the project with id 1 exists
     And "BS" is project leader for the project
     And the activity with name "Some Activity" exists for project
+    And employee with initials "JS" exists
     When the actor assign the employee to the activity "Some Activity"
     Then I get the error message "You are not the project leader for this project"
 

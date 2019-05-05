@@ -15,8 +15,8 @@ public class Project {
 	private Employee projectLeader;
 	private List<Activity> activities = new ArrayList<>();
 	private int number;
-	private GregorianCalendar startDate = new GregorianCalendar(1000, 1, 1);
-	private GregorianCalendar endDate = new GregorianCalendar(3000, 1, 1);
+	private GregorianCalendar startDate = new GregorianCalendar(1000, 0, 1);
+	private GregorianCalendar endDate = new GregorianCalendar(3000, 0, 1);
 
 	public Project(String name, boolean isProjectInternal, int projectCount) {
 		this.name = name;
@@ -70,7 +70,7 @@ public class Project {
 	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException, ActivityNotFoundException {
 		// Check that projectleader is projectleader for this project. If not stop!
-		if (this.projectLeader != projectLeader) {
+		if (!this.projectLeader.equals(projectLeader)) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
 		
@@ -134,15 +134,14 @@ public class Project {
 	// TODO: there are no tests for the method below
 	public String getStartDateString() {
 		int year = startDate.get(Calendar.YEAR);
-		int month = startDate.get(Calendar.MONTH);
+		int month = startDate.get(Calendar.MONTH) + 1;
 		int date = startDate.get(Calendar.DATE);
 		return date + "/" + month + "/" + year;
 	}
 	
-	// TODO: there are no tests for the method below
 	public String getEndDateString() {
 		int year = endDate.get(Calendar.YEAR);
-		int month = endDate.get(Calendar.MONTH);
+		int month = endDate.get(Calendar.MONTH) + 1;
 		int date = endDate.get(Calendar.DATE);
 		return date + "/" + month + "/" + year;
 	}
@@ -161,32 +160,46 @@ public class Project {
 		return projectNumber;
 	}
 	
-	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
 		searchText = searchText.toLowerCase();
-		String name = this.name.toLowerCase();
+		
+		// Search external
 		if (searchText.contains("external")) {
 			return !isProjectInternal;
-		} else if (searchText.contains("internal")) {
+		} 
+		
+		// Search internal
+		if (searchText.contains("internal")) {
 			return isProjectInternal;
-		} else if (projectLeader != null) {
-			 return name.contains(searchText) ||
-						Integer.toString(number).contains(searchText) ||
-						projectLeader.match(searchText); // It might be overkill to include the project leader in the search
-		} else {
-			return name.contains(searchText) ||
-					Integer.toString(number).contains(searchText);	
 		}
+		
+		// Search name
+		if (name != null && name.toLowerCase().contains(searchText)) { //? this.name
+			return true;
+		}
+		
+		// Search project-number
+		if (toString().contains(searchText)) {
+			return true;
+		}
+		
+		// Search project-leader
+		// It might be overkill to include the project leader in the search
+		if (hasProjectLeader() && projectLeader.match(searchText)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
-	// TODO: there are no tests for the method below
 	public String toString() {
 		return this.name + " - " + this.number;
 	}
 
-	public Report generateReport(Employee projectLeader) throws NotProjectLeaderException {
+	public Report generateReport(Employee actor) throws NotProjectLeaderException {
 		// Check that projectleader is projectleader for this project. If not stop!
-		if (this.projectLeader != projectLeader) {
+		 
+		if (!this.projectLeader.equals(actor) && this.projectLeader!= null) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
 		

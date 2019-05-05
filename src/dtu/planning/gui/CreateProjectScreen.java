@@ -336,7 +336,7 @@ public class CreateProjectScreen {
 					int day = Integer.parseInt(startDayField.getText());
 					int month = Integer.parseInt(startMonthField.getText());
 					int year = Integer.parseInt(startYearField.getText());
-					GregorianCalendar startDate = new GregorianCalendar(year, month, day);
+					GregorianCalendar startDate = new GregorianCalendar(year, month - 1, day);
 					planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
@@ -353,7 +353,7 @@ public class CreateProjectScreen {
 					int day = Integer.parseInt(endDayField.getText());
 					int month = Integer.parseInt(endMonthField.getText());
 					int year = Integer.parseInt(endYearField.getText());
-					GregorianCalendar endDate = new GregorianCalendar(year, month, day);
+					GregorianCalendar endDate = new GregorianCalendar(year, month - 1, day);
 					planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
 				} catch (Exception e) {
 					System.out.println(e.getMessage());

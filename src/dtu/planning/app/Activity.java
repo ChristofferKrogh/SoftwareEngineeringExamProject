@@ -22,7 +22,6 @@ public class Activity {
 		this.associatedProjectNumber = associatedProjectNumber;
 	}
 
-
 	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek) {
 		this.name = name;
 		this.startWeek = startWeek;
@@ -35,15 +34,8 @@ public class Activity {
 		return name;
 	}
 
-
-	// TODO: there are no tests for the method below
 	public double getExpectedAmountOfHours() {
 		return expectedAmountOfHours;
-	}
-
-	// TODO: there are no tests for the method below
-	public int getAssociatedProjectNumber() {
-		return associatedProjectNumber;
 	}
 
 	public List<Employee> getAssignedEmployees() {
@@ -114,15 +106,12 @@ public class Activity {
 		return name.toLowerCase().contains(searchText.toLowerCase());
 	}
 
-	// TODO: there are no tests for the method below
 	public String toString() {
 		return name;
 	}
 
-
 	public void setExpectedAmountOfHours(double hours) {
-		this.expectedAmountOfHours = hours; 
-		
+		this.expectedAmountOfHours = hours; 	
 	}
 
 }

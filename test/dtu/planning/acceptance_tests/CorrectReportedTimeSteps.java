@@ -58,9 +58,9 @@ public class CorrectReportedTimeSteps {
 		employee = employeeHolder.getEmployee();
 		date = new GregorianCalendar(year, month, day);
 		activityName = nameActivity;
-		TimeRegistration timereg = new TimeRegistration(employee, date, hours, TimeRegistration.timeUnits.HOURS);
-		timeregOld = timereg.getAmountOfTime();
 		try {
+			TimeRegistration timereg = new TimeRegistration(employee, date, hours);
+			timeregOld = timereg.getAmountOfTime();
 			project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
 			activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
 			Activity activity = activityHolder.getActivity();
