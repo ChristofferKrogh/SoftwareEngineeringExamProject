@@ -120,4 +120,12 @@ public class Activity {
 		this.expectedAmountOfHours = hours; 	
 	}
 
+	public void removeEmployee(Employee employee) {
+		for (Employee e : employees) {
+			if (e.equals(employee)) {
+				employees.remove(employee);
+			}
+		}
+	}
+	
 }

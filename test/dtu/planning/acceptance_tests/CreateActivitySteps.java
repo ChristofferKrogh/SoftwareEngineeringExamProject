@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -23,10 +25,12 @@ import dtu.planning.app.Project;
 public class CreateActivitySteps {
 		
 	private PlanningApp planningApp = new PlanningApp();
+	private PlanningAppHolder planningAppHolder; 
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder; 
 	private ActivityHolder activityHolder; 
+	private ActorHolder actorHolder; 
 	private Project project;
 	private Activity activity; 
 	private int projectNumber;
@@ -34,12 +38,13 @@ public class CreateActivitySteps {
 	private Employee employee; 
 	private Employee projectLeader; 
 		
-	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
+	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, ActorHolder actorHolder) {
 		this.planningApp = planningApp; 
 		this.errorMessageHolder = errorMessageHolder; 
 		this.projectHolder = projectHolder; 
 		this.employeeHolder = employeeHolder; 
 		this.activityHolder = activityHolder; 
+		this.actorHolder = actorHolder;
 	}
 		
 		
@@ -103,7 +108,60 @@ public class CreateActivitySteps {
 		assertEquals(compareWeek,activityHolder.getActivity().getStartWeek()); 
 	}
 
-	
-	
+	@When("the project leader edits the end week of the project to {int}\\/{int}")
+	public void theProjectLeaderEditsTheEndWeekOfTheProjectTo(Integer numWeekYear, Integer year) throws OperationNotAllowedException {
+		GregorianCalendar endWeek = new GregorianCalendar();
+        endWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
 		
+		activityHolder.getActivity().setEndWeek(endWeek); 
+	}
+
+	@Then("the end week of the project is {int}\\/{int}")
+	public void theEndWeekOfTheProjectIs(Integer numWeekYear, Integer year) {
+		GregorianCalendar compareWeek = new GregorianCalendar();
+        compareWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
+		
+		assertEquals(compareWeek,activityHolder.getActivity().getEndWeek()); 
+	}
+	
+	@When("the project leader edits the expected amount of hours to {int}")
+	public void theProjectLeaderEditsTheExpectedAmountOfHoursTo(Integer hours) {
+	    double expectedAmountOfHours = new Double(hours); 
+		activityHolder.getActivity().setExpectedAmountOfHours(expectedAmountOfHours);
+	}
+
+	@Then("the expected amount of hours is {int}")
+	public void theExpectedAmountOfHoursIs(Integer hours) {
+		double expectedAmountOfHours = new Double(hours); 
+		assertTrue(expectedAmountOfHours == activityHolder.getActivity().getExpectedAmountOfHours()); 
+	}
+	
+	@Given("the assigned employee is {string}")
+	public void theAssignedEmployeeIs(String initials) {
+		Employee employee = new Employee(null, initials); 
+		employeeHolder.setEmployee(employee);
+		try {
+			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor(), employee);
+		} catch (NotProjectLeaderException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (ActivityNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	@When("the project leader changes the assigned employee to {string}")
+	public void theProjectLeaderChangesTheAssignedEmployeeTo(String initials ) throws OperationNotAllowedException {
+	    activityHolder.getActivity().getAssignedEmployees().remove(employeeHolder.getEmployee()); 	    
+	    Employee newEmployee = new Employee(null, initials); 
+	    activityHolder.getActivity().assignEmployee(newEmployee);
+	    
+	}
+
+	@Then("the employee for the activity is {string}")
+	public void theEmployeeForTheActivityIs(String initials) {
+	    assertTrue(activityHolder.getActivity().getAssignedEmployees().stream().map(e -> e.getInitials()).anyMatch(i -> i.equals(initials))); 
+	}
+	
 }
