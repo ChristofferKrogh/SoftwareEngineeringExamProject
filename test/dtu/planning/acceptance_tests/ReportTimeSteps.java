@@ -18,17 +18,15 @@ public class ReportTimeSteps {
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
-	private ActorHolder actorHolder;
 	
 	// Private variables, will give problems when others need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
-	public ReportTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder) {
+	public ReportTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
-		this.actorHolder = actorHolder;
 	}
 	
 	@When("the employee report {int} hour on {string} on {int}\\/{int}\\/{int}")
