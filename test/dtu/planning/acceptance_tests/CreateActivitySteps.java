@@ -61,7 +61,6 @@ public class CreateActivitySteps {
 		try {
 			projectHolder.getProject().addActivity(activity,initials,projectHolder.getProject().getProjectNumber());
 		} catch (Throwable e) {
-			e.printStackTrace();
 			assertTrue(false);
 		}
 	}

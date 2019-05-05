@@ -4,24 +4,28 @@ Feature: Edit activity
 	
 #Scenario: The start week of an activity is changed
 #	Given the project with id 1 exists
-#	And the project has and activity "Test Activity"
+#    And the actor is project leader for the project
+#	And the project has an activity "Test Activity"
 #	When the project leader edits the start week of the activity to 1/2019
 #	Then the start week of the project is 1/2019
 	
 #Scenario: The end date of an activity is changed
 #	Given the project with id 1 exists
-#	And the project has and activity "Test Activity"
+#   And the actor is project leader for the project
+#	And the project has an activity "Test Activity"
 #	When the project leader edits the end week of the project to 2/2019
 #	Then the end week of the project is 2/2019
 	
 #Scenario: The expected amount of hours is changed 
 #	Given the project with id 1 exists
+#   And the actor is project leader for the project
 #	And the project has an activity "Test Activity"
 #	When the project leader edits the expected amount of hours to 20
 #	Then the expected amount of hours is 20  
 
 #Scenario: An employee is added to a activity // Maybe made before 
 #	Given the project with id 1 exists
+#   And the actor is project leader for the project
 #	And the activity "Test Activity" exists 
 #	And the assigned employee is "JD"
 #	When the project leader adds an employee "RA" to the activity
@@ -29,6 +33,7 @@ Feature: Edit activity
 
 #Scenario: The employee for an activity is changed 
 #	Given the project with id 1 exists
+#   And the actor is project leader for the project
 #	And the activity "Test Activity" exists 
 #	And the assigned employee is "JD"
 #	When the project leader changes the assigned employee to "KA"
@@ -36,12 +41,14 @@ Feature: Edit activity
 #
 #Scenario: A employee who are not project leader changes an activity
 #	Given the project with id 1 exists
+#   And the actor is project leader for the project
 #	And the activity "Test Activity" exists 
 #	When an employee changes the expected amount of hours 
 #	Then get the error message "You must be project leader to change a activity"
 
 #Scenario: The start week is set to a week after the end week 
 #	Given the project with id 1 exists 
+#   And the actor is project leader for the project
 #	And the activity "Test Activity" exists 
 #	And the project has end week 5/2019
 #	When the project leader changes the start week to 6/2019
@@ -49,6 +56,7 @@ Feature: Edit activity
 
 #Scenario: The end week is set before the start week 
 #	Given the project with id 1 exists 
+#   And the actor is project leader for the project
 #	And the activity "Test Activity" exists 
 #	And the project has start week 20/2019 
 #	When the project leader changes the end week to  19/2019
@@ -56,6 +64,7 @@ Feature: Edit activity
 
 #Scenario: The amount of expected hours is set to less than 0 
 #	Given the project with id 1 exists 
+#   And the actor is project leader for the project
 #	And the activity "Test Activity" exists 
 #	And the expected amount of hours is 20 
 #	When the project leader changes the expected amount of hours to -1 

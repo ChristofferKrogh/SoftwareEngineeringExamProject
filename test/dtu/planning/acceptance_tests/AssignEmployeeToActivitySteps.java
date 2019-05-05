@@ -136,9 +136,7 @@ public class AssignEmployeeToActivitySteps {
 
 	@When("the actor assign the employee to the activity {string}")
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		System.out.println(actorHolder.getActor()); 
-		System.out.println(employeeHolder.getEmployee()); 
+		PlanningApp planningApp = planningAppHolder.getPlanningApp(); 
 		try {
 			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor(), employeeHolder.getEmployee());
 		} catch (NotProjectLeaderException e) {
