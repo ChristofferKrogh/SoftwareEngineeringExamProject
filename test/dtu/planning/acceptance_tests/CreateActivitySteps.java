@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -91,7 +92,8 @@ public class CreateActivitySteps {
 		GregorianCalendar compareWeek = new GregorianCalendar();
         compareWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
 		
-		assertEquals(compareWeek,activityHolder.getActivity().getStartWeek()); 
+		assertEquals(compareWeek.get(Calendar.WEEK_OF_YEAR),activityHolder.getActivity().getStartWeek().get(Calendar.WEEK_OF_YEAR)); 
+		assertEquals(compareWeek.get(Calendar.YEAR),activityHolder.getActivity().getStartWeek().get(Calendar.YEAR)); 
 	}
 
 	
