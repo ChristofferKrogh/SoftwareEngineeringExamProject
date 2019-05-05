@@ -19,11 +19,12 @@ import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
+import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
 public class CreateActivitySteps {
 		
-	private PlanningApp planningApp = new PlanningApp();
+	private PlanningApp planningApp;
 	private PlanningAppHolder planningAppHolder; 
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
