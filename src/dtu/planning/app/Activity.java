@@ -62,12 +62,18 @@ public class Activity {
 				+ " of " + endWeek.get(GregorianCalendar.YEAR);
 	}
 
-	public void setStartWeek(GregorianCalendar startWeek) {
-		this.startWeek = startWeek;
+	public void setStartWeek(GregorianCalendar newStartWeek) throws OperationNotAllowedException {
+		if (newStartWeek.after(endWeek)) {
+			throw new OperationNotAllowedException("The start week must be before the end week");
+		}
+		this.startWeek = newStartWeek;
 	}
 
-	public void setEndWeek(GregorianCalendar endWeek) {
-		this.endWeek = endWeek;
+	public void setEndWeek(GregorianCalendar newEndWeek) throws OperationNotAllowedException {
+		if (newEndWeek.before(startWeek)) {
+			throw new OperationNotAllowedException("The end week must be after the start week");
+		}		
+		this.endWeek = newEndWeek;
 	}
 
 	public void setName(String name) {

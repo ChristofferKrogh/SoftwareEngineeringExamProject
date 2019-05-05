@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -25,6 +26,7 @@ public class CreateActivitySteps {
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder; 
+	private ActivityHolder activityHolder; 
 	private Project project;
 	private Activity activity; 
 	private int projectNumber;
@@ -32,11 +34,12 @@ public class CreateActivitySteps {
 	private Employee employee; 
 	private Employee projectLeader; 
 		
-	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
+	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
 		this.planningApp = planningApp; 
 		this.errorMessageHolder = errorMessageHolder; 
 		this.projectHolder = projectHolder; 
 		this.employeeHolder = employeeHolder; 
+		this.activityHolder = activityHolder; 
 	}
 		
 		
@@ -81,6 +84,23 @@ public class CreateActivitySteps {
 		} catch (NotProjectLeaderException|OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
+	}
+	
+
+	@When("the project leader edits the start week of the activity to {int}\\/{int}")
+	public void theProjectLeaderEditsTheStartWeekOfTheActivityTo(Integer numWeekYear, Integer year) throws OperationNotAllowedException {
+		GregorianCalendar startWeek = new GregorianCalendar();
+        startWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
+		
+		activityHolder.getActivity().setStartWeek(startWeek); 
+	}
+
+	@Then("the start week of the project is {int}\\/{int}")
+	public void theStartWeekOfTheProjectIs(Integer numWeekYear, Integer year) {
+		GregorianCalendar compareWeek = new GregorianCalendar();
+        compareWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
+		
+		assertEquals(compareWeek,activityHolder.getActivity().getStartWeek()); 
 	}
 
 	

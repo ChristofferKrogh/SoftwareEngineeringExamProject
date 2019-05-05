@@ -2,12 +2,12 @@ Feature: Edit activity
 	Description: The start week, end week, hours and assigned employee of an activity is set or changed.
 	Actors: Project leader 
 	
-#Scenario: The start week of an activity is changed
-#	Given the project with id 1 exists
-#    And the actor is project leader for the project
-#	And the project has an activity "Test Activity"
-#	When the project leader edits the start week of the activity to 1/2019
-#	Then the start week of the project is 1/2019
+Scenario: The start week of an activity is changed
+	Given the project with id 1 exists
+    And the actor is project leader for the project
+    And the activity with name "Some Activity" exists for project
+	When the project leader edits the start week of the activity to 1/2019
+	Then the start week of the project is 1/2019
 	
 #Scenario: The end date of an activity is changed
 #	Given the project with id 1 exists

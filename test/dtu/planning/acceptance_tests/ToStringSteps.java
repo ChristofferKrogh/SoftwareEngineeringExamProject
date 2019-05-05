@@ -44,14 +44,14 @@ public class ToStringSteps {
 	}
 	
 	@Given("the activity starts in week {int} of {int}")
-	public void theActivityStartsInWeekOf(Integer startWeek, Integer startYear) {
+	public void theActivityStartsInWeekOf(Integer startWeek, Integer startYear) throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
 	    activityHolder.getActivity().setStartWeek(start);
 	}
 	
 	@Given("the activity ends in week {int} of {int}")
-	public void theActivityEndsInWeekOf(Integer endWeek, Integer endYear) {
+	public void theActivityEndsInWeekOf(Integer endWeek, Integer endYear) throws OperationNotAllowedException {
 		GregorianCalendar end = new GregorianCalendar();
 	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SUNDAY);
 	    activityHolder.getActivity().setEndWeek(end);
