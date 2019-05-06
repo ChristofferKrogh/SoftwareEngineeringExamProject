@@ -23,14 +23,13 @@ Scenario: The expected amount of hours is changed
 	When the project leader edits the expected amount of hours to 20
 	Then the expected amount of hours is 20  
 
-Scenario: The employee for an activity is changed 
+Scenario: The employee for an activity is removed
 	Given the project with id 1 exists
     And the actor is project leader for the project
     And the activity with name "Some Activity" exists for project
 	And the assigned employee is "JD"
-	And employee with initials "KA" exists
-	When the project leader changes the assigned from "JD" employee to "KA"
-	Then the employee for the activity is "KA" 
+	When the actor deletes "JD" from the activity
+	Then the employee is not part of the activity
 
 Scenario: A employee who are not project leader changes an activity
 	Given the project with id 1 exists
@@ -61,7 +60,7 @@ Scenario: Fail "The start week is set to a week after the end week" if not proje
 	When the project leader edits the start week of the activity to 6/2019
 	Then I get the error message "You must be project leader to change an activity" 
 
-Scenario: The end week is set before the start week 
+Scenario: Fail The end week is set before the start week 
 	Given the project with id 1 exists
     And the actor is project leader for the project
     And the activity with name "Some Activity" exists for project

@@ -63,7 +63,6 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 
-	// TODO: der mangler test for nedenstående metode
 	public List<Project> searchForProjectsByName(String name) throws OperationNotAllowedException {
 		List<Project> searchResults = new ArrayList<>();
 		for (Project p : projects) {
@@ -233,7 +232,6 @@ public class PlanningApp {
 		searchForActivity(projectNumber, name).setStartWeek(startDate);
 	}
 
-	// TODO no test for the method below
 	public void editEndDateOfActivity(GregorianCalendar endDate, int projectNumber, String name, String projectLeaderInitials) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
@@ -247,7 +245,6 @@ public class PlanningApp {
 	}
 
 	// Method 3 in report
-	// TODO no test for the method below
 	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String name, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
@@ -259,7 +256,7 @@ public class PlanningApp {
 		searchForActivity(projectNumber, name).setExpectedAmountOfHours(expectedAmountOfHours);
 	}
 
-	public void editEmployeeForActivity(int projectNumber, String activityName, String oldEmployeeInitials, String newEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+	public void removeEmployeeFromActivity(int projectNumber, String activityName, String oldEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 								
@@ -273,12 +270,9 @@ public class PlanningApp {
 			throw new OperationNotAllowedException("The employee is not assigned to the activity"); 
 		}
 				
-		
 		// Remove old employee from activity and add new employee to the activity
 		Employee oldEmployee = searchForEmployee(oldEmployeeInitials); 
 		project.getActivityByName(activityName).removeEmployee(oldEmployee);
-		Employee newEmployee = searchForEmployee(newEmployeeInitials); 
-		project.getActivityByName(activityName).assignEmployee(newEmployee);
 			
 	}
 	
