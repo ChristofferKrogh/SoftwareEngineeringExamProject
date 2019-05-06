@@ -37,7 +37,7 @@ Scenario: A employee who are not project leader changes an activity
 	And the activity with name "Some Activity" exists for project
     And the actor is not project leader for the project
     When an actor changes the expected amount of hours to 20
-	Then I get the error message "You must be project leader to change a activity"
+	Then I get the error message "You must be project leader to change an activity"
 
 Scenario: The start week is set to a week after the end week 
 	Given the project with id 1 exists 
