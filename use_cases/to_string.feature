@@ -81,10 +81,10 @@ Scenario: Match activity on employee first name
     Then I get a match
     
 Scenario: Represent an project as a string
-    Given the project with id 190001 exists
+    Given the project with some id exists
     And the project has the name "Test project"
     When I get the string representation of the project
-    Then I get the string "Test project - 190001"
+    Then I get the project string "Test project - " with that ID in the end
     
 Scenario: Represent a project start date as a string
     Given the project with id 1 exists
@@ -120,8 +120,8 @@ Scenario: Match project on name
     Then I get a match
     
 Scenario: Match project on project number
-    Given the project with id 190001 exists
-    When I match the project with "190001"
+    Given the project with some id exists
+    When I match the project that id
     Then I get a match
     
 Scenario: Match project on employee intitials
@@ -140,7 +140,7 @@ Scenario: Match project on employee first name
     Then I get a match
     
 Scenario: Fail match project
-    Given the project with id 190001 exists
+    Given the project with some id exists
     When I match the project with "testNoProject"
     Then I do not get a match
 

@@ -153,11 +153,23 @@ public class ToStringSteps {
 	public void iMatchTheProjectWith(String matchString) {
 	    isMatched = projectHolder.getProject().match(matchString);
 	}
+	
+	@When("I match the project that id")
+	public void iMatchTheProjectThatId() {
+		// This looks odd, but its still a sanity check. It ensures that the project can be found with the match function.
+	    isMatched = projectHolder.getProject().match(Integer.toString(projectHolder.getProject().getProjectNumber()));
+	}
 
 	
 	@Then("I get the string {string}")
 	public void iGetTheString(String wantedString) {
 		assertEquals(savedString,wantedString);
+	}
+	
+	@Then("I get the project string {string} with that ID in the end")
+	public void iGetTheProjectStringWithThatIDInTheEnd(String wantedString) {
+		// This string test is needed since the project id is unknown. It depends on when its created what the id would be. Any test must be independent of when someone run it.
+		assertEquals(savedString,wantedString+projectHolder.getProject().getProjectNumber());
 	}
 	
 	@Then("I get a match")

@@ -23,12 +23,6 @@ public class PlanningApp {
 	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 
-	public void createProject(Project project) {
-		projects.add(project);
-		projectCount++;
-	}
-
-	// TODO: der mangler test for nedenstående metode
 	public Project createProject(String name, boolean isProjectInternal) {
 		Project newProject = new Project(name, isProjectInternal, projectCount);
 		projects.add(newProject);

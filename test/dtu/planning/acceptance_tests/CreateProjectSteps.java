@@ -43,7 +43,7 @@ public class CreateProjectSteps {
 		// that only employee will have access to this system
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		Project project = projectHolder.getProject();
-		planningApp.createProject(project);
+		projectHolder.setProject(planningApp.createProject(project.getName(),project.isProjectInternal()));
 	}
 
 	@Then("the internal project with name {string} is created")

@@ -28,9 +28,9 @@ Scenario: Search for regular activity that does not exist
     Then I get the error message "The activity does not exist"
 
 Scenario: Search for project by id successfully
-    Given the project with id 190001 exists
-    When I search a project with id 190001
-    Then I get a project with id 190001
+    Given the project with some id exists
+    When I search a project with that id
+    Then I get a project that project
     
 Scenario: Search for project by name successfully
     Given the project with id 1 exists
