@@ -32,6 +32,7 @@ import dtu.planning.app.OperationNotAllowedException;
 public class CreateProjectScreen {
 
 	private ProjectsScreen parentWindow;
+	private CreateActivitiesScreen createActivitiesScreen;
 	private PlanningApp planningApp;
 	private JPanel panelCreateProject;
 	private JPanel panelCreateProjectSuccess;
@@ -110,10 +111,11 @@ public class CreateProjectScreen {
 		panelCreateProjectSuccess.add(btnCreateActivity);
 		btnCreateActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// CreateActivitiesScreen.setProject(project);
-				// frpanelCreateProjectSuccess.setVisible(false);
-				// clear();
-				// panelCreateActivity.setVisible(true);
+				createActivitiesScreen.setProject(project);
+				setVisible(false);
+				panelCreateProjectSuccess.setVisible(false);
+				clear();
+				createActivitiesScreen.setVisible(true);
 			}
 				
 		});
@@ -259,7 +261,8 @@ public class CreateProjectScreen {
 
         listScrollPane.setBounds(100, 280, 250, 100);
 		panelCreateProject.add(listScrollPane);
-
+		
+		createActivitiesScreen = new CreateActivitiesScreen(planningApp, parentWindow);
 	}
 
 	public void setVisible(boolean aFlag) {

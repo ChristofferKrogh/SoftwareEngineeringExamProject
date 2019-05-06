@@ -49,7 +49,7 @@ public class CreateActivitySteps {
 	@When("the project leader {string} creates an activity {string}")
 	public void theProjectLeaderCreatesAnActivity(String initials, String name) throws NotProjectLeaderException, OperationNotAllowedException {
 		assertTrue(projectHolder.getProject().getProjectLeader().getInitials().equals(initials));
-		Activity activity = new Activity(name, null, null, 0.0);
+		Activity activity = new Activity(name, null, null, (float) 0.0);
 		projectHolder.getProject().addActivity(activity,initials);
 	}
 
@@ -109,8 +109,7 @@ public class CreateActivitySteps {
 	
 	@When("the project leader edits the expected amount of hours to {int}")
 	public void theProjectLeaderEditsTheExpectedAmountOfHoursTo(Integer hours) {
-	    double expectedAmountOfHours = new Double(hours); 
-		activityHolder.getActivity().setExpectedAmountOfHours(expectedAmountOfHours);
+		activityHolder.getActivity().setExpectedAmountOfHours((float) hours);
 	}
 
 	@Then("the expected amount of hours is {int}")

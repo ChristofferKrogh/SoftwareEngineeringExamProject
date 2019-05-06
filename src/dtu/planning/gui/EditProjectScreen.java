@@ -83,8 +83,9 @@ public class EditProjectScreen {
 //				setVisible(false);
 //				clear();
 //				activityScreen.setVisible(true);
+				//–––––––––––––––––––––––––––––-
+				project.getActivities().forEach((a)-> {System.out.println(a + " (" + a.getExpectedAmountOfHours() + " hours)" + " - " + a.getAssignedEmployees());});
 			}
-				
 		});
 		
 		// -------Success Message-----------
@@ -95,7 +96,6 @@ public class EditProjectScreen {
 		panelSuccessMessage.setBorder(BorderFactory.createLineBorder(Color.green, 5));
 		panelSuccessMessage.setBackground(Color.white);
 		panelSuccessMessage.setVisible(false);
-		
 		JLabel lblSuccessMessage = new JLabel("The changes were saved");
 		lblSuccessMessage.setBounds(75, 50, 200, 30);
 		panelSuccessMessage.add(lblSuccessMessage);

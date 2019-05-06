@@ -87,7 +87,7 @@ public class PlanningApp {
 
 	public Employee searchForEmployee(String initials) throws OperationNotAllowedException {
 		for (Employee e : employees) {
-			if (e.getInitials() == initials) {
+			if (e.getInitials().equals(initials)) {
 				return e;
 			}
 		}
@@ -236,8 +236,8 @@ public class PlanningApp {
 	}
 
 	// TODO no test for the method below
-	public void editExpectedAmountOfHoursForActivity(int hours, int projectNumber, String name)throws ActivityNotFoundException, OperationNotAllowedException {
-		searchForActivity(projectNumber, name).setExpectedAmountOfHours(hours);
+	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String name)throws ActivityNotFoundException, OperationNotAllowedException {
+		searchForActivity(projectNumber, name).setExpectedAmountOfHours(expectedAmountOfHours);
 	}
 
 	public Activity searchForActivity(int projectNumber, String name) throws ActivityNotFoundException, OperationNotAllowedException {

@@ -9,11 +9,11 @@ public class Activity {
 	private String name;
 	private GregorianCalendar startWeek;
 	private GregorianCalendar endWeek;
-	private double expectedAmountOfHours;
+	private float expectedAmountOfHours;
 	private List<Employee> employees = new ArrayList<>();
 	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
-	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, double expectedAmountOfHours) {
+	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, float expectedAmountOfHours) {
 		this.name = name;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
@@ -113,7 +113,7 @@ public class Activity {
 		return name;
 	}
 
-	public void setExpectedAmountOfHours(double hours) {
+	public void setExpectedAmountOfHours(float hours) {
 		this.expectedAmountOfHours = hours; 	
 	}
 
