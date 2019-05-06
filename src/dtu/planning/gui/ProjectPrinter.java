@@ -5,7 +5,7 @@ import dtu.planning.app.Project;
 public class ProjectPrinter {
 	
 	private Project project;
-
+	
 	public ProjectPrinter(Project project) {
 		this.project = project;
 	}

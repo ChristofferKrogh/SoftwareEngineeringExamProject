@@ -9,12 +9,12 @@ Scenario: The start week of an activity is changed
 	When the project leader edits the start week of the activity to 1/2019
 	Then the start week of the project is 1/2019
 	
-Scenario: The end date of an activity is changed
-	Given the project with id 1 exists
-    And the actor is project leader for the project
-    And the activity with name "Some Activity" exists for project
-	When the project leader edits the end week of the project to 2/2019
-	Then the end week of the project is 2/2019
+#Scenario: The end date of an activity is changed
+#	Given the project with id 1 exists
+#    And the actor is project leader for the project
+#    And the activity with name "Some Activity" exists for project
+#	When the project leader edits the end week of the project to 2/2019
+#	Then the end week of the project is 2/2019
 	
 Scenario: The expected amount of hours is changed 
 	Given the project with id 1 exists

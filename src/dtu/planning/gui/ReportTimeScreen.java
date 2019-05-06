@@ -479,8 +479,15 @@ public class ReportTimeScreen {
 	private void setReportingDetails() {
 		StringBuffer b = new StringBuffer();
 		b.append("<html>You are currently reporting <b>" + amountOfTime + "</b> hours on <b>\"");
-		b.append(activity.getName());
-		b.append("\"</b> for " + employee.getName() + "</html>");
+		if (activity != null) {
+			b.append(activity.getName());
+		} else {
+			b.append("No Name");
+		} if (employee != null) {
+			b.append("\"</b> for " + employee.getName() + "</html>");
+		} else {
+			b.append("No Name");
+		}
 		lblReportingDetails.setText(b.toString());
 	}
 

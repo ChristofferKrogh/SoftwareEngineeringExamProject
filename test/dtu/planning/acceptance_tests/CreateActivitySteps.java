@@ -48,7 +48,7 @@ public class CreateActivitySteps {
 	@When("the project leader {string} creates an activity {string}")
 	public void theProjectLeaderCreatesAnActivity(String initials, String name) throws NotProjectLeaderException, OperationNotAllowedException {
 		assertTrue(projectHolder.getProject().getProjectLeader().getInitials().equals(initials));
-		Activity activity = new Activity(name, null, null, 0);
+		Activity activity = new Activity(name, null, null, (float) 0.0);
 		projectHolder.getProject().addActivity(activity,initials);
 	}
 

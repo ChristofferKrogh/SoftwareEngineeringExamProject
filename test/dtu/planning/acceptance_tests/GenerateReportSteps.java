@@ -36,8 +36,7 @@ public class GenerateReportSteps {
 	public void theActivityIsEstimatedToLastHours(Integer hours) throws ActivityNotFoundException, OperationNotAllowedException {
 		Project project = planningAppHolder.getPlanningApp().searchForProject(projectHolder.getProject().getProjectNumber());
 		Activity activity = project.getActivityByName(activityHolder.getActivity().getName());
-		float hours1 = new Float(hours);  
-		activity.setExpectedAmountOfHours(hours1);
+		activity.setExpectedAmountOfHours((float) hours);
 	}
 	
 	@When("The actor generates a report for the project")

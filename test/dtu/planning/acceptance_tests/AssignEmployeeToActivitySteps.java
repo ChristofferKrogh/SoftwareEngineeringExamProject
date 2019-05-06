@@ -66,7 +66,7 @@ public class AssignEmployeeToActivitySteps {
 	public void theActivityWithNameExists(String activityName) throws OperationNotAllowedException, NotProjectLeaderException {
 		Project project = projectHolder.getProject(); 
 		// The values 0, 1, 2, 3 are chosen as an example.
-		Activity activity = new Activity(activityName, null, null, 2); 
+		Activity activity = new Activity(activityName, null, null, (float) 2.0); 
 		project.addActivity(activity,projectHolder.getProject().getProjectLeader().getInitials());
 		activityHolder.setActivity(activity);
 	}
