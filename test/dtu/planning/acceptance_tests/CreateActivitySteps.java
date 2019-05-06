@@ -104,7 +104,8 @@ public class CreateActivitySteps {
 		GregorianCalendar compareWeek = new GregorianCalendar();
         compareWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
 		
-		assertEquals(compareWeek,activityHolder.getActivity().getEndWeek()); 
+		assertEquals(compareWeek.get(Calendar.WEEK_OF_YEAR),activityHolder.getActivity().getEndWeek().get(Calendar.WEEK_OF_YEAR)); 
+		assertEquals(compareWeek.get(Calendar.YEAR),activityHolder.getActivity().getEndWeek().get(Calendar.YEAR)); 
 	}
 	
 	@When("the project leader edits the expected amount of hours to {int}")

@@ -3,6 +3,7 @@ package dtu.planning.acceptance_tests;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -87,6 +88,16 @@ public class AssignEmployeeToActivitySteps {
 	public void theActorIsNotProjectLeaderForTheOverlyingProject() {
 		Employee actor = new Employee("Jane Doe", "JD");
 		actorHolder.setActor(actor);
+		
+		// Add the actor to the company
+		try {
+			planningAppHolder.getPlanningApp().addEmployee(actor);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		
+		// Check that the actor is not the project leader.
+		assertFalse(actor.getInitials().equals(projectHolder.getProject().getProjectLeader().getInitials()));
 	}
 
 	@Given("the employee doesn't exist")
