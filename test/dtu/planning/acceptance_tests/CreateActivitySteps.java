@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -20,17 +19,15 @@ import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
-import dtu.planning.app.Project;
 
 public class CreateActivitySteps {
 		
 	private PlanningAppHolder planningAppHolder; 
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
-	private EmployeeHolder employeeHolder; 
-	private ActivityHolder activityHolder; 
-	private ActorHolder actorHolder; 
-	private Project project;
+	private EmployeeHolder employeeHolder;
+	private ActivityHolder activityHolder;
+	private ActorHolder actorHolder;
 		
 	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningAppHolder planningAppHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, ActorHolder actorHolder) {
 		this.planningAppHolder = planningAppHolder; 
@@ -107,7 +104,8 @@ public class CreateActivitySteps {
 		GregorianCalendar compareWeek = new GregorianCalendar();
         compareWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
 		
-		assertEquals(compareWeek,activityHolder.getActivity().getEndWeek()); 
+		assertEquals(compareWeek.get(Calendar.WEEK_OF_YEAR),activityHolder.getActivity().getEndWeek().get(Calendar.WEEK_OF_YEAR)); 
+		assertEquals(compareWeek.get(Calendar.YEAR),activityHolder.getActivity().getEndWeek().get(Calendar.YEAR)); 
 	}
 	
 	@When("the project leader edits the expected amount of hours to {int}")
@@ -136,7 +134,7 @@ public class CreateActivitySteps {
 		
 		// Assign employee to activity 
 		try {
-			planningAppHolder.getPlanningApp().assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor(), employee);
+			planningAppHolder.getPlanningApp().assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials(), employee.getInitials());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {

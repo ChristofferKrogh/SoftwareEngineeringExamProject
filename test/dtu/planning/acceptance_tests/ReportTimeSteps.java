@@ -18,15 +18,17 @@ public class ReportTimeSteps {
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
+	private TimeRegistrationHolder timeRegistrationHolder;
 	
 	// Private variables, will give problems when others need to use them. Create holder then?
 	private TimeRegistration timeRegistration;
 
-	public ReportTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder) {
+	public ReportTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, TimeRegistrationHolder timeRegistrationHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
+		this.timeRegistrationHolder = timeRegistrationHolder;
 	}
 	
 	@When("the employee report {int} hour on {string} on {int}\\/{int}\\/{int}")
@@ -34,11 +36,13 @@ public class ReportTimeSteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		
 		// Parse date
-		GregorianCalendar date = new GregorianCalendar(year, month, day);
+		// The month starts with 0 in GregorianCalendar. Therefore we must subtract one month to get the correct date.
+		GregorianCalendar date = new GregorianCalendar(year, month-1, day);
 		
 		try {
 			// Create new time registration object
 			timeRegistration = new TimeRegistration(employeeHolder.getEmployee(), date, amountOfTime);
+			timeRegistrationHolder.setTimeRegistration(timeRegistration);
 			
 			// Register the time
 			planningApp.registerTime(projectHolder.getProject().getProjectNumber(),activityName,timeRegistration);

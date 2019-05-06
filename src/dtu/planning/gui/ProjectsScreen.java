@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 
@@ -193,8 +194,14 @@ public class ProjectsScreen {
 	protected void searchProjects() {
 		projectSelected(false);
 		searchResults.clear();
-		planningApp.searchForProjectsByName(searchField.getText())
-		.forEach((m) -> {searchResults.addElement(m);});
+		try {
+			planningApp.searchForProjectsByName(searchField.getText())
+			.forEach((m) -> {searchResults.addElement(m);});
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			// TODO: Add action if no project was found.
+			// e.printStackTrace();
+		}
 	}
 
 	public void setVisible(boolean aFlag) {

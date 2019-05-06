@@ -5,6 +5,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -87,6 +90,16 @@ public class AssignEmployeeToActivitySteps {
 	public void theActorIsNotProjectLeaderForTheOverlyingProject() {
 		Employee actor = new Employee("Jane Doe", "JD");
 		actorHolder.setActor(actor);
+		
+		// Add the actor to the company
+		try {
+			planningAppHolder.getPlanningApp().addEmployee(actor);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		
+		// Check that the actor is not the project leader.
+		assertFalse(actor.getInitials().equals(projectHolder.getProject().getProjectLeader().getInitials()));
 	}
 
 	@Given("the employee doesn't exist")
@@ -123,7 +136,7 @@ public class AssignEmployeeToActivitySteps {
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp(); 
 		try {
-			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor(), employeeHolder.getEmployee());
+			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor().getInitials(), employeeHolder.getEmployee().getInitials());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
@@ -136,6 +149,14 @@ public class AssignEmployeeToActivitySteps {
 	@Then("the employee {string} is assigned to the activity {string}")
 	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException, ActivityNotFoundException {
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
+	}
+	
+	@Then("the employee is in the list of employees for the activity {string}")
+	public void theEmployeeIsInTheListOfEmployeesForTheActivity(String activityName) throws ActivityNotFoundException {
+		List<Employee> employeeList = projectHolder.getProject().getEmployeesAssignedToActivity(activityName);
+		Employee employee = employeeHolder.getEmployee();
+		
+		assertTrue(employeeList.contains(employee));
 	}
 
 	@Then("I get the error message {string}")

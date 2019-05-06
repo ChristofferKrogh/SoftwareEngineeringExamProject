@@ -1,12 +1,11 @@
 package dtu.planning.app;
 
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-//import java.util.Calendar;
 import java.util.GregorianCalendar;
-//import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-//import java.util.stream.Collectors;
 
 public class PlanningApp {
 	// Storage for the projects
@@ -71,13 +70,18 @@ public class PlanningApp {
 	}
 
 	// TODO: der mangler test for nedenstående metode
-	public List<Project> searchForProjectsByName(String name) {
+	public List<Project> searchForProjectsByName(String name) throws OperationNotAllowedException {
 		List<Project> searchResults = new ArrayList<>();
 		for (Project p : projects) {
 			if (p.match(name)) {
 				searchResults.add(p);
 			}
 		}
+		
+		if (searchResults.isEmpty()) {
+			throw new OperationNotAllowedException("The project does not exist");
+		}
+		
 		return searchResults;
 	}
 
@@ -112,15 +116,20 @@ public class PlanningApp {
 
 
 	// TODO: there are no tests for this method
-		public List<Employee> searchForEmployeesByName(String name) {
-			List<Employee> searchResults = new ArrayList<>();
-			for (Employee e : employees) {
-				if (e.match(name)) {
-					searchResults.add(e);
-				}
+	public List<Employee> searchForEmployeesByName(String name) throws OperationNotAllowedException {
+		List<Employee> searchResults = new ArrayList<>();
+		for (Employee e : employees) {
+			if (e.match(name)) {
+				searchResults.add(e);
 			}
-			return searchResults;
 		}
+		
+		if (searchResults.isEmpty()) {
+			throw new OperationNotAllowedException("The employee does not exist");
+		}
+		
+		return searchResults;
+	}
 
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
@@ -133,7 +142,7 @@ public class PlanningApp {
 		return projectNumbers;
 	}
 
-	public List<Project> getProjects() throws OperationNotAllowedException{
+	public List<Project> getProjects(){
 		return projects;
 	}
 	
@@ -170,8 +179,11 @@ public class PlanningApp {
 	public List<Employee> getEmployees() {
 		return employees;
 	}
-
-	public void assignEmployee(int projectNumber, String activityName, Employee projectLeader, Employee employee) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+	
+	public void assignEmployee(int projectNumber, String activityName, String projectLeaderInitials, String employeeInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+		Employee employee = searchForEmployee(employeeInitials);
+		Employee projectLeader = searchForEmployee(projectLeaderInitials);
+		
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 
@@ -180,7 +192,8 @@ public class PlanningApp {
 
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);
-	}
+		
+	};
 
 	private void checkEmployeeExist(Employee employee) throws OperationNotAllowedException {
 		Optional<Employee> r = employees
@@ -319,4 +332,19 @@ public class PlanningApp {
 		}
 		return dailyUsedTime;
 	};
+	
+	public SimpleEntry<List<Activity>, List<Integer>> getAllRelevantActivitiesForEmployee(Employee employee) {
+		List<Activity> relevantActivities = new ArrayList<>();
+		List<Integer> projectNumbers = new ArrayList<>();
+		for (Project p : projects) {
+			for (Activity a : p.getActivities()) {
+				if (a.getAssignedEmployees().contains(employee)) {
+					relevantActivities.add(a);
+					projectNumbers.add(p.getProjectNumber());
+				}
+			}
+		}
+		AbstractMap.SimpleEntry<List<Activity>, List<Integer>> activitiesWithProjectNumbers = new AbstractMap.SimpleEntry<>(relevantActivities, projectNumbers);
+		return activitiesWithProjectNumbers;
+	}
 }

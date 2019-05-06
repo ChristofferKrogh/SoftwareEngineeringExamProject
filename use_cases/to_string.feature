@@ -35,7 +35,7 @@ Scenario: Represent an activity as a string
     
 #Scenario: Represent an activity start week as a string
 #    Given the project with id 1 exists
-	And project leader has initials "BS"
+#	And project leader has initials "BS"
 #    And the activity with name "Some Activity" exists for project
 #    And the activity starts in week 1 of 2019
 #    When I get the string representation the start week of the activity
@@ -108,6 +108,11 @@ Scenario: Match external project
     When I match the project with "external"
     Then I get a match
     
+Scenario: Match external project
+    Given there is an internal project with name "Test project"
+    When I match the project with "external"
+    Then I do not get a match
+    
 Scenario: Match project on name
     Given the project with id 190001 exists
     And the project has the name "Test project"
@@ -138,3 +143,12 @@ Scenario: Fail match project
     Given the project with id 190001 exists
     When I match the project with "testNoProject"
     Then I do not get a match
+
+Scenario: Represent a time registration as a string
+    Given employee with initials "JS" exists
+    And the employee has the name "John Smith"
+    And the project with id 1 exists
+    And the activity "Don't look at me" doesn't exist
+    When the employee report 4 hour on "Don't look at me" on 1/1/2019
+    When I get the string representation of the time registration
+    Then I get the string "4.0 hours on 1/1/2019 for John Smith"
