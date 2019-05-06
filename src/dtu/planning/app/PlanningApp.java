@@ -98,13 +98,18 @@ public class PlanningApp {
 	}
 
 	// TODO: there are no tests for the method below
-	public List<Activity> searchForRegActivitiesByName(String searchText) {
+	public List<Activity> searchForRegActivitiesByName(String searchText) throws OperationNotAllowedException {
 		List<Activity> searchResults = new ArrayList<>();
 		for (Activity a : regularActivities) {
 			if (a.match(searchText)) {
 				searchResults.add(a);
 			}
 		}
+		
+		if (searchResults.isEmpty()) {
+			throw new OperationNotAllowedException("The regular activity does not exist");
+		}
+		
 		return searchResults;
 	}
 

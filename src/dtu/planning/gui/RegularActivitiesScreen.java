@@ -223,8 +223,13 @@ public class RegularActivitiesScreen {
 	
 	protected void searchRegActivities() {
 		searchResults.clear();
-		planningApp.searchForRegActivitiesByName(searchField.getText())
-		.forEach((m) -> {searchResults.addElement(m);});
+		try {
+			planningApp.searchForRegActivitiesByName(searchField.getText())
+			.forEach((m) -> {searchResults.addElement(m);});
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void setVisible(boolean aFlag) {

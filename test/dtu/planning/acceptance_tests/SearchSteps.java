@@ -7,6 +7,7 @@ import java.util.List;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
@@ -53,6 +54,17 @@ public class SearchSteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
+	
+	@When("I search for a regular activies with name {string}")
+	public void iSearchForARegularActiviesWithName(String activityName) {
+		try {
+			List<Activity> searchResults = planningAppHolder.getPlanningApp().searchForRegActivitiesByName(activityName);
+			activityHolder.setActivity(searchResults.get(0));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
 	
 	@When("I search a project with id {int}")
 	public void iSearchAProjectWithId(Integer searchTerm) {
