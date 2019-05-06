@@ -1,5 +1,7 @@
 package dtu.planning.app;
 
+import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 //import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -115,15 +117,15 @@ public class PlanningApp {
 
 
 	// TODO: there are no tests for this method
-		public List<Employee> searchForEmployeesByName(String name) {
-			List<Employee> searchResults = new ArrayList<>();
-			for (Employee e : employees) {
-				if (e.match(name)) {
-					searchResults.add(e);
-				}
+	public List<Employee> searchForEmployeesByName(String name) {
+		List<Employee> searchResults = new ArrayList<>();
+		for (Employee e : employees) {
+			if (e.match(name)) {
+				searchResults.add(e);
 			}
-			return searchResults;
 		}
+		return searchResults;
+	}
 
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
@@ -136,7 +138,7 @@ public class PlanningApp {
 		return projectNumbers;
 	}
 
-	public List<Project> getProjects() throws OperationNotAllowedException{
+	public List<Project> getProjects(){
 		return projects;
 	}
 	
@@ -293,15 +295,18 @@ public class PlanningApp {
 		return dut;
 	}
 
-	public DefaultListModel<Activity> getAllRelevantActivitiesForEmployee(Employee employee) {
-		DefaultListModel<Activity> relevantActivities = new DefaultListModel<>();
+	public SimpleEntry<List<Activity>, List<Integer>> getAllRelevantActivitiesForEmployee(Employee employee) {
+		List<Activity> relevantActivities = new ArrayList<>();
+		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
 			for (Activity a : p.getAktivities()) {
 				if (a.getAssignedEmployees().contains(employee)) {
-					relevantActivities.addElement(a);
+					relevantActivities.add(a);
+					projectNumbers.add(p.getProjectNumber());
 				}
 			}
 		}
-		return relevantActivities;
+		AbstractMap.SimpleEntry<List<Activity>, List<Integer>> activitiesWithProjectNumbers = new AbstractMap.SimpleEntry<>(relevantActivities, projectNumbers);
+		return activitiesWithProjectNumbers;
 	}
 }

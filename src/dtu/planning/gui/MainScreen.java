@@ -13,9 +13,11 @@ import javax.swing.JPanel;
 
 import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
+import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 //import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.Project;
+import dtu.planning.app.TimeRegistration;
 
 public class MainScreen {
 	
@@ -77,6 +79,8 @@ public class MainScreen {
 		GregorianCalendar endWeek = new GregorianCalendar();
 		endWeek.setWeekDate(2020, 4, GregorianCalendar.SATURDAY);
 		planningApp.addRegularActivity(new Activity("Sickness", startWeek, endWeek), "CK");
+		planningApp.addRegularActivity(new Activity("Vacation", startWeek, endWeek), "CK");
+		planningApp.addRegularActivity(new Activity("Child Sickness", startWeek, endWeek), "CK");
 		planningApp.addActivity(p1.getProjectNumber(), "Buy lawnmower", startWeek, endWeek, 4);
 		planningApp.assignEmployee(p1.getProjectNumber(), "Buy lawnmower", p1.getProjectLeader(), "JaD");
 	}
@@ -144,8 +148,15 @@ public class MainScreen {
 		JButton btnGetTime = new JButton("Get Daily Reported Time");
 		btnGetTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-//				regularActivitiesScreen.setVisible(true);
+				for (Project p : planningApp.getProjects()) {
+					for (Activity a : p.getAktivities()) {
+						for (TimeRegistration t : a.getTimeRegistrations()) {
+							System.out.println(t);
+						}
+					}
+				}
+				
+				
 			}
 
 		});

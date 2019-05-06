@@ -4,11 +4,12 @@ import java.util.GregorianCalendar;
 
 public class TimeRegistration {
 	private GregorianCalendar date;
-	private int amountOfTime;
+	// TODO: change from int to float
+	private float amountOfTime;
 	private Employee employee;
 	
 	// We have chosen to make the key the day for an employee for an activity 
-	public TimeRegistration (Employee employee, GregorianCalendar date, int amountOfTime) throws OperationNotAllowedException {
+	public TimeRegistration (Employee employee, GregorianCalendar date, float amountOfTime) throws OperationNotAllowedException {
 		if (amountOfTime < 0) {
 			throw new OperationNotAllowedException("You cannot report negative hours");
 		}
@@ -25,7 +26,7 @@ public class TimeRegistration {
 		return date;
 	}
 	
-	public int getAmountOfTime() {
+	public float getAmountOfTime() {
 		return amountOfTime;
 	}
 	
@@ -33,4 +34,11 @@ public class TimeRegistration {
 		this.amountOfTime = amountOfTime;
 	}
  	
+	public String toString() {
+		int year = date.get(GregorianCalendar.YEAR);
+		int month = date.get(GregorianCalendar.MONTH) + 1;
+		int day = date.get(GregorianCalendar.DATE);
+		return amountOfTime + " hours on " + day + "/" + month + "/" + year + " for " + employee.getName();
+	}
+	
 }

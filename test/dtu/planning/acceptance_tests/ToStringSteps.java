@@ -119,7 +119,7 @@ public class ToStringSteps {
 	
 	@When("I get the string representation the start week of the project")
 	public void iGetTheStringRepresentationTheStartWeekOfTheProject() {
-	    savedString = projectHolder.getProject().getEndDateString();
+	    savedString = projectHolder.getProject().getStartDateString();
 	}
 	
 	@When("I get the string representation the end week of the project")

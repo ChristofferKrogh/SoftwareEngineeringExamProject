@@ -32,12 +32,12 @@ Scenario: Represent an activity as a string
     When I get the string representation of the activity
     Then I get the string "Some Activity"
     
-#Scenario: Represent an activity start week as a string
-#    Given the project with id 1 exists
-#    And the activity with name "Some Activity" exists for project
-#    And the activity starts in week 1 of 2019
-#    When I get the string representation the start week of the activity
-#    Then I get the string "week 1 of 2019"
+Scenario: Represent an activity start week as a string
+    Given the project with id 1 exists
+    And the activity with name "Some Activity" exists for project
+    And the activity starts in week 1 of 2019
+    When I get the string representation the start week of the activity
+    Then I get the string "week 1 of 2019"
     
 Scenario: Represent an activity end week as a string
     Given the project with id 1 exists
@@ -79,11 +79,11 @@ Scenario: Represent an project as a string
     When I get the string representation of the project
     Then I get the string "Test project - 190001"
     
-#Scenario: Represent a project start week as a string
-#    Given the project with id 1 exists
-#    And the project start date is 2/1/2019
-#    When I get the string representation the start week of the project
-#    Then I get the string "2/1/2019"
+Scenario: Represent a project start week as a string
+    Given the project with id 1 exists
+    And the project start date is 2/1/2019
+    When I get the string representation the start week of the project
+    Then I get the string "2/1/2019"
     
 Scenario: Represent a project end week as a string
     Given the project with id 1 exists
