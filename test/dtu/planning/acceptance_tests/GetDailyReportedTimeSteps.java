@@ -48,8 +48,7 @@ public class GetDailyReportedTimeSteps {
 		// assume that a time registration exist for project with id 1 and activity with name "Some activity"
 		// the project and activity chosen is only relevant for the purpose of a test 
 		TimeRegistration timeReg = new TimeRegistration(employeeHolder.getEmployee(), date, 2); //2 hours registered 
-		Project project = new Project(null, false, 1);
-		planningApp.createProject(project);
+		Project project = planningApp.createProject(null,false);
 		projectHolder.setProject(project);
 		planningApp.setProjectLeader(projectHolder.getProject().getProjectNumber(),employeeHolder.getEmployee().getInitials());
 		// Register the time 

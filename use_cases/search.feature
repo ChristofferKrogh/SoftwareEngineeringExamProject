@@ -21,16 +21,28 @@ Scenario: Search for regular activity successfully
 	And the regular activity is in the system
     When I search for a regular activity with name "Sickness"
     Then I get an activity with name "Sickness - John Doe"
+ 
+Scenario: Search for regular activies successfully
+	Given I have the regular activity with name "Sickness" , start: week 2 of year 2019 and end: week 4 of year 2019
+	And employee with initials "JD" exists
+    And the employee has the name "John Doe"
+	And the regular activity is in the system
+    When I search for a regular activies with name "Sickness"
+    Then I get an activity with name "Sickness - John Doe"   
 
 Scenario: Search for regular activity that does not exist
     Given the project with id 1 exists
-    When I search for an activity with name "Sickness"
-    Then I get the error message "The activity does not exist"
+    When I search for a regular activity with name "Sickness"
+    Then I get the error message "The regular activity does not exist"
 
+Scenario: Search for regular activties that does not exist
+    When I search for a regular activies with name "Sickness"
+    Then I get the error message "The regular activity does not exist"
+    
 Scenario: Search for project by id successfully
-    Given the project with id 190001 exists
-    When I search a project with id 190001
-    Then I get a project with id 190001
+    Given the project with some id exists
+    When I search a project with that id
+    Then I get a project that project
     
 Scenario: Search for project by name successfully
     Given the project with id 1 exists
