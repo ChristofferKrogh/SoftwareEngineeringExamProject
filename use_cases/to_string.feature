@@ -108,6 +108,11 @@ Scenario: Match external project
     When I match the project with "external"
     Then I get a match
     
+Scenario: Match external project
+    Given there is an internal project with name "Test project"
+    When I match the project with "external"
+    Then I do not get a match
+    
 Scenario: Match project on name
     Given the project with id 190001 exists
     And the project has the name "Test project"
