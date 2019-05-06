@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -185,6 +186,12 @@ public class CreateProjectSteps {
 	public void theInternalStatusOfTheProjectIs(String internalStatusString) {
 		boolean isProjectInternal = internalStatusString.toLowerCase().equals("true");
 		assertEquals(isProjectInternal, projectHolder.getProject().isProjectInternal());
+	}
+	
+	@Then("the project number is included in the project number list")
+	public void theProjectNumberIsIncludedInTheProjectNumberList() {
+		List<Integer> projectNumbers = planningAppHolder.getPlanningApp().getProjectNumbers();
+		assertTrue(projectNumbers.contains(projectHolder.getProject().getProjectNumber()));
 	}
 
 }

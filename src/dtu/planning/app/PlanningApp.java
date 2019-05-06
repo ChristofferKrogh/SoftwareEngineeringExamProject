@@ -133,9 +133,6 @@ public class PlanningApp {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
 			projectNumbers.add(p.getProjectNumber());
-//			if (!p.isPresent()) {
-//				throw new OperationNotAllowedException("The project does not exist");
-//			}
 		}
 		return projectNumbers;
 	}
