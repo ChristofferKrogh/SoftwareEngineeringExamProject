@@ -3,14 +3,9 @@ package dtu.planning.app;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-//import java.util.Calendar;
 import java.util.GregorianCalendar;
-//import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-//import java.util.stream.Collectors;
-
-import javax.swing.DefaultListModel;
 
 public class PlanningApp {
 	// Storage for the projects

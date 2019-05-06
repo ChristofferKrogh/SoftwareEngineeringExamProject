@@ -35,7 +35,7 @@ Scenario: Represent an activity as a string
     
 #Scenario: Represent an activity start week as a string
 #    Given the project with id 1 exists
-	And project leader has initials "BS"
+#	And project leader has initials "BS"
 #    And the activity with name "Some Activity" exists for project
 #    And the activity starts in week 1 of 2019
 #    When I get the string representation the start week of the activity
