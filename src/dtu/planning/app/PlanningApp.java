@@ -225,7 +225,6 @@ public class PlanningApp {
 		searchForActivity(projectNumber, name).setStartWeek(startDate);
 	}
 
-	// TODO no test for the method below
 	public void editEndDateOfActivity(GregorianCalendar endDate, int projectNumber, String name) throws ActivityNotFoundException, OperationNotAllowedException {
 		searchForActivity(projectNumber, name).setEndWeek(endDate);
 	}

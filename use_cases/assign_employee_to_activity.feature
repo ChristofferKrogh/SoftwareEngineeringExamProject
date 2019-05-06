@@ -9,6 +9,7 @@ Scenario: An employee is assigned to the activity successfully
     And the activity with name "Some Activity" exists for project
     When the actor assign the employee to the activity "Some Activity"
     Then the employee "JS" is assigned to the activity "Some Activity"
+    And the employee is in the list of employees for the activity "Some Activity"
 
 Scenario: A non-project leader tries to assign an employee to an activity
 	Given the project with id 1 exists

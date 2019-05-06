@@ -4,6 +4,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -133,6 +136,14 @@ public class AssignEmployeeToActivitySteps {
 	@Then("the employee {string} is assigned to the activity {string}")
 	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException, ActivityNotFoundException {
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
+	}
+	
+	@Then("the employee is in the list of employees for the activity {string}")
+	public void theEmployeeIsInTheListOfEmployeesForTheActivity(String activityName) throws ActivityNotFoundException {
+		List<Employee> employeeList = projectHolder.getProject().getEmployeesAssignedToActivity(activityName);
+		Employee employee = employeeHolder.getEmployee();
+		
+		assertTrue(employeeList.contains(employee));
 	}
 
 	@Then("I get the error message {string}")
