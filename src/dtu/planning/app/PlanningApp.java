@@ -179,6 +179,7 @@ public class PlanningApp {
 		return employees;
 	}
 	
+	// Method 1 in report
 	public void assignEmployee(int projectNumber, String activityName, String projectLeaderInitials, String employeeInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		Employee employee = searchForEmployee(employeeInitials);
 		Employee projectLeader = searchForEmployee(projectLeaderInitials);
@@ -204,6 +205,7 @@ public class PlanningApp {
 		}
 	}
 
+	// Method 2 in report
 	public Activity addActivity(int projectNumber, String activityName, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, String actorInitials) throws OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
@@ -225,7 +227,7 @@ public class PlanningApp {
 		
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
 		
 		searchForActivity(projectNumber, name).setStartWeek(startDate);
@@ -238,12 +240,13 @@ public class PlanningApp {
 				
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
 		
 		searchForActivity(projectNumber, name).setEndWeek(endDate);
 	}
 
+	// Method 3 in report
 	// TODO no test for the method below
 	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String name, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
@@ -262,7 +265,7 @@ public class PlanningApp {
 								
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
 		
 		// Check that the current employee is assigned to the activity 
@@ -294,6 +297,7 @@ public class PlanningApp {
 		project.setProjectLeader(employee);
 	}
 
+	// Method 4 in report
 	public void registerTime(int projectNumber, String activityName, TimeRegistration timeRegistration) throws OperationNotAllowedException, ActivityNotFoundException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
