@@ -57,6 +57,16 @@ public class SearchSteps {
 		}
 	}
 	
+	@When("I search for a regular activity with name {string}")
+	public void iSearchForARegularActivityWithName(String activityName) {
+		System.out.println("Regular activity name here: "+activityHolder.getActivity().getName());
+	    try {
+			activityHolder.setActivity(planningAppHolder.getPlanningApp().searchForRegActivity(activityName));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
 	@When("I search a project with id {int}")
 	public void iSearchAProjectWithId(Integer searchTerm) {
 	    try {

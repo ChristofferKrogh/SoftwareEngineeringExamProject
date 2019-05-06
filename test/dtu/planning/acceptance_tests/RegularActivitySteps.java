@@ -18,12 +18,13 @@ public class RegularActivitySteps {
 	private PlanningAppHolder planningAppHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private EmployeeHolder employeeHolder;
-	private Activity activity;
+	private ActivityHolder activityHolder;
 	
-	public RegularActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, EmployeeHolder employeeHolder) {
+	public RegularActivitySteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.employeeHolder = employeeHolder;
+		this.activityHolder = activityHolder;
 	}
 
 	@Given("I have the regular activity with name {string} , start: week {int} of year {int} and end: week {int} of year {int}")
@@ -35,23 +36,23 @@ public class RegularActivitySteps {
 	    GregorianCalendar end = new GregorianCalendar();
 	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
 		
-		activity = new Activity(name, start, end);
+		activityHolder.setActivity(new Activity(name, start, end));
 	}
 	
 	@Given("the regular activity is in the system")
 	public void theRegularActivityIsInTheSystem() throws OperationNotAllowedException {
-		planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
+		planningAppHolder.getPlanningApp().addRegularActivity(activityHolder.getActivity(), employeeHolder.getEmployee().getInitials());
 	}
 	
 	@Given("the regular activity is not in the system")
 	public void theRegularActivityIsNotInTheSystem() {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		assertThat(planningApp.getRegularActivities(), not(hasItem(activity)));
+		assertThat(planningApp.getRegularActivities(), not(hasItem(activityHolder.getActivity())));
 	}
 
 	@When("I create the regular activity and assign the employee to it")
 	public void iCreateTheRegularActivityAndAssignTheEmployeeToIt() throws OperationNotAllowedException {
-		planningAppHolder.getPlanningApp().addRegularActivity(activity, employeeHolder.getEmployee().getInitials());
+		planningAppHolder.getPlanningApp().addRegularActivity(activityHolder.getActivity(), employeeHolder.getEmployee().getInitials());
 	}
 	
 	@When("I change the start week of the regular activity to week {int} of year {int}")
@@ -60,7 +61,7 @@ public class RegularActivitySteps {
 	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
 	    
 	    try {
-			planningAppHolder.getPlanningApp().editStartWeekOfRegular(start, activity.getName());
+			planningAppHolder.getPlanningApp().editStartWeekOfRegular(start, activityHolder.getActivity().getName());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -72,7 +73,7 @@ public class RegularActivitySteps {
 	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
 	    
 	    try {
-			planningAppHolder.getPlanningApp().editEndWeekOfRegular(end, activity.getName());
+			planningAppHolder.getPlanningApp().editEndWeekOfRegular(end, activityHolder.getActivity().getName());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -82,8 +83,8 @@ public class RegularActivitySteps {
 	public void theRegularActivityIsCreatedAndTheEmployeeIsAssignedToIt() {
 	    PlanningApp planningApp;
 	    planningApp = planningAppHolder.getPlanningApp();
-		assertThat(planningApp.getRegularActivities(), hasItem(activity));
-		assertThat(activity.getAssignedEmployees(), hasItem(employeeHolder.getEmployee()));
+		assertThat(planningApp.getRegularActivities(), hasItem(activityHolder.getActivity()));
+		assertThat(activityHolder.getActivity().getAssignedEmployees(), hasItem(employeeHolder.getEmployee()));
 	}
 	
 	@Then("the start week of the regular activity is week {int} of year {int}")
@@ -91,9 +92,9 @@ public class RegularActivitySteps {
 	    PlanningApp planningApp = planningAppHolder.getPlanningApp();
 	    GregorianCalendar start = new GregorianCalendar();
 	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
-	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getStartWeek().get(GregorianCalendar.DATE),start.get(GregorianCalendar.DATE));
-	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getStartWeek().get(GregorianCalendar.MONTH),start.get(GregorianCalendar.MONTH));
-	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getStartWeek().get(GregorianCalendar.YEAR),start.get(GregorianCalendar.YEAR));
+	    assertEquals(planningApp.searchForRegActivity(activityHolder.getActivity().getName()).getStartWeek().get(GregorianCalendar.DATE),start.get(GregorianCalendar.DATE));
+	    assertEquals(planningApp.searchForRegActivity(activityHolder.getActivity().getName()).getStartWeek().get(GregorianCalendar.MONTH),start.get(GregorianCalendar.MONTH));
+	    assertEquals(planningApp.searchForRegActivity(activityHolder.getActivity().getName()).getStartWeek().get(GregorianCalendar.YEAR),start.get(GregorianCalendar.YEAR));
 	}
 	
 	@Then("the end week of the regular activity is week {int} of year {int}")
@@ -101,8 +102,8 @@ public class RegularActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 	    GregorianCalendar end = new GregorianCalendar();
 	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
-	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getEndWeek().get(GregorianCalendar.DATE),end.get(GregorianCalendar.DATE));
-	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getEndWeek().get(GregorianCalendar.MONTH),end.get(GregorianCalendar.MONTH));
-	    assertEquals(planningApp.searchForRegActivity(activity.getName()).getEndWeek().get(GregorianCalendar.YEAR),end.get(GregorianCalendar.YEAR));
+	    assertEquals(planningApp.searchForRegActivity(activityHolder.getActivity().getName()).getEndWeek().get(GregorianCalendar.DATE),end.get(GregorianCalendar.DATE));
+	    assertEquals(planningApp.searchForRegActivity(activityHolder.getActivity().getName()).getEndWeek().get(GregorianCalendar.MONTH),end.get(GregorianCalendar.MONTH));
+	    assertEquals(planningApp.searchForRegActivity(activityHolder.getActivity().getName()).getEndWeek().get(GregorianCalendar.YEAR),end.get(GregorianCalendar.YEAR));
 }
 }
