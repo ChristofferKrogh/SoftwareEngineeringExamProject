@@ -63,7 +63,6 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 
-	// TODO: der mangler test for nedenstående metode
 	public List<Project> searchForProjectsByName(String name) throws OperationNotAllowedException {
 		List<Project> searchResults = new ArrayList<>();
 		for (Project p : projects) {
@@ -233,7 +232,6 @@ public class PlanningApp {
 		searchForActivity(projectNumber, name).setStartWeek(startDate);
 	}
 
-	// TODO no test for the method below
 	public void editEndDateOfActivity(GregorianCalendar endDate, int projectNumber, String name, String projectLeaderInitials) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
@@ -247,7 +245,6 @@ public class PlanningApp {
 	}
 
 	// Method 3 in report
-	// TODO no test for the method below
 	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String name, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);

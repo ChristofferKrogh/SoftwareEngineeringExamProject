@@ -7,6 +7,8 @@ Scenario: Create employee successfully
     And the employee has the name "John Doe"
     When I check for the employee is created
     Then I get the name "John Doe" and the initials "JD"
+    And the initials "JD" is in the initials list
+    And the employeelist conatins the employee
 
 
 Scenario: Fail create employees with duplicate initials
