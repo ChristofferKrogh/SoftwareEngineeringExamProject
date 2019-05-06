@@ -169,21 +169,10 @@ public class PlanningApp {
 	public List<Employee> getEmployees() {
 		return employees;
 	}
-
-	public void assignEmployee(int projectNumber, String activityName, Employee projectLeader, Employee employee) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
-		// Find project from id
-		Project project = this.searchForProject(projectNumber);
-
-		// Check that the employee given exists, if not throw exception
-		this.checkEmployeeExist(employee);
-
-		// Assign employee to the activity
-		project.assignEmployee(activityName, projectLeader, employee);
-	}
 	
-	// TODO: there are no tests for the method below
-	public void assignEmployee(int projectNumber, String activityName, Employee projectLeader, String employeeInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+	public void assignEmployee(int projectNumber, String activityName, String projectLeaderInitials, String employeeInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		Employee employee = searchForEmployee(employeeInitials);
+		Employee projectLeader = searchForEmployee(projectLeaderInitials);
 		
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);

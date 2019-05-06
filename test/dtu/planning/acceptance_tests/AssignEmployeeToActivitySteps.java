@@ -123,7 +123,7 @@ public class AssignEmployeeToActivitySteps {
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp(); 
 		try {
-			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor(), employeeHolder.getEmployee());
+			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor().getInitials(), employeeHolder.getEmployee().getInitials());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {

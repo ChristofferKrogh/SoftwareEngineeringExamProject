@@ -124,7 +124,7 @@ public class CreateActivitySteps {
 		Employee employee = new Employee(null, initials); 
 		employeeHolder.setEmployee(employee);
 		try {
-			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor(), employee);
+			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials(), employee.getInitials());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
