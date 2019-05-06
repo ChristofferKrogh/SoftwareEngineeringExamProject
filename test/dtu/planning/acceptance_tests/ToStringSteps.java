@@ -14,27 +14,19 @@ import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.Project;
-import dtu.planning.app.Report;
 
 public class ToStringSteps {
 	// "Global" variable holders so steps can be used across features
-	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
-	private ErrorMessageHolder errorMessageHolder;
-	private ActorHolder actorHolder;
 	private ActivityHolder activityHolder;
-	private Report report;
 	
 	private String savedString;
 	private boolean isMatched;
 
-	public ToStringSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActorHolder actorHolder, ActivityHolder activityHolder) {
-		this.planningAppHolder = planningAppHolder;
-		this.errorMessageHolder = errorMessageHolder;
+	public ToStringSteps(ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
-		this.actorHolder = actorHolder;
 		this.activityHolder = activityHolder;
 	}
 	
@@ -44,14 +36,14 @@ public class ToStringSteps {
 	}
 	
 	@Given("the activity starts in week {int} of {int}")
-	public void theActivityStartsInWeekOf(Integer startWeek, Integer startYear) {
+	public void theActivityStartsInWeekOf(Integer startWeek, Integer startYear) throws OperationNotAllowedException {
 		GregorianCalendar start = new GregorianCalendar();
 	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
 	    activityHolder.getActivity().setStartWeek(start);
 	}
 	
 	@Given("the activity ends in week {int} of {int}")
-	public void theActivityEndsInWeekOf(Integer endWeek, Integer endYear) {
+	public void theActivityEndsInWeekOf(Integer endWeek, Integer endYear) throws OperationNotAllowedException {
 		GregorianCalendar end = new GregorianCalendar();
 	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SUNDAY);
 	    activityHolder.getActivity().setEndWeek(end);
@@ -117,13 +109,13 @@ public class ToStringSteps {
 		savedString = activityHolder.getActivity().getEndWeekString();
 	}
 	
-	@When("I get the string representation the start week of the project")
-	public void iGetTheStringRepresentationTheStartWeekOfTheProject() {
+	@When("I get the string representation the start date of the project")
+	public void iGetTheStringRepresentationTheStartDateOfTheProject() {
 	    savedString = projectHolder.getProject().getStartDateString();
 	}
 	
-	@When("I get the string representation the end week of the project")
-	public void iGetTheStringRepresentationTheEndWeekOfTheProject() {
+	@When("I get the string representation the end date of the project")
+	public void iGetTheStringRepresentationTheEndDateOfTheProject() {
 	    savedString = projectHolder.getProject().getEndDateString();
 	}
 	

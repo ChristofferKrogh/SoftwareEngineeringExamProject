@@ -52,19 +52,22 @@ public class Project {
 		return number;
 	}
 
-	public void addActivity(Activity activity) {
-		// Does not check that the projectID of the activity does match the project of which it is being assigned.
+	public void addActivity(Activity activity, String actorInitials) throws NotProjectLeaderException, OperationNotAllowedException {
+		if(!this.projectLeader.getInitials().equals(actorInitials)) {
+			throw new NotProjectLeaderException("You are not the project leader for this project");
+		}
+		
 		activities.add(activity);
 	}
 	
 	// TODO: there are no tests for the method below
-	public List<Activity> getAktivities() {
+	public List<Activity> getActivities() {
 		return activities;
 	}
 	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException, ActivityNotFoundException {
 		// Check that projectleader is projectleader for this project. If not stop!
-		if (this.projectLeader != projectLeader) {
+		if (!this.projectLeader.equals(projectLeader)) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
 		
@@ -133,7 +136,6 @@ public class Project {
 		return date + "/" + month + "/" + year;
 	}
 	
-	// TODO: there are no tests for the method below
 	public String getEndDateString() {
 		int year = endDate.get(Calendar.YEAR);
 		int month = endDate.get(Calendar.MONTH) + 1;
@@ -169,18 +171,18 @@ public class Project {
 		}
 		
 		// Search name
-		if (this.name != null && this.name.toLowerCase().contains(searchText)) {
+		if (name != null && name.toLowerCase().contains(searchText)) { //? this.name
 			return true;
 		}
 		
 		// Search project-number
-		if (Integer.toString(this.number).contains(searchText)) {
+		if (toString().contains(searchText)) {
 			return true;
 		}
 		
 		// Search project-leader
 		// It might be overkill to include the project leader in the search
-		if (this.hasProjectLeader() && projectLeader.match(searchText)) {
+		if (hasProjectLeader() && projectLeader.match(searchText)) {
 			return true;
 		}
 		
@@ -191,9 +193,10 @@ public class Project {
 		return this.name + " - " + this.number;
 	}
 
-	public Report generateReport(Employee projectLeader) throws NotProjectLeaderException {
+	public Report generateReport(Employee actor) throws NotProjectLeaderException {
 		// Check that projectleader is projectleader for this project. If not stop!
-		if (this.projectLeader != projectLeader) {
+		 
+		if (!this.projectLeader.equals(actor) && this.projectLeader!= null) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
 		

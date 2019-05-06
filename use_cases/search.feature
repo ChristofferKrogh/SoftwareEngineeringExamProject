@@ -4,6 +4,7 @@ Feature: Search functions
     
 Scenario: Search for activity successfully
     Given the project with id 1 exists
+	 And project leader has initials "BS"
     And the activity with name "Some Activity" exists for project
     When I search an activity with name "Some Activity"
     Then I get an activity with name "Some Activity"

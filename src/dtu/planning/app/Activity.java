@@ -9,17 +9,15 @@ public class Activity {
 	private String name;
 	private GregorianCalendar startWeek;
 	private GregorianCalendar endWeek;
-	private int expectedAmountOfHours;
-	private int associatedProjectNumber;
+	private double expectedAmountOfHours;
 	private List<Employee> employees = new ArrayList<>();
 	private List<TimeRegistration> timeRegistrations = new ArrayList<>();
 
-	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, int associatedProjectNumber) {
+	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek, double expectedAmountOfHours) {
 		this.name = name;
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
 		this.expectedAmountOfHours = expectedAmountOfHours;
-		this.associatedProjectNumber = associatedProjectNumber;
 	}
 
 	public Activity(String name, GregorianCalendar startWeek, GregorianCalendar endWeek) {
@@ -27,14 +25,13 @@ public class Activity {
 		this.startWeek = startWeek;
 		this.endWeek = endWeek;
 		this.expectedAmountOfHours = 0;
-		this.associatedProjectNumber = 0;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public int getExpectedAmountOfHours() {
+	public double getExpectedAmountOfHours() {
 		return expectedAmountOfHours;
 	}
 
@@ -62,12 +59,18 @@ public class Activity {
 				+ " of " + endWeek.get(GregorianCalendar.YEAR);
 	}
 
-	public void setStartWeek(GregorianCalendar startWeek) {
-		this.startWeek = startWeek;
+	public void setStartWeek(GregorianCalendar newStartWeek) throws OperationNotAllowedException {
+		if (newStartWeek.after(endWeek)) {
+			throw new OperationNotAllowedException("The start week must be before the end week");
+		}
+		this.startWeek = newStartWeek;
 	}
 
-	public void setEndWeek(GregorianCalendar endWeek) {
-		this.endWeek = endWeek;
+	public void setEndWeek(GregorianCalendar newEndWeek) throws OperationNotAllowedException {
+		if (newEndWeek.before(startWeek)) {
+			throw new OperationNotAllowedException("The end week must be after the start week");
+		}		
+		this.endWeek = newEndWeek;
 	}
 
 	public void setName(String name) {
@@ -110,9 +113,16 @@ public class Activity {
 		return name;
 	}
 
-	public void setExpectedAmountOfHours(int hours) {
-		this.expectedAmountOfHours = hours; 
-		
+	public void setExpectedAmountOfHours(double hours) {
+		this.expectedAmountOfHours = hours; 	
 	}
 
+	public void removeEmployee(Employee employee) {
+		for (Employee e : employees) {
+			if (e.equals(employee)) {
+				employees.remove(employee);
+			}
+		}
+	}
+	
 }

@@ -3,30 +3,19 @@ package dtu.planning.acceptance_tests;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import dtu.planning.app.Activity;
-import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
-import dtu.planning.app.TimeRegistration;
 import dtu.planning.app.OperationNotAllowedException;
 
 public class CreateProjectSteps {
@@ -96,14 +85,6 @@ public class CreateProjectSteps {
 		Project project = new Project(name, false, planningApp.projectCount);
 		projectHolder.setProject(project);
 	}
-	
-	@Given("there is a project with id {int}")
-	public void thereIsAProjectWithId(Integer projectNumber) throws Exception {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = new Project("Test Project", true, projectNumber);
-		projectHolder.setProject(project);
-		planningApp.createProject(project);
-	}
 
 	@When("an employee edits the start date of the project to {int}\\/{int}\\/{int}")
 	public void anEmployeeEditsTheStartDateOfTheProjectTo(Integer day, Integer month, Integer year) throws Exception {
@@ -153,10 +134,6 @@ public class CreateProjectSteps {
 		Project project = projectHolder.getProject();
 		try {
 			planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-		try {
 			planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
@@ -171,10 +148,6 @@ public class CreateProjectSteps {
 		Project project = projectHolder.getProject();
 		try {
 			planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-		try {
 			planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());

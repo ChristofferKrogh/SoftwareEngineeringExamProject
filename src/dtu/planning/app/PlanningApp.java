@@ -111,7 +111,6 @@ public class PlanningApp {
 				searchResults.add(a);
 			}
 		}
-
 		return searchResults;
 	}
 
@@ -212,17 +211,17 @@ public class PlanningApp {
 		}
 	}
 
-	public void addActivity(int projectNumber, String activityName, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours) throws OperationNotAllowedException {
+	public Activity addActivity(int projectNumber, String activityName, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, String actorInitials) throws OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
-
+		
 		// Create new activity
-		Activity activity = new Activity(activityName, startWeek, endWeek, expectedAmountOfHours, project.getProjectNumber());
+		Activity activity = new Activity(activityName, startWeek, endWeek, expectedAmountOfHours);
 
 		
 		// Add activity to that project
-		project.addActivity(activity);
-
+		project.addActivity(activity, actorInitials);
+		return activity;
 	}
     
     
@@ -241,7 +240,6 @@ public class PlanningApp {
 		searchForActivity(projectNumber, name).setExpectedAmountOfHours(hours);
 	}
 
-	// TODO no test for the method below
 	public Activity searchForActivity(int projectNumber, String name) throws ActivityNotFoundException, OperationNotAllowedException {
 		Project project = searchForProject(projectNumber);
 		return project.getActivityByName(name);
@@ -279,7 +277,7 @@ public class PlanningApp {
 	
 	public List<TimeRegistration> getAllTimeRegistrationsForEmployeeOnDate(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
 		for(Project p : projects) {
-			List<Activity> activities = p.getAktivities();
+			List<Activity> activities = p.getActivities();
 			for(Activity a : activities) {
 					timeRegistration.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
 			}
@@ -287,26 +285,11 @@ public class PlanningApp {
 		return timeRegistration;
 	}
 	
-	public int getDailyUsedTime(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
-		int dut = 0;
-		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(employee, date)) {
-			dut += t.getAmountOfTime();
+	public int getDailyUsedTime(String initials, GregorianCalendar date) throws TimeRegistrationNotFoundException, OperationNotAllowedException {
+		int dailyUsedTime = 0;
+		for(TimeRegistration t : getAllTimeRegistrationsForEmployeeOnDate(searchForEmployee(initials), date)) {
+			dailyUsedTime += t.getAmountOfTime();
 		}
-		return dut;
-	}
-
-	public SimpleEntry<List<Activity>, List<Integer>> getAllRelevantActivitiesForEmployee(Employee employee) {
-		List<Activity> relevantActivities = new ArrayList<>();
-		List<Integer> projectNumbers = new ArrayList<>();
-		for (Project p : projects) {
-			for (Activity a : p.getAktivities()) {
-				if (a.getAssignedEmployees().contains(employee)) {
-					relevantActivities.add(a);
-					projectNumbers.add(p.getProjectNumber());
-				}
-			}
-		}
-		AbstractMap.SimpleEntry<List<Activity>, List<Integer>> activitiesWithProjectNumbers = new AbstractMap.SimpleEntry<>(relevantActivities, projectNumbers);
-		return activitiesWithProjectNumbers;
-	}
+		return dailyUsedTime;
+	};
 }
