@@ -70,13 +70,18 @@ public class PlanningApp {
 	}
 
 	// TODO: der mangler test for nedenstående metode
-	public List<Project> searchForProjectsByName(String name) {
+	public List<Project> searchForProjectsByName(String name) throws OperationNotAllowedException {
 		List<Project> searchResults = new ArrayList<>();
 		for (Project p : projects) {
 			if (p.match(name)) {
 				searchResults.add(p);
 			}
 		}
+		
+		if (searchResults.isEmpty()) {
+			throw new OperationNotAllowedException("The project does not exist");
+		}
+		
 		return searchResults;
 	}
 

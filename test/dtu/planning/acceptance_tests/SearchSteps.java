@@ -3,12 +3,15 @@ package dtu.planning.acceptance_tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.OperationNotAllowedException;
+import dtu.planning.app.Project;
 
 public class SearchSteps {
 	// "Global" variable holders so steps can be used across features
@@ -42,12 +45,30 @@ public class SearchSteps {
 		assertTrue(activity==null);
 	}
 	
-	@When("I search an activity with name {string}")
-	public void iSearchAnActivityWithName(String activityName) {
+	@When("I search for an activity with name {string}")
+	public void iSearchForAnActivityWithName(String activityName) throws OperationNotAllowedException {
 	    try {
 			activityHolder.setActivity(planningAppHolder.getPlanningApp().searchForActivity(projectHolder.getProject().getProjectNumber(), activityName));
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("I search a project with id {int}")
+	public void iSearchAProjectWithId(Integer searchTerm) {
+	    try {
+			projectHolder.setProject(planningAppHolder.getPlanningApp().searchForProject(searchTerm));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("I search a project with name {string}")
+	public void iSearchAProjectWithName(String searchTerm) {
+		List<Project> searchResults;
+		try {
+			searchResults = planningAppHolder.getPlanningApp().searchForProjectsByName(searchTerm);
+			projectHolder.setProject(searchResults.get(0));
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -56,5 +77,15 @@ public class SearchSteps {
 	@Then("I get an activity with name {string}")
 	public void iGetAnActivityWithName(String activityName) {
 		assertEquals(activityHolder.getActivity().getName(),activityName);
+	}
+	
+	@Then("I get a project with id {int}")
+	public void iGetAProjectWithId(int projectId) {
+		assertEquals(projectHolder.getProject().getProjectNumber(),projectId);
+	}
+	
+	@Then("I get a project with name {string}")
+	public void iGetAProjectWithName(String projectName) {
+	    assertEquals(projectHolder.getProject().getName(),projectName);
 	}
 }
