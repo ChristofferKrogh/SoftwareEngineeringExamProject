@@ -26,7 +26,7 @@ public class CorrectReportedTimeSteps {
 
 	private Employee employee;
 
-	private int timeregOld;
+	private float timeregOld;
 
 	private String activityName;
 	private GregorianCalendar date;

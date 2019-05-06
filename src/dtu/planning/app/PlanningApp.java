@@ -292,4 +292,19 @@ public class PlanningApp {
 		}
 		return dailyUsedTime;
 	};
+	
+	public SimpleEntry<List<Activity>, List<Integer>> getAllRelevantActivitiesForEmployee(Employee employee) {
+		List<Activity> relevantActivities = new ArrayList<>();
+		List<Integer> projectNumbers = new ArrayList<>();
+		for (Project p : projects) {
+			for (Activity a : p.getActivities()) {
+				if (a.getAssignedEmployees().contains(employee)) {
+					relevantActivities.add(a);
+					projectNumbers.add(p.getProjectNumber());
+				}
+			}
+		}
+		AbstractMap.SimpleEntry<List<Activity>, List<Integer>> activitiesWithProjectNumbers = new AbstractMap.SimpleEntry<>(relevantActivities, projectNumbers);
+		return activitiesWithProjectNumbers;
+	}
 }

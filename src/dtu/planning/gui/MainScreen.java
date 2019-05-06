@@ -82,7 +82,7 @@ public class MainScreen {
 		planningApp.addRegularActivity(new Activity("Sickness", startWeek, endWeek), "CK");
 		planningApp.addRegularActivity(new Activity("Vacation", startWeek, endWeek), "CK");
 		planningApp.addRegularActivity(new Activity("Child Sickness", startWeek, endWeek), "CK");
-		planningApp.addActivity(p1.getProjectNumber(), "Buy lawnmower", startWeek, endWeek, 4);
+		planningApp.addActivity(p1.getProjectNumber(), "Buy lawnmower", startWeek, endWeek, 4, p1.getProjectLeader().getInitials());
 		planningApp.assignEmployee(p1.getProjectNumber(), "Buy lawnmower", p1.getProjectLeader(), "JaD");
 	}
 
@@ -150,7 +150,7 @@ public class MainScreen {
 		btnGetTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (Project p : planningApp.getProjects()) {
-					for (Activity a : p.getAktivities()) {
+					for (Activity a : p.getActivities()) {
 						for (TimeRegistration t : a.getTimeRegistrations()) {
 							System.out.println(t);
 						}
