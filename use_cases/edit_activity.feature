@@ -49,8 +49,20 @@ Scenario: The start week is set to a week after the end week
 	When the project leader edits the start week of the activity to 6/2019
 	Then I get the error message "The start week must be before the end week" 
 
+Scenario: Fail "The start week is set to a week after the end week" if not project leader
+	Given the project with id 1 exists
+	# Setup is done by the project leader
+    And the actor is project leader for the project
+    And the activity with name "Some Activity" exists for project
+    And the project has start week 1/2019
+	And the project has end week 5/2019
+	And the actor is not project leader for the project
+	# TODO: Rename "the project leader" to "the actor" since its the actor that does this.
+	When the project leader edits the start week of the activity to 6/2019
+	Then I get the error message "You must be project leader to change a activity" 
+
 Scenario: The end week is set before the start week 
-	Given the project with id 1 exists 
+	Given the project with id 1 exists
     And the actor is project leader for the project
     And the activity with name "Some Activity" exists for project
  	And the project has start week 20/2019 
@@ -58,6 +70,18 @@ Scenario: The end week is set before the start week
 	When the project leader edits the end week of the project to 19/2019
 	Then I get the error message "The end week must be after the start week" 
 
+Scenario: The end week is set before the start week 
+	Given the project with id 1 exists
+	# Setup is done by the project leader
+    And the actor is project leader for the project
+    And the activity with name "Some Activity" exists for project
+ 	And the project has start week 20/2019 
+ 	And the project has end week 25/2019
+	And the actor is not project leader for the project
+	# TODO: Rename "the project leader" to "the actor" since its the actor that does this.
+	When the project leader edits the end week of the project to 19/2019
+	Then I get the error message "You must be project leader to change a activity" 
+	
 Scenario: The amount of expected hours is set to less than 0 
 	Given the project with id 1 exists 
     And the actor is project leader for the project
