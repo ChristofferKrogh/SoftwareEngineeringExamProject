@@ -13,9 +13,7 @@ import javax.swing.JPanel;
 
 import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
-import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
-//import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
 
@@ -83,7 +81,7 @@ public class MainScreen {
 		planningApp.addRegularActivity(new Activity("Vacation", startWeek, endWeek), "CK");
 		planningApp.addRegularActivity(new Activity("Child Sickness", startWeek, endWeek), "CK");
 		planningApp.addActivity(p1.getProjectNumber(), "Buy lawnmower", startWeek, endWeek, 4, p1.getProjectLeader().getInitials());
-		planningApp.assignEmployee(p1.getProjectNumber(), "Buy lawnmower", p1.getProjectLeader(), "JaD");
+		planningApp.assignEmployee(p1.getProjectNumber(), "Buy lawnmower", p1.getProjectLeader().getInitials(), "JaD");
 	}
 
 	/**

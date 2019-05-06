@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.NotProjectLeaderException;
@@ -17,17 +18,21 @@ import dtu.planning.app.Project;
 
 public class ToStringSteps {
 	// "Global" variable holders so steps can be used across features
+	private PlanningAppHolder planningAppHolder;
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ActivityHolder activityHolder;
+	private TimeRegistrationHolder timeRegistrationHolder;
 	
 	private String savedString;
 	private boolean isMatched;
 
-	public ToStringSteps(ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
+	public ToStringSteps(PlanningAppHolder planningAppHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, TimeRegistrationHolder timeRegistrationHolder) {
+		this.planningAppHolder = planningAppHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 		this.activityHolder = activityHolder;
+		this.timeRegistrationHolder = timeRegistrationHolder;
 	}
 	
 	@Given("the employee has the name {string}")
@@ -36,17 +41,22 @@ public class ToStringSteps {
 	}
 	
 	@Given("the activity starts in week {int} of {int}")
-	public void theActivityStartsInWeekOf(Integer startWeek, Integer startYear) throws OperationNotAllowedException {
-		GregorianCalendar start = new GregorianCalendar();
-	    start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
-	    activityHolder.getActivity().setStartWeek(start);
+	public void theActivityStartsInWeekOf(Integer startWeek, Integer startYear) throws OperationNotAllowedException, ActivityNotFoundException, NotProjectLeaderException {
+		GregorianCalendar startDate = new GregorianCalendar();
+		startDate.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
+	    Project project = projectHolder.getProject();
+	    Activity activity = activityHolder.getActivity();
+	    planningAppHolder.getPlanningApp().editStartDateOfActivity(startDate, project.getProjectNumber(), activity.getName(), projectHolder.getProject().getProjectLeader().getInitials());
 	}
 	
 	@Given("the activity ends in week {int} of {int}")
-	public void theActivityEndsInWeekOf(Integer endWeek, Integer endYear) throws OperationNotAllowedException {
-		GregorianCalendar end = new GregorianCalendar();
-	    end.setWeekDate(endYear, endWeek, GregorianCalendar.SUNDAY);
-	    activityHolder.getActivity().setEndWeek(end);
+	public void theActivityEndsInWeekOf(Integer endWeek, Integer endYear) throws OperationNotAllowedException, ActivityNotFoundException, NotProjectLeaderException {
+		GregorianCalendar endDate = new GregorianCalendar();
+		endDate.setWeekDate(endYear, endWeek, GregorianCalendar.SUNDAY);
+	    Project project = projectHolder.getProject();
+	    Activity activity = activityHolder.getActivity();
+	    planningAppHolder.getPlanningApp().editEndDateOfActivity(endDate, project.getProjectNumber(), activity.getName(), projectHolder.getProject().getProjectLeader().getInitials());
+		
 	}
 	
 	@Given("employee with initials {string} is assigned to the activity")
@@ -122,6 +132,11 @@ public class ToStringSteps {
 	@When("I get the string representation of the project")
 	public void iGetTheStringRepresentationOfTheProject() {
 	    savedString = projectHolder.getProject().toString();
+	}
+	
+	@When("I get the string representation of the time registration")
+	public void iGetTheStringRepresentationOfTheTimeRegistration() {
+	    savedString = timeRegistrationHolder.getTimeRegistration().toString();
 	}
 	
 	@When("I match the employee with {string}")

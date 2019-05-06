@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.GregorianCalendar;
 
@@ -26,7 +25,6 @@ import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
-import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
 import dtu.planning.app.OperationNotAllowedException;
 
@@ -507,8 +505,13 @@ public class ReportTimeScreen {
 		employeeReminderField.setText(b.toString());
 		
 		searchResults.clear();
-		planningApp.searchForEmployeesByName(searchField.getText())
-		.forEach((m) -> {searchResults.addElement(m);});		
+		try {
+			planningApp.searchForEmployeesByName(searchField.getText())
+			.forEach((m) -> {searchResults.addElement(m);});
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 	protected void clear() {

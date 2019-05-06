@@ -61,7 +61,7 @@ public class GenerateReportSteps {
 	
 	@Then("A report over the project is generated with {int} hours estimated on activity with name {string}")
 	public void aReportOverTheProjectIsGeneratedWithHoursEstimatedOnActivityWithName(Integer hours, String activityName) throws ActivityNotFoundException {
-		double hours1 = new Double(hours); 
+		float hours1 = new Float(hours); 
 		// Third argument in assert equals with doubble is delta
 		assertEquals(report.getEstimatedTimeForActivity(activityName),hours1,0);
 	}
@@ -69,7 +69,7 @@ public class GenerateReportSteps {
 	
 	@Then("A report over the project is generated with {int} hours reported on activity with name {string}")
 	public void aReportOverTheProjectIsGeneratedWithHoursReportedOnActivityWithName(Integer hours, String activityName) throws ActivityNotFoundException{
-		double hours1 = new Double(hours); 
+		float hours1 = new Float(hours); 
 		// Third argument in assert equals with doubble is delta
 		assertEquals(report.getReportedTimeForActivity(activityName),hours1,0);	
 	}

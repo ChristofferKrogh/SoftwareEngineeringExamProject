@@ -3,7 +3,11 @@ package dtu.planning.acceptance_tests;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -43,11 +47,7 @@ public class AssignEmployeeToActivitySteps {
 		employeeHolder.setEmployee(employee);
 
 		// Add this employee to the company
-		try {
-			planningApp.addEmployee(employee);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningApp.addEmployee(employee);
 
 	}
 
@@ -60,6 +60,8 @@ public class AssignEmployeeToActivitySteps {
 		planningApp.createProject(project);
 
 		projectHolder.setProject(project);
+		
+		// assertEquals(projectCount,project.getProjectNumber());
 	}
 
 	@Given("the activity with name {string} exists for project")
@@ -81,9 +83,15 @@ public class AssignEmployeeToActivitySteps {
 	}
 
 	@Given("the actor is not project leader for the project")
-	public void theActorIsNotProjectLeaderForTheOverlyingProject() {
+	public void theActorIsNotProjectLeaderForTheOverlyingProject() throws OperationNotAllowedException {
 		Employee actor = new Employee("Jane Doe", "JD");
 		actorHolder.setActor(actor);
+		
+		// Add the actor to the company
+		planningAppHolder.getPlanningApp().addEmployee(actor);
+		
+		// Check that the actor is not the project leader.
+		assertFalse(actor.getInitials().equals(projectHolder.getProject().getProjectLeader().getInitials()));
 	}
 
 	@Given("the employee doesn't exist")
@@ -120,7 +128,7 @@ public class AssignEmployeeToActivitySteps {
 	public void theProjectLeaderAssignTheEmployeeToTheActivity(String activityName) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp(); 
 		try {
-			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor(), employeeHolder.getEmployee());
+			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityName, actorHolder.getActor().getInitials(), employeeHolder.getEmployee().getInitials());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
@@ -133,6 +141,14 @@ public class AssignEmployeeToActivitySteps {
 	@Then("the employee {string} is assigned to the activity {string}")
 	public void theEmployeeIsAssignedToTheActivity(String employeeInitials, String activityName) throws OperationNotAllowedException, ActivityNotFoundException {
 		assertThat(employeeHolder.getEmployee().getInitials(),is(equalTo(employeeInitials)));
+	}
+	
+	@Then("the employee is in the list of employees for the activity {string}")
+	public void theEmployeeIsInTheListOfEmployeesForTheActivity(String activityName) throws ActivityNotFoundException {
+		List<Employee> employeeList = projectHolder.getProject().getEmployeesAssignedToActivity(activityName);
+		Employee employee = employeeHolder.getEmployee();
+		
+		assertTrue(employeeList.contains(employee));
 	}
 
 	@Then("I get the error message {string}")

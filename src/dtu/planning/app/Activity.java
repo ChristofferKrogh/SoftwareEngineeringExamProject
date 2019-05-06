@@ -31,7 +31,7 @@ public class Activity {
 		return name;
 	}
 
-	public double getExpectedAmountOfHours() {
+	public float getExpectedAmountOfHours() {
 		return expectedAmountOfHours;
 	}
 
@@ -113,16 +113,22 @@ public class Activity {
 		return name;
 	}
 
-	public void setExpectedAmountOfHours(float hours) {
+	public void setExpectedAmountOfHours(float hours) throws OperationNotAllowedException {
+		if(hours < 0) {
+			throw new OperationNotAllowedException("The expected amount of hours must be at least 0");
+		}
 		this.expectedAmountOfHours = hours; 	
 	}
 
 	public void removeEmployee(Employee employee) {
+		int i = -1;
 		for (Employee e : employees) {
 			if (e.equals(employee)) {
-				employees.remove(employee);
+				i = employees.indexOf(e);
 			}
 		}
+		if (i != -1) 
+		employees.remove(i);	
 	}
 	
 }
