@@ -115,7 +115,6 @@ public class CreateActivitiesScreen {
         // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
         // ––––––––––––––––––– Activity Details –––––––––––––––––––––––––
-        // TODO: change date to weekDate
         panelActivityDetails = new JPanel();
         panelCreateActivity.add(panelActivityDetails);
         panelActivityDetails.setLayout(null);
@@ -174,60 +173,6 @@ public class CreateActivitiesScreen {
 					 + "<b>End:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;week&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of</html>");
 		lblDates.setText(b.toString());
 		panelActivityDetails.add(lblDates);
-        
-        
-        
-//        JLabel lblDateFormat = new JLabel("Day / Month / Year");
-//        lblDateFormat.setBounds(215, 145, 200, 30);
-//        panelCreateActivity.add(lblDateFormat);
-//
-//        JLabel lblStartDate = new JLabel("Start Date:");
-//        lblStartDate.setBounds(100, 170, 100, 30);
-//        panelCreateActivity.add(lblStartDate);
-//
-//        JLabel lblEndDate = new JLabel("End Date:");
-//        lblEndDate.setBounds(100, 200, 100, 30);
-//        panelCreateActivity.add(lblEndDate);
-//
-//        startDayField = new JTextField();
-//        startDayField.setBounds(210, 170, 30, 30);
-//        panelCreateActivity.add(startDayField);
-//
-//        startMonthField = new JTextField();
-//        startMonthField.setBounds(250, 170, 30, 30);
-//        panelCreateActivity.add(startMonthField);
-//
-//        startYearField = new JTextField();
-//        startYearField.setBounds(290, 170, 60, 30);
-//        panelCreateActivity.add(startYearField);
-//
-//        endDayField = new JTextField();
-//        endDayField.setBounds(210, 200, 30, 30);
-//        panelCreateActivity.add(endDayField);
-//
-//        endMonthField = new JTextField();
-//        endMonthField.setBounds(250, 200, 30, 30);
-//        panelCreateActivity.add(endMonthField);
-//
-//        endYearField = new JTextField();
-//        endYearField.setBounds(290, 200, 60, 30);
-//        panelCreateActivity.add(endYearField);
-//
-//        JLabel separatorOne = new JLabel("/");
-//        separatorOne.setBounds(242, 170, 30, 30);
-//        panelCreateActivity.add(separatorOne);
-//
-//        JLabel separatorTwo = new JLabel("/");
-//        separatorTwo.setBounds(282, 170, 30, 30);
-//        panelCreateActivity.add(separatorTwo);
-//
-//        JLabel separatorThree = new JLabel("/");
-//        separatorThree.setBounds(242, 200, 30, 30);
-//        panelCreateActivity.add(separatorThree);
-//
-//        JLabel separatorFour = new JLabel("/");
-//        separatorFour.setBounds(282, 200, 30, 30);
-//        panelCreateActivity.add(separatorFour);
 
         // Amount of hours
         JLabel lblAmountOfHours = new JLabel("Expected hours:");
@@ -288,8 +233,6 @@ public class CreateActivitiesScreen {
 				panelActivityDetails.setVisible(true);
 			}
 		});
-        
-        // TODO: Add 'okay'-button and 'create new activity'-button
         // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     }
 
@@ -375,7 +318,7 @@ public class CreateActivitiesScreen {
                     int year = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
                     GregorianCalendar startDate = new GregorianCalendar(); 
                     startDate.setWeekDate(year, week, GregorianCalendar.SUNDAY);
-                    planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name);
+                    planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -390,7 +333,7 @@ public class CreateActivitiesScreen {
                     int year = Integer.parseInt(endYearComboBox.getSelectedItem().toString());
                     GregorianCalendar endDate = new GregorianCalendar();
                     endDate.setWeekDate(year, week, GregorianCalendar.SATURDAY);
-                    planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name);
+                    planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -400,7 +343,7 @@ public class CreateActivitiesScreen {
             if (!amountOfHours.getText().equals("")) {
             	try{
                     float expectedAmountOfHours = Float.parseFloat(amountOfHours.getText());
-                    planningApp.editExpectedAmountOfHoursForActivity(expectedAmountOfHours,project.getProjectNumber(), name);
+                    planningApp.editExpectedAmountOfHoursForActivity(expectedAmountOfHours,project.getProjectNumber(), name, project.getProjectLeader().getInitials());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
