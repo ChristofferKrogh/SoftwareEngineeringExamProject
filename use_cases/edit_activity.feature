@@ -59,7 +59,7 @@ Scenario: Fail "The start week is set to a week after the end week" if not proje
 	And the actor is not project leader for the project
 	# TODO: Rename "the project leader" to "the actor" since its the actor that does this.
 	When the project leader edits the start week of the activity to 6/2019
-	Then I get the error message "You must be project leader to change a activity" 
+	Then I get the error message "You must be project leader to change an activity" 
 
 Scenario: The end week is set before the start week 
 	Given the project with id 1 exists
@@ -80,7 +80,7 @@ Scenario: The end week is set before the start week
 	And the actor is not project leader for the project
 	# TODO: Rename "the project leader" to "the actor" since its the actor that does this.
 	When the project leader edits the end week of the project to 19/2019
-	Then I get the error message "You must be project leader to change a activity" 
+	Then I get the error message "You must be project leader to change an activity" 
 	
 Scenario: The amount of expected hours is set to less than 0 
 	Given the project with id 1 exists 
