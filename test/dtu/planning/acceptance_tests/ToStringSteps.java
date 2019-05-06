@@ -22,15 +22,17 @@ public class ToStringSteps {
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ActivityHolder activityHolder;
+	private TimeRegistrationHolder timeRegistrationHolder;
 	
 	private String savedString;
 	private boolean isMatched;
 
-	public ToStringSteps(PlanningAppHolder planningAppHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
+	public ToStringSteps(PlanningAppHolder planningAppHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, TimeRegistrationHolder timeRegistrationHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 		this.activityHolder = activityHolder;
+		this.timeRegistrationHolder = timeRegistrationHolder;
 	}
 	
 	@Given("the employee has the name {string}")
@@ -129,6 +131,11 @@ public class ToStringSteps {
 	@When("I get the string representation of the project")
 	public void iGetTheStringRepresentationOfTheProject() {
 	    savedString = projectHolder.getProject().toString();
+	}
+	
+	@When("I get the string representation of the time registration")
+	public void iGetTheStringRepresentationOfTheTimeRegistration() {
+	    savedString = timeRegistrationHolder.getTimeRegistration().toString();
 	}
 	
 	@When("I match the employee with {string}")

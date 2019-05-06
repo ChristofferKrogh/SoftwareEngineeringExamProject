@@ -36,7 +36,10 @@ public class TimeRegistration {
  	
 	public String toString() {
 		int year = date.get(GregorianCalendar.YEAR);
+		
+		// The month is zero indexed in GregorianCalendar. Therefore we must add one month to get the correct month.
 		int month = date.get(GregorianCalendar.MONTH) + 1;
+		
 		int day = date.get(GregorianCalendar.DATE);
 		return amountOfTime + " hours on " + day + "/" + month + "/" + year + " for " + employee.getName();
 	}

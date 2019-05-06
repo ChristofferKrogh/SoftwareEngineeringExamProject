@@ -143,3 +143,12 @@ Scenario: Fail match project
     Given the project with id 190001 exists
     When I match the project with "testNoProject"
     Then I do not get a match
+
+Scenario: Represent a time registration as a string
+    Given employee with initials "JS" exists
+    And the employee has the name "John Smith"
+    And the project with id 1 exists
+    And the activity "Don't look at me" doesn't exist
+    When the employee report 4 hour on "Don't look at me" on 1/1/2019
+    When I get the string representation of the time registration
+    Then I get the string "4.0 hours on 1/1/2019 for John Smith"
