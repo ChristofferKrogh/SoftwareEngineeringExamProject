@@ -47,11 +47,7 @@ public class AssignEmployeeToActivitySteps {
 		employeeHolder.setEmployee(employee);
 
 		// Add this employee to the company
-		try {
-			planningApp.addEmployee(employee);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningApp.addEmployee(employee);
 
 	}
 
@@ -87,16 +83,12 @@ public class AssignEmployeeToActivitySteps {
 	}
 
 	@Given("the actor is not project leader for the project")
-	public void theActorIsNotProjectLeaderForTheOverlyingProject() {
+	public void theActorIsNotProjectLeaderForTheOverlyingProject() throws OperationNotAllowedException {
 		Employee actor = new Employee("Jane Doe", "JD");
 		actorHolder.setActor(actor);
 		
 		// Add the actor to the company
-		try {
-			planningAppHolder.getPlanningApp().addEmployee(actor);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningAppHolder.getPlanningApp().addEmployee(actor);
 		
 		// Check that the actor is not the project leader.
 		assertFalse(actor.getInitials().equals(projectHolder.getProject().getProjectLeader().getInitials()));
