@@ -257,7 +257,7 @@ public class PlanningApp {
 		searchForActivity(projectNumber, name).setExpectedAmountOfHours(expectedAmountOfHours);
 	}
 
-	public void editEmployeeForActivity(int projectNumber, String activityName, String oldEmployeeInitials, String newEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+	public void removeEmployeeFromActivity(int projectNumber, String activityName, String oldEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 								
@@ -271,12 +271,9 @@ public class PlanningApp {
 			throw new OperationNotAllowedException("The employee is not assigned to the activity"); 
 		}
 				
-		
 		// Remove old employee from activity and add new employee to the activity
 		Employee oldEmployee = searchForEmployee(oldEmployeeInitials); 
 		project.getActivityByName(activityName).removeEmployee(oldEmployee);
-		Employee newEmployee = searchForEmployee(newEmployeeInitials); 
-		project.getActivityByName(activityName).assignEmployee(newEmployee);
 			
 	}
 	

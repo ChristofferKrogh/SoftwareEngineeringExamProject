@@ -3,6 +3,7 @@ package dtu.planning.acceptance_tests;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -155,15 +156,6 @@ public class CreateActivitySteps {
 		}
 	}
 
-	@When("the project leader changes the assigned from {string} employee to {string}")
-	public void theProjectLeaderChangesTheAssignedEmployeeTo(String oldEmployeeInitials, String newEmployeeInitials) {
-		try {
-			planningAppHolder.getPlanningApp().editEmployeeForActivity(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(),oldEmployeeInitials,newEmployeeInitials, actorHolder.getActor().getInitials());
-		} catch (OperationNotAllowedException | NotProjectLeaderException | ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} 
-	     
-	}
 
 	@Then("the employee for the activity is {string}")
 	public void theEmployeeForTheActivityIs(String initials) {
@@ -212,6 +204,21 @@ public class CreateActivitySteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
+	}
+	
+	@When("the actor deletes {string} from the activity")
+	public void theActorDeletesFromTheActivity(String employeeInitials) {
+	    try {
+			planningAppHolder.getPlanningApp().removeEmployeeFromActivity(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), employeeInitials, projectHolder.getProject().getProjectLeader().getInitials());
+		} catch (OperationNotAllowedException | NotProjectLeaderException | ActivityNotFoundException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		
+	}
+
+	@Then("the employee is not part of the activity")
+	public void theEmployeeIsNotPartOfTheActivity() {
+	    assertFalse(activityHolder.getActivity().getAssignedEmployees().stream().map(e -> e.getInitials()).anyMatch(i -> i.equals(employeeHolder.getEmployee().getInitials()))); 
 	}
 	
 }
