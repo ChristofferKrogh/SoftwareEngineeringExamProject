@@ -531,7 +531,6 @@ public class ReportTimeScreen {
 
 	public void setVisible(boolean aFlag) {
 		panelReportTime.setVisible(aFlag);
-		
 	}
 	
 	private void reportTime() {
