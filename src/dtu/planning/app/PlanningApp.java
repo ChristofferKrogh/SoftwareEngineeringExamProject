@@ -116,13 +116,18 @@ public class PlanningApp {
 
 
 	// TODO: there are no tests for this method
-	public List<Employee> searchForEmployeesByName(String name) {
+	public List<Employee> searchForEmployeesByName(String name) throws OperationNotAllowedException {
 		List<Employee> searchResults = new ArrayList<>();
 		for (Employee e : employees) {
 			if (e.match(name)) {
 				searchResults.add(e);
 			}
 		}
+		
+		if (searchResults.isEmpty()) {
+			throw new OperationNotAllowedException("The employee does not exist");
+		}
+		
 		return searchResults;
 	}
 

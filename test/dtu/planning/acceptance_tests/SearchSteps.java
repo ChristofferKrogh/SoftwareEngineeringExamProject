@@ -10,6 +10,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
+import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.Project;
 
@@ -19,12 +20,14 @@ public class SearchSteps {
 	private ProjectHolder projectHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private ActivityHolder activityHolder;
+	private EmployeeHolder employeeHolder;
 
-	public SearchSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, ActivityHolder activityHolder) {
+	public SearchSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, ActivityHolder activityHolder, EmployeeHolder employeeHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.activityHolder = activityHolder;
+		this.employeeHolder = employeeHolder;
 	}
 	
 	@Given("the activity with name {string} does not exists for project")
@@ -65,10 +68,28 @@ public class SearchSteps {
 	
 	@When("I search a project with name {string}")
 	public void iSearchAProjectWithName(String searchTerm) {
-		List<Project> searchResults;
 		try {
-			searchResults = planningAppHolder.getPlanningApp().searchForProjectsByName(searchTerm);
+			List<Project> searchResults = planningAppHolder.getPlanningApp().searchForProjectsByName(searchTerm);
 			projectHolder.setProject(searchResults.get(0));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("I search for an employee with initials {string}")
+	public void iSearchForAnEmployeeWithInitials(String employeeInitials) {
+	    try {
+			employeeHolder.setEmployee(planningAppHolder.getPlanningApp().searchForEmployee(employeeInitials));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
+	@When("I search for an employee with name {string}")
+	public void iSearchForAnEmployeeWithName(String employeeName) {
+		try {
+			List<Employee> searchResults = planningAppHolder.getPlanningApp().searchForEmployeesByName(employeeName);
+			employeeHolder.setEmployee(searchResults.get(0));
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -87,5 +108,15 @@ public class SearchSteps {
 	@Then("I get a project with name {string}")
 	public void iGetAProjectWithName(String projectName) {
 	    assertEquals(projectHolder.getProject().getName(),projectName);
+	}
+	
+	@Then("I get an employee with intitials {string}")
+	public void iGetAnEmployeeWithIntitials(String employeeInitials) {
+		assertEquals(employeeHolder.getEmployee().getInitials(),employeeInitials);
+	}
+	
+	@Then("I get an employee with name {string}")
+	public void iGetAnEmployeeWithName(String employeeName) {
+	    assertEquals(employeeHolder.getEmployee().getName(),employeeName);
 	}
 }

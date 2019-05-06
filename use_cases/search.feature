@@ -34,7 +34,21 @@ Scenario: Search for project that does not exist by id
     When I search a project with id 1
     Then I get the error message "The project does not exist"
     
+Scenario: Search for employee by initials successfully
+    And employee with initials "JS" exists
+    When I search for an employee with initials "JS"
+    Then I get an employee with intitials "JS"
 
-# Search for employee
-# - By Initials
-# - By name
+Scenario: Search for employee by name successfully
+    And employee with initials "JS" exists
+    And the employee has the name "John Doe"
+    When I search for an employee with name "John Doe"
+    Then I get an employee with name "John Doe"
+    
+Scenario: Search for employee that does not exist by initials
+    When I search for an employee with initials "JS"
+    Then I get the error message "The employee does not exist"
+    
+Scenario: Search for employee that does not exist by name
+    When I search for an employee with name "John Doe"
+    Then I get the error message "The employee does not exist"
