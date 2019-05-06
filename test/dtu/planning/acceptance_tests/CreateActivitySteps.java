@@ -24,7 +24,6 @@ import dtu.planning.app.Project;
 
 public class CreateActivitySteps {
 		
-	private PlanningApp planningApp;
 	private PlanningAppHolder planningAppHolder; 
 	private ErrorMessageHolder errorMessageHolder;
 	private ProjectHolder projectHolder;
@@ -33,8 +32,8 @@ public class CreateActivitySteps {
 	private ActorHolder actorHolder; 
 	private Project project;
 		
-	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningApp planningApp, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, ActorHolder actorHolder) {
-		this.planningApp = planningApp; 
+	public CreateActivitySteps(ErrorMessageHolder errorMessageHolder, PlanningAppHolder planningAppHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, ActorHolder actorHolder) {
+		this.planningAppHolder = planningAppHolder; 
 		this.errorMessageHolder = errorMessageHolder; 
 		this.projectHolder = projectHolder; 
 		this.employeeHolder = employeeHolder; 
@@ -53,7 +52,7 @@ public class CreateActivitySteps {
 	@When("the project leader {string} creates an activity {string}")
 	public void theProjectLeaderCreatesAnActivity(String initials, String name) throws NotProjectLeaderException, OperationNotAllowedException {
 		assertTrue(projectHolder.getProject().getProjectLeader().getInitials().equals(initials));
-		Activity activity = new Activity(name, null, null, 0.0);
+		Activity activity = new Activity(name, null, null, 0);
 		projectHolder.getProject().addActivity(activity,initials);
 	}
 
@@ -79,11 +78,11 @@ public class CreateActivitySteps {
 	
 
 	@When("the project leader edits the start week of the activity to {int}\\/{int}")
-	public void theProjectLeaderEditsTheStartWeekOfTheActivityTo(Integer numWeekYear, Integer year) throws OperationNotAllowedException {
+	public void theProjectLeaderEditsTheStartWeekOfTheActivityTo(Integer numWeekYear, Integer year) throws OperationNotAllowedException, ActivityNotFoundException, NotProjectLeaderException {
 		GregorianCalendar startWeek = new GregorianCalendar();
         startWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
 		
-		activityHolder.getActivity().setStartWeek(startWeek); 
+		planningAppHolder.getPlanningApp().editStartDateOfActivity(startWeek, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 	}
 
 	@Then("the start week of the project is {int}\\/{int}")
@@ -96,11 +95,11 @@ public class CreateActivitySteps {
 	}
 
 	@When("the project leader edits the end week of the project to {int}\\/{int}")
-	public void theProjectLeaderEditsTheEndWeekOfTheProjectTo(Integer numWeekYear, Integer year) throws OperationNotAllowedException {
+	public void theProjectLeaderEditsTheEndWeekOfTheProjectTo(Integer numWeekYear, Integer year) throws OperationNotAllowedException, ActivityNotFoundException, NotProjectLeaderException {
 		GregorianCalendar endWeek = new GregorianCalendar();
         endWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
+		planningAppHolder.getPlanningApp().editEndDateOfActivity(endWeek, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 		
-		activityHolder.getActivity().setEndWeek(endWeek); 
 	}
 
 	@Then("the end week of the project is {int}\\/{int}")
@@ -112,14 +111,14 @@ public class CreateActivitySteps {
 	}
 	
 	@When("the project leader edits the expected amount of hours to {int}")
-	public void theProjectLeaderEditsTheExpectedAmountOfHoursTo(Integer hours) {
-	    double expectedAmountOfHours = new Double(hours); 
-		activityHolder.getActivity().setExpectedAmountOfHours(expectedAmountOfHours);
+	public void theProjectLeaderEditsTheExpectedAmountOfHoursTo(Integer hours) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
+	    float expectedAmountOfHours = new Float(hours); 
+	    planningAppHolder.getPlanningApp().editExpectedAmountOfHoursForActivity(expectedAmountOfHours, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 	}
 
 	@Then("the expected amount of hours is {int}")
 	public void theExpectedAmountOfHoursIs(Integer hours) {
-		double expectedAmountOfHours = new Double(hours); 
+		float expectedAmountOfHours = new Float(hours); 
 		assertTrue(expectedAmountOfHours == activityHolder.getActivity().getExpectedAmountOfHours()); 
 	}
 	
@@ -127,8 +126,17 @@ public class CreateActivitySteps {
 	public void theAssignedEmployeeIs(String initials) {
 		Employee employee = new Employee(null, initials); 
 		employeeHolder.setEmployee(employee);
+		
+		// Add this employee to the company
 		try {
-			planningApp.assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor(), employee);
+			planningAppHolder.getPlanningApp().addEmployee(employee);
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+		
+		// Assign employee to activity 
+		try {
+			planningAppHolder.getPlanningApp().assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor(), employee);
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (OperationNotAllowedException e) {
@@ -138,17 +146,27 @@ public class CreateActivitySteps {
 		}
 	}
 
-	@When("the project leader changes the assigned employee to {string}")
-	public void theProjectLeaderChangesTheAssignedEmployeeTo(String initials ) throws OperationNotAllowedException {
-	    activityHolder.getActivity().getAssignedEmployees().remove(employeeHolder.getEmployee()); 	    
-	    Employee newEmployee = new Employee(null, initials); 
-	    activityHolder.getActivity().assignEmployee(newEmployee);
-	    
+	@When("the project leader changes the assigned from {string} employee to {string}")
+	public void theProjectLeaderChangesTheAssignedEmployeeTo(String oldEmployeeInitials, String newEmployeeInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+		planningAppHolder.getPlanningApp().editEmployeeForActivity(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(),oldEmployeeInitials,newEmployeeInitials, actorHolder.getActor().getInitials()); 
+	     
 	}
 
 	@Then("the employee for the activity is {string}")
 	public void theEmployeeForTheActivityIs(String initials) {
 	    assertTrue(activityHolder.getActivity().getAssignedEmployees().stream().map(e -> e.getInitials()).anyMatch(i -> i.equals(initials))); 
 	}
+	
+	@When("an actor changes the expected amount of hours to {int}")
+	public void anActorChangesTheExpectedAmountOfHoursTo(Integer hours) {
+		float expectedAmountOfHours = new Float(hours); 
+
+	    try {
+			planningAppHolder.getPlanningApp().editExpectedAmountOfHoursForActivity(expectedAmountOfHours, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
+		} catch (ActivityNotFoundException | OperationNotAllowedException | NotProjectLeaderException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
 	
 }

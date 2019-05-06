@@ -257,7 +257,7 @@ public class CreateActivitiesScreen {
                     int month = Integer.parseInt(startMonthField.getText());
                     int year = Integer.parseInt(startYearField.getText());
                     GregorianCalendar startDate = new GregorianCalendar(year, month, day);
-                    planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name);
+                    //planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -274,7 +274,7 @@ public class CreateActivitiesScreen {
                     int month = Integer.parseInt(endMonthField.getText());
                     int year = Integer.parseInt(endYearField.getText());
                     GregorianCalendar endDate = new GregorianCalendar(year, month, day);
-                    planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name);
+                    //planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -283,7 +283,7 @@ public class CreateActivitiesScreen {
             // Add the expected amount of hours
             try{
                 int expectedAmountOfHours = Integer.parseInt(amountOfHours.getText());
-                planningApp.editExpectedAmountOfHoursForActivity(expectedAmountOfHours,project.getProjectNumber(), name);
+                //planningApp.editExpectedAmountOfHoursForActivity(expectedAmountOfHours,project.getProjectNumber(), name);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

@@ -36,15 +36,17 @@ Scenario: The employee for an activity is changed
     And the actor is project leader for the project
     And the activity with name "Some Activity" exists for project
 	And the assigned employee is "JD"
-	When the project leader changes the assigned employee to "KA"
+	And employee with initials "KA" exists
+	When the project leader changes the assigned from "JD" employee to "KA"
 	Then the employee for the activity is "KA" 
 
-#Scenario: A employee who are not project leader changes an activity
-#	Given the project with id 1 exists
-#   And the actor is project leader for the project
-#   And the activity with name "Some Activity" exists for project
-#	When an employee changes the expected amount of hours 
-#	Then get the error message "You must be project leader to change a activity"
+Scenario: A employee who are not project leader changes an activity
+	Given the project with id 1 exists
+	And "BS" is project leader for the project
+	And the activity with name "Some Activity" exists for project
+    And the actor is not project leader for the project
+    When an actor changes the expected amount of hours to 20
+	Then I get the error message "You must be project leader to change a activity"
 
 #Scenario: The start week is set to a week after the end week 
 #	Given the project with id 1 exists 
