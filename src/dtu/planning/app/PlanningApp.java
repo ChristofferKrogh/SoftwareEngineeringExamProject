@@ -133,9 +133,6 @@ public class PlanningApp {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
 			projectNumbers.add(p.getProjectNumber());
-//			if (!p.isPresent()) {
-//				throw new OperationNotAllowedException("The project does not exist");
-//			}
 		}
 		return projectNumbers;
 	}
@@ -192,7 +189,7 @@ public class PlanningApp {
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);
 		
-	};
+	}
 
 	private void checkEmployeeExist(Employee employee) throws OperationNotAllowedException {
 		Optional<Employee> r = employees
@@ -251,7 +248,7 @@ public class PlanningApp {
 						
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
 		searchForActivity(projectNumber, name).setExpectedAmountOfHours(expectedAmountOfHours);
 	}
