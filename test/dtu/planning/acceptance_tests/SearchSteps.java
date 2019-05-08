@@ -118,11 +118,6 @@ public class SearchSteps {
 		assertEquals(activityHolder.getActivity().getName(),activityName);
 	}
 	
-	@Then("I get a project with id {int}")
-	public void iGetAProjectWithId(int projectId) {
-		assertEquals(projectHolder.getProject().getProjectNumber(),projectId);
-	}
-	
 	@Then("I get a project that project")
 	public void iGetAProjectThatProject() {
 		assertEquals(projectHolder.getProject().getProjectNumber(),foundProject.getProjectNumber());

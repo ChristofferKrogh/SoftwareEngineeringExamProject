@@ -59,16 +59,13 @@ public class CreateActivitySteps {
 	}
 
 	@When("an employee {string} creates an activity {string}")
-	public void anEmployeeCreatesAnActivity(String initials, String name) {
+	public void anEmployeeCreatesAnActivity(String initials, String name) throws OperationNotAllowedException {
 	
 		Employee employee = new Employee(null,initials);
 		try {
 			Activity activity = new Activity(name, null, null, 0);
 			projectHolder.getProject().addActivity(activity,employee.getInitials());
-			assertTrue(false);
 		} catch (NotProjectLeaderException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
@@ -96,34 +93,23 @@ public class CreateActivitySteps {
 	}
 
 	@When("the project leader edits the end week of the project to {int}\\/{int}")
-	public void theProjectLeaderEditsTheEndWeekOfTheProjectTo(Integer numWeekYear, Integer year) {
+	public void theProjectLeaderEditsTheEndWeekOfTheProjectTo(Integer numWeekYear, Integer year) throws ActivityNotFoundException {
 		GregorianCalendar endWeek = new GregorianCalendar();
         endWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
 		try {
 			planningAppHolder.getPlanningApp().editEndDateOfActivity(endWeek, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
-		} catch (ActivityNotFoundException | OperationNotAllowedException | NotProjectLeaderException e) {
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
-	}
-
-	@Then("the end week of the project is {int}\\/{int}")
-	public void theEndWeekOfTheProjectIs(Integer numWeekYear, Integer year) {
-		GregorianCalendar compareWeek = new GregorianCalendar();
-        compareWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
-		
-		assertEquals(compareWeek.get(Calendar.WEEK_OF_YEAR),activityHolder.getActivity().getEndWeek().get(Calendar.WEEK_OF_YEAR)); 
-		assertEquals(compareWeek.get(Calendar.YEAR),activityHolder.getActivity().getEndWeek().get(Calendar.YEAR)); 
 	}
 	
 	@When("the project leader edits the expected amount of hours to {int}")
-	public void theProjectLeaderEditsTheExpectedAmountOfHoursTo(Integer hours){
+	public void theProjectLeaderEditsTheExpectedAmountOfHoursTo(Integer hours) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException{
 	    float expectedAmountOfHours = new Float(hours); 
-	    try {
-			planningAppHolder.getPlanningApp().editExpectedAmountOfHoursForActivity(expectedAmountOfHours, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
-		} catch (ActivityNotFoundException | OperationNotAllowedException | NotProjectLeaderException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+	    planningAppHolder.getPlanningApp().editExpectedAmountOfHoursForActivity(expectedAmountOfHours, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 	}
 
 	@Then("the expected amount of hours is {int}")
@@ -133,76 +119,42 @@ public class CreateActivitySteps {
 	}
 	
 	@Given("the assigned employee is {string}")
-	public void theAssignedEmployeeIs(String initials) {
+	public void theAssignedEmployeeIs(String initials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		Employee employee = new Employee(null, initials); 
 		employeeHolder.setEmployee(employee);
 		
 		// Add this employee to the company
-		try {
-			planningAppHolder.getPlanningApp().addEmployee(employee);
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningAppHolder.getPlanningApp().addEmployee(employee);
 		
 		// Assign employee to activity 
-		try {
-			planningAppHolder.getPlanningApp().assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials(), employee.getInitials());
-		} catch (NotProjectLeaderException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
-
-
-	@Then("the employee for the activity is {string}")
-	public void theEmployeeForTheActivityIs(String initials) {
-	    assertTrue(activityHolder.getActivity().getAssignedEmployees().stream().map(e -> e.getInitials()).anyMatch(i -> i.equals(initials))); 
+		planningAppHolder.getPlanningApp().assignEmployee(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials(), employee.getInitials());
 	}
 	
 	@When("an actor changes the expected amount of hours to {int}")
-	public void anActorChangesTheExpectedAmountOfHoursTo(Integer hours) {
+	public void anActorChangesTheExpectedAmountOfHoursTo(Integer hours) throws ActivityNotFoundException {
 		float expectedAmountOfHours = new Float(hours); 
 
 	    try {
 			planningAppHolder.getPlanningApp().editExpectedAmountOfHoursForActivity(expectedAmountOfHours, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
-		} catch (ActivityNotFoundException | OperationNotAllowedException | NotProjectLeaderException e) {
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
-	   
 	}
 	
 	@Given("the project has start week {int}\\/{int}")
-	public void theProjectHasStartWeek(Integer numWeekYear, Integer year) {
+	public void theProjectHasStartWeek(Integer numWeekYear, Integer year) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		GregorianCalendar startWeek = new GregorianCalendar();
         startWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
-		try {
-			planningAppHolder.getPlanningApp().editStartDateOfActivity(startWeek, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
-		} catch (ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (NotProjectLeaderException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-		
+		planningAppHolder.getPlanningApp().editStartDateOfActivity(startWeek, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 	}
 
 	@Given("the project has end week {int}\\/{int}")
-	public void theProjectHasEndWeek(Integer numWeekYear, Integer year) {
+	public void theProjectHasEndWeek(Integer numWeekYear, Integer year) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		GregorianCalendar endWeek = new GregorianCalendar();
         endWeek.setWeekDate(year, numWeekYear, GregorianCalendar.SUNDAY);
-		try {
-			planningAppHolder.getPlanningApp().editEndDateOfActivity(endWeek, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
-		}  catch (ActivityNotFoundException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		} catch (NotProjectLeaderException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+		planningAppHolder.getPlanningApp().editEndDateOfActivity(endWeek, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 		
 	}
 	
