@@ -30,6 +30,24 @@ Scenario: The employee for an activity is removed
 	And the assigned employee is "JD"
 	When the actor deletes "JD" from the activity
 	Then the employee is not part of the activity
+	
+Scenario: The employee for an activity is removed
+	Given the project with id 1 exists
+	# Setup is done by the project leader
+    And the actor is project leader for the project
+    And the activity with name "Some Activity" exists for project
+	And the assigned employee is "JS"
+	And the actor is not project leader for the project
+	# TODO: Rename "the project leader" to "the actor" since its the actor that does this.
+	When the actor deletes "JS" from the activity
+	Then I get the error message "You must be project leader to change an activity"
+
+Scenario: The employee for an activity is removed
+	Given the project with id 1 exists
+    And the actor is project leader for the project
+    And the activity with name "Some Activity" exists for project
+	When the actor deletes "JD" from the activity
+	Then I get the error message "The employee is not assigned to the activity"
 
 Scenario: A employee who are not project leader changes an activity
 	Given the project with id 1 exists

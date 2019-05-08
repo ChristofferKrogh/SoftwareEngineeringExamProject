@@ -209,7 +209,7 @@ public class CreateActivitySteps {
 	@When("the actor deletes {string} from the activity")
 	public void theActorDeletesFromTheActivity(String employeeInitials) {
 	    try {
-			planningAppHolder.getPlanningApp().removeEmployeeFromActivity(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), employeeInitials, projectHolder.getProject().getProjectLeader().getInitials());
+			planningAppHolder.getPlanningApp().removeEmployeeFromActivity(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), employeeInitials, actorHolder.getActor().getInitials());
 		} catch (OperationNotAllowedException | NotProjectLeaderException | ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
