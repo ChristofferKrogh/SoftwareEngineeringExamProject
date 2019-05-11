@@ -80,7 +80,7 @@ public class EditProjectScreen {
 		btnEditActivities.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Jeg forestiller mig, at det bliver noget i stil med:
-				// editActivitiesScreen.setProject(project);
+				editActivitiesScreen.setProject(project);
 				setVisible(false);
 				clear();
 				editActivitiesScreen.setVisible(true);

@@ -111,6 +111,7 @@ public class PlanningApp {
 		
 		return searchResults;
 	}
+	
 
 
 	// TODO: there are no tests for this method
@@ -129,6 +130,25 @@ public class PlanningApp {
 		return searchResults;
 	}
 
+	// TODO no test for this method 
+	public List<Activity> searchForActivitiesByName(int projectNumber, String searchText) throws OperationNotAllowedException {
+		List<Activity> searchResults = new ArrayList<>();
+		List<Activity> activities = new ArrayList<>(); 
+		activities = searchForProject(projectNumber).getActivities(); 
+		for (Activity a : activities) {
+			if (a.match(searchText)) {
+				searchResults.add(a);
+			}
+		}
+		
+		if (searchResults.isEmpty()) {
+			throw new OperationNotAllowedException("The activity does not exist");
+		}
+		
+		return searchResults;
+	}
+	
+	
 	public List<Integer> getProjectNumbers() {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
@@ -220,7 +240,6 @@ public class PlanningApp {
 	public void editStartDateOfActivity(GregorianCalendar startDate, int projectNumber, String name, String projectLeaderInitials) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException{
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
-		
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
 			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
@@ -233,6 +252,7 @@ public class PlanningApp {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 				
+		
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
 			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
