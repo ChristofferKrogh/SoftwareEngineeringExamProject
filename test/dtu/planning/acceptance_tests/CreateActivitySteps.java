@@ -115,7 +115,7 @@ public class CreateActivitySteps {
 	@Then("the expected amount of hours is {int}")
 	public void theExpectedAmountOfHoursIs(Integer hours) {
 		float expectedAmountOfHours = new Float(hours); 
-		assertTrue(expectedAmountOfHours == activityHolder.getActivity().getExpectedAmountOfHours()); 
+		assertEquals(expectedAmountOfHours,activityHolder.getActivity().getExpectedAmountOfHours(),0); 
 	}
 	
 	@Given("the assigned employee is {string}")
