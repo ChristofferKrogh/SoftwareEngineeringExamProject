@@ -26,12 +26,6 @@ public class CreateActivitiesScreen {
     private JLabel lblProjectName;
     private JLabel lblLeader;
     private JLabel lblCheckLeader;
-    private JTextField startDayField;
-    private JTextField startMonthField;
-    private JTextField startYearField;
-    private JTextField endDayField;
-    private JTextField endMonthField;
-    private JTextField endYearField;
     private Activity activity;
     private Project project;
 	private JTextField startWeekField;

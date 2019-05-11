@@ -4,19 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import dtu.planning.app.Activity;
-import dtu.planning.app.ActivityNotFoundException;
-import dtu.planning.app.Employee;
-import dtu.planning.app.NotProjectLeaderException;
-import dtu.planning.app.OperationNotAllowedException;
-import dtu.planning.app.Project;
 
 public class GetAllRelevantActivitiesForEmployee {
 	// "Global" variable holders so steps can be used across features
@@ -24,17 +17,15 @@ public class GetAllRelevantActivitiesForEmployee {
 	private ProjectHolder projectHolder;
 	private EmployeeHolder employeeHolder;
 	private ActivityHolder activityHolder;
-	private TimeRegistrationHolder timeRegistrationHolder;
 
 	// Private variables for this steps file
 	private SimpleEntry<List<Activity>, List<Integer>> relevantActivities;
 
-	public GetAllRelevantActivitiesForEmployee(PlanningAppHolder planningAppHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, TimeRegistrationHolder timeRegistrationHolder) {
+	public GetAllRelevantActivitiesForEmployee(PlanningAppHolder planningAppHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 		this.activityHolder = activityHolder;
-		this.timeRegistrationHolder = timeRegistrationHolder;
 	}
 	
 	@When("I get relevant activites for the employee")

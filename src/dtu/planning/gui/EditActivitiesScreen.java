@@ -12,15 +12,14 @@ import dtu.planning.app.PlanningApp;
 public class EditActivitiesScreen {
 
     private EditProjectScreen parentScreen;
-    private PlanningApp planningApp;
     private JPanel panelEditActivities;
-	private JPanel panelSuccessMessage;
 	private JButton btnBack;
     
 
 
     public EditActivitiesScreen(PlanningApp planningApp, EditProjectScreen parentScreen) {
-        this.planningApp = planningApp;
+    	// TODO Remove planningApp from constructor, not used here
+        // this.planningApp = planningApp;
         this.parentScreen = parentScreen;
         initialize();
     }
