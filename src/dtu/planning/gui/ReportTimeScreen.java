@@ -493,7 +493,7 @@ public class ReportTimeScreen {
 
 	private void findRelevantActivities() {
 		relevantActivities.clear();
-		SimpleEntry<List<Activity>, List<Integer>> foundActivities = planningApp.getAllRelevantActivitiesForEmployee(employee);
+		SimpleEntry<List<Activity>, List<Integer>> foundActivities = planningApp.getAllRelevantActivitiesForEmployee(employee.getInitials());
 		foundActivities.getKey().forEach((a) -> {relevantActivities.addElement(a);});
 		relevantProjectNumbers = foundActivities.getValue();
 	}
