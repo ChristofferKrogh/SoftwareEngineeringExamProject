@@ -76,12 +76,8 @@ public class SearchSteps {
 	}
 	
 	@When("I search a project with that id")
-	public void iSearchAProjectWithThatId() {
-		try {
-			foundProject = planningAppHolder.getPlanningApp().searchForProject(projectHolder.getProject().getProjectNumber());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+	public void iSearchAProjectWithThatId() throws OperationNotAllowedException {
+		foundProject = planningAppHolder.getPlanningApp().searchForProject(projectHolder.getProject().getProjectNumber());
 	}	
 	
 	@When("I search a project with name {string}")
