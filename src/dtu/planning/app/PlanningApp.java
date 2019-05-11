@@ -96,7 +96,6 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The regular activity does not exist");
 	}
 
-	// TODO: there are no tests for the method below
 	public List<Activity> searchForRegActivitiesByName(String searchText) throws OperationNotAllowedException {
 		List<Activity> searchResults = new ArrayList<>();
 		for (Activity a : regularActivities) {
@@ -112,8 +111,6 @@ public class PlanningApp {
 		return searchResults;
 	}
 
-
-	// TODO: there are no tests for this method
 	public List<Employee> searchForEmployeesByName(String name) throws OperationNotAllowedException {
 		List<Employee> searchResults = new ArrayList<>();
 		for (Employee e : employees) {
@@ -170,7 +167,6 @@ public class PlanningApp {
 		return employeeInitials;
 	}
 
-	// TODO: there are no tests for the method below
 	public List<Employee> getEmployees() {
 		return employees;
 	}
@@ -214,9 +210,7 @@ public class PlanningApp {
 		project.addActivity(activity, actorInitials);
 		return activity;
 	}
-    
-    
-	// TODO no test for the method below
+
 	public void editStartDateOfActivity(GregorianCalendar startDate, int projectNumber, String name, String projectLeaderInitials) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException{
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);

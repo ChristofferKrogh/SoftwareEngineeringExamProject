@@ -4,7 +4,6 @@ import java.util.GregorianCalendar;
 
 public class TimeRegistration {
 	private GregorianCalendar date;
-	// TODO: change from int to float
 	private float amountOfTime;
 	private Employee employee;
 	

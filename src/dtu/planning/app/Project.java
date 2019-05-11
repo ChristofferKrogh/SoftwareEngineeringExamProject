@@ -60,7 +60,6 @@ public class Project {
 		activities.add(activity);
 	}
 	
-	// TODO: there are no tests for the method below
 	public List<Activity> getActivities() {
 		return activities;
 	}
@@ -98,7 +97,6 @@ public class Project {
 	    return (Activity) r.get();
 	}
 	
-	// TODO: there are no tests for the method below
 	public boolean hasProjectLeader() {
 		if (projectLeader == null) {
 			return false;
@@ -128,7 +126,6 @@ public class Project {
 		return endDate;
 	}
 	
-	// TODO: there are no tests for the method below
 	public String getStartDateString() {
 		int year = startDate.get(Calendar.YEAR);
 		int month = startDate.get(Calendar.MONTH) + 1;

@@ -47,7 +47,6 @@ public class Activity {
 		return endWeek;
 	}
 	
-	// TODO: there are no tests for the method below
 	public String getStartWeekString() {
 		return "week " + startWeek.get(GregorianCalendar.WEEK_OF_YEAR)
 				+ " of " + startWeek.get(GregorianCalendar.YEAR);
