@@ -62,6 +62,14 @@ public class GetDailyReportedTimeSteps {
 		timeRegistrations = planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
 		assertFalse(timeRegistrations.isEmpty());
 	}
+    
+    @Given("no time report for date {int}\\/{int}\\/{int} exists")
+    public void noTimeReportForDateExists(Integer day, Integer month, Integer year) throws OperationNotAllowedException, TimeRegistrationNotFoundException {
+    	PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		date = new GregorianCalendar(year, month, day);
+		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
+		assertTrue(timeRegistrations.isEmpty());
+    }
 
 	@When("I ask for my daily used time")
 	public void iAskForMyDailyUsedTime() throws TimeRegistrationNotFoundException {
@@ -77,18 +85,9 @@ public class GetDailyReportedTimeSteps {
     public void iGetTheTimeUsedAcrossAllActivitiesAcrossAllProjects() {
         assertThat(dailyUsedTime,not(equalTo(0)));
     }
-    
-    @Given("no time report for date {int}\\/{int}\\/{int} exists")
-    public void noTimeReportForDateExists(Integer day, Integer month, Integer year) throws OperationNotAllowedException, TimeRegistrationNotFoundException {
-    	PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		date = new GregorianCalendar(year, month, day);
-		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
-		assertTrue(timeRegistrations.isEmpty());
-    }
 
     @Then("I get zero")
     public void iGetZero() {
         assertEquals(dailyUsedTime,0);
     }
-
 }

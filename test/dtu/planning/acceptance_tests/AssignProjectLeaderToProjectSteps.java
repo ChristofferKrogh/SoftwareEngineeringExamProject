@@ -31,7 +31,21 @@ public class AssignProjectLeaderToProjectSteps {
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 	}
-
+	
+	@Given("project with id {int} does not exist")
+	public void projectWithProjectNumberDoesNotExist(Integer pNumber) {
+		assertThat(planningApp.getProjectNumbers(), not(hasItem(pNumber)));
+		project = new Project("Test Project", true, pNumber);
+		projectHolder.setProject(project);
+	}
+	
+	@Given("employee with initials {string} does not exist")
+	public void employeeWithInitialsDoesNotExist(String initials) {
+		assertThat(planningApp.getEmployeeInitials(), not(hasItem(initials)));
+		employee = new Employee(null,initials);
+		employeeHolder.setEmployee(employee);
+	}
+	
 	@When("I assign employee with initials {string} as project leader")
 	public void iAssignEmployeeWithInitialsAsProjectLeader(String initials) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
@@ -53,19 +67,4 @@ public class AssignProjectLeaderToProjectSteps {
 		assertThat(employee.getInitials(),is(equalTo(initials)));
 		assertThat(project.getProjectLeader(),is(equalTo(employee)));
 	}
-	
-	@Given("project with id {int} does not exist")
-	public void projectWithProjectNumberDoesNotExist(Integer pNumber) {
-		assertThat(planningApp.getProjectNumbers(), not(hasItem(pNumber)));
-		project = new Project("Test Project", true, pNumber);
-		projectHolder.setProject(project);
-	}
-	
-	@Given("employee with initials {string} does not exist")
-	public void employeeWithInitialsDoesNotExist(String initials) {
-		assertThat(planningApp.getEmployeeInitials(), not(hasItem(initials)));
-		employee = new Employee(null,initials);
-		employeeHolder.setEmployee(employee);
-	}
-	
 }

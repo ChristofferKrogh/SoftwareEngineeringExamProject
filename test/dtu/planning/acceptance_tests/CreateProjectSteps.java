@@ -38,48 +38,6 @@ public class CreateProjectSteps {
 		projectHolder.setProject(project);
 	}
 
-	@When("an employee creates the project")
-	public void anEmployeeCreatesTheProject() throws Exception {
-		// There is no need to check whether the actor is an employee since we assume
-		// that only employee will have access to this system
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = projectHolder.getProject();
-		projectHolder.setProject(planningApp.createProject(project.getName(),project.isProjectInternal()));
-	}
-
-	@Then("the internal project with name {string} is created")
-	public void theInternalProjectWithNameIsCreated(String name) throws Exception {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = projectHolder.getProject();
-	    assertThat(project.getName(), is(equalTo(name)));
-	    assertThat(project.isProjectInternal(), is(equalTo(true)));
-	    assertThat(planningApp.getProjects(), hasItem(project));
-	}
-	
-	@Then("the external project with name {string} is created")
-	public void theExternalProjectWithNameIsCreated(String name) throws Exception {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = projectHolder.getProject();
-		assertThat(project.getName(), is(equalTo(name)));
-	    assertThat(project.isProjectInternal(), is(equalTo(false)));
-	    assertThat(planningApp.getProjects(), hasItem(project));
-	}
-
-	@Then("the project is given a project number")
-	public void theProjectIsGivenAProjectNumber() throws Exception {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		Project project = projectHolder.getProject();
-		int projectNumber = (planningApp.projectCount - 1) % 10000;
-		Date date = new Date();
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(date);
-		int year = calendar.get(Calendar.YEAR);
-		year %= 100;
-		projectNumber = year * 10000 + projectNumber;
-	    assertThat(project.getProjectNumber(), is(equalTo(projectNumber)));
-	    
-	}
-
 	@Given("there is an external project with name {string}")
 	public void thereIsAnExternalProjectWithName(String name) throws Exception {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
@@ -87,24 +45,13 @@ public class CreateProjectSteps {
 		projectHolder.setProject(project);
 	}
 
-	@When("an employee edits the start date of the project to {int}\\/{int}\\/{int}")
-	public void anEmployeeEditsTheStartDateOfTheProjectTo(Integer day, Integer month, Integer year) throws Exception {
+	@When("an employee creates the project")
+	public void anEmployeeCreatesTheProject() throws Exception {
+		// There is no need to check whether the actor is an employee since we assume
+		// that only employee will have access to this system
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
-	    Project project = projectHolder.getProject();
-	    try {
-	    	planningApp.editStartDateOfProject(date, project.getProjectNumber());
-		    projectHolder.setProject(planningApp.searchForProject(project.getProjectNumber()));
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
-	}
-
-	@Then("the start date of the project is {int}\\/{int}\\/{int}")
-	public void theStartDateOfTheProjectWithIdIs(Integer day, Integer month, Integer year) throws Exception {
 		Project project = projectHolder.getProject();
-		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
-	    assertTrue(project.getStartDate().equals(date));
+		projectHolder.setProject(planningApp.createProject(project.getName(),project.isProjectInternal()));
 	}
 	
 	@When("an employee edits the end date of the project to {int}\\/{int}\\/{int}")
@@ -120,11 +67,17 @@ public class CreateProjectSteps {
 		}
 	}
 
-	@Then("the end date of the project is {int}\\/{int}\\/{int}")
-	public void theEndDateOfTheProjectWithIdIs(Integer day, Integer month, Integer year) throws Exception {
-		Project project = projectHolder.getProject();
+	@When("an employee edits the start date of the project to {int}\\/{int}\\/{int}")
+	public void anEmployeeEditsTheStartDateOfTheProjectTo(Integer day, Integer month, Integer year) throws Exception {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
-	    assertTrue(project.getEndDate().equals(date));
+	    Project project = projectHolder.getProject();
+	    try {
+	    	planningApp.editStartDateOfProject(date, project.getProjectNumber());
+		    projectHolder.setProject(planningApp.searchForProject(project.getProjectNumber()));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
 	}
 	
 	@When("an employee edits the start date of the project to a date after the end date")
@@ -163,6 +116,53 @@ public class CreateProjectSteps {
 		} catch (OperationNotAllowedException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
+	}
+
+	@Then("the internal project with name {string} is created")
+	public void theInternalProjectWithNameIsCreated(String name) throws Exception {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		Project project = projectHolder.getProject();
+	    assertThat(project.getName(), is(equalTo(name)));
+	    assertThat(project.isProjectInternal(), is(equalTo(true)));
+	    assertThat(planningApp.getProjects(), hasItem(project));
+	}
+	
+	@Then("the external project with name {string} is created")
+	public void theExternalProjectWithNameIsCreated(String name) throws Exception {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		Project project = projectHolder.getProject();
+		assertThat(project.getName(), is(equalTo(name)));
+	    assertThat(project.isProjectInternal(), is(equalTo(false)));
+	    assertThat(planningApp.getProjects(), hasItem(project));
+	}
+
+	@Then("the project is given a project number")
+	public void theProjectIsGivenAProjectNumber() throws Exception {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		Project project = projectHolder.getProject();
+		int projectNumber = (planningApp.projectCount - 1) % 10000;
+		Date date = new Date();
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		year %= 100;
+		projectNumber = year * 10000 + projectNumber;
+	    assertThat(project.getProjectNumber(), is(equalTo(projectNumber)));
+	    
+	}
+
+	@Then("the start date of the project is {int}\\/{int}\\/{int}")
+	public void theStartDateOfTheProjectWithIdIs(Integer day, Integer month, Integer year) throws Exception {
+		Project project = projectHolder.getProject();
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
+	    assertTrue(project.getStartDate().equals(date));
+	}
+
+	@Then("the end date of the project is {int}\\/{int}\\/{int}")
+	public void theEndDateOfTheProjectWithIdIs(Integer day, Integer month, Integer year) throws Exception {
+		Project project = projectHolder.getProject();
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
+	    assertTrue(project.getEndDate().equals(date));
 	}
 
 	@Then("the name of the project is {string}")

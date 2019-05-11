@@ -40,7 +40,6 @@ public class CorrectReportedTimeSteps {
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
-//		this.actorHolder = actorHolder;
 		this.activityHolder = activityHolder;
 	}
 
@@ -60,6 +59,14 @@ public class CorrectReportedTimeSteps {
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
+	}
+
+	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
+	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year) throws ActivityNotFoundException{
+		employee = employeeHolder.getEmployee();
+		date = new GregorianCalendar(year, month, day);
+		activityName = nameActivity;
+		activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
 	}
 
 	@When("I update time used to {int} hours")
@@ -91,15 +98,4 @@ public class CorrectReportedTimeSteps {
 		assertThat(timeregOld,not(equalTo(activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime())));
 		assertTrue(projectHolder.getProject().getActivityByName(activityName).getTimeRegistrations().contains(activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date)));
 	}
-
-	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year) throws ActivityNotFoundException{
-		employee = employeeHolder.getEmployee();
-		date = new GregorianCalendar(year, month, day);
-		activityName = nameActivity;
-		activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
-	}
-
-
-
 }
