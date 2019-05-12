@@ -30,6 +30,7 @@ public class ProjectsScreen {
 	private CreateProjectScreen createProjectScreen;
 	private EditProjectScreen editProjectScreen;
 	private CreateActivitiesScreen createActivitiesScreen;
+	private GenerateReportScreen generateReportScreen;
 	private JPanel panelProjects;
 	private JTextField searchField;
 	private JList<Project> listSearchResult;
@@ -130,7 +131,10 @@ public class ProjectsScreen {
 				if (listSearchResult.getSelectedIndex() == -1) {
 					setConsoleMessage("You need to select a project");
 				} else {
-					// Generate Report
+					generateReportScreen.setProject(listSearchResult.getSelectedValue());
+					setVisible(false);
+					clear();
+					generateReportScreen.setVisible(true);
 				}
 			}
 		});
@@ -189,6 +193,7 @@ public class ProjectsScreen {
 		createProjectScreen = new CreateProjectScreen(planningApp, this);
 		editProjectScreen = new EditProjectScreen(planningApp, this);
 		createActivitiesScreen = new CreateActivitiesScreen(planningApp, this);
+		generateReportScreen = new GenerateReportScreen(planningApp, this);
 
 	}
 	protected void searchProjects() {

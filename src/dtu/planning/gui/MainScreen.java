@@ -32,6 +32,7 @@ public class MainScreen {
 	ReportTimeScreen reportTimeScreen;
 	CorrectReportedTimeScreen correctReportedTimeScreen;
 	GetDailyScreen getDailyScreen;
+	GenerateReportScreen generateReportScreen;
 	private int firstYear = 2000;
 	private int lastYear = 2040;
 
@@ -191,6 +192,7 @@ public class MainScreen {
 		reportTimeScreen = new ReportTimeScreen(planningApp, this);
 		correctReportedTimeScreen = new CorrectReportedTimeScreen(planningApp, this);
 		getDailyScreen = new GetDailyScreen(planningApp, this);
+		generateReportScreen = new GenerateReportScreen(planningApp, projectsScreen);
 	}
 	
 	public void setVisible(boolean aFlag) {
