@@ -18,8 +18,6 @@ public class PlanningApp {
 	// Storage for the list of employees that work for the company
 	private List<Employee> employees = new ArrayList<>();
 
-	private List<TimeRegistration> timeRegistration = new ArrayList<>();
-
 	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 
@@ -308,6 +306,17 @@ public class PlanningApp {
 		// Add time registration to that activity
 		activity.registerTime(timeRegistration);
 	}
+	
+	public void correctTimeReport(int projectNumber, String activityName, TimeRegistration timeRegistration, int amountOfTime) throws OperationNotAllowedException, ActivityNotFoundException {
+		// Find project from id
+		Project project = this.searchForProject(projectNumber);
+
+		// Find activity in project
+		Activity activity = project.getActivityByName(activityName);
+		
+		int index = activity.getTimeRegistrations().indexOf(timeRegistration);
+		activity.getTimeRegistrations().get(index).correctTime(amountOfTime);
+	}
 
 	public Report generateReport(int projectNumber, Employee projectLeader) throws NotProjectLeaderException, OperationNotAllowedException {
 		// Find project from id
@@ -315,11 +324,19 @@ public class PlanningApp {
 		return project.generateReport(projectLeader);
 	}
 	
-	public List<TimeRegistration> getAllTimeRegistrationsForEmployeeOnDate(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
+	public List<TimeRegistration> getAllTimeRegistrationsForEmployeeOnDate(Employee employee, GregorianCalendar date) {
+		List<TimeRegistration> timeRegistration = new ArrayList<>();
 		for(Project p : projects) {
-			List<Activity> activities = p.getActivities();
-			for(Activity a : activities) {
-					timeRegistration.add(a.getTimeRegistrationForEmployeeOnDate(employee, date));
+			for(Activity a : p.getActivities()) {
+				TimeRegistration t = null;
+				try {
+					t = a.getTimeRegistrationForEmployeeOnDate(employee, date);
+				} catch (TimeRegistrationNotFoundException e) {
+					
+				}
+				if (t != null) {
+					timeRegistration.add(t);
+				}
 			}
 		}
 		return timeRegistration;

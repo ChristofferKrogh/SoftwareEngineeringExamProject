@@ -23,10 +23,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.BorderUIResource;
 
 import dtu.planning.app.PlanningApp;
+import dtu.planning.app.Project;
 import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.TimeRegistration;
+import dtu.planning.app.TimeRegistrationNotFoundException;
 import dtu.planning.app.OperationNotAllowedException;
 
 public class CorrectReportedTimeScreen {
@@ -41,10 +43,10 @@ public class CorrectReportedTimeScreen {
 	private JLabel lblPhase;
 //	private JLabel employeeReminderField;
 	private JList<Employee> listSearchResult;
-	private JList<Activity> listTimeRegistrations;
+	private JList<TimeRegistration> listTimeRegistrations;
 	private JScrollPane listScrollPane;
 	private DefaultListModel<Employee> searchResults;
-	private DefaultListModel<Activity> timeRegistrations;
+	private DefaultListModel<TimeRegistration> timeRegistrations;
 	private List<Integer> relevantProjectNumbers;
 	private Employee employee;
 	private Activity activity;
@@ -60,6 +62,7 @@ public class CorrectReportedTimeScreen {
 	private JComboBox<String> monthComboBox;
 	private JComboBox<String> yearComboBox;
 	private float amountOfTime;
+	protected TimeRegistration timeRegistration;
   	
 	public CorrectReportedTimeScreen(PlanningApp planningApp, MainScreen parentWindow) {
 		this.planningApp = planningApp;
@@ -156,8 +159,6 @@ public class CorrectReportedTimeScreen {
 					System.out.println("You need to select an employee");
 				} else {
 					employee = listSearchResult.getSelectedValue();
-//					findRelevantActivities();
-					
 					panelSelectEmployee.setVisible(false);
 					panelSelectDate.setVisible(true);
 				}
@@ -222,7 +223,8 @@ public class CorrectReportedTimeScreen {
 						yearComboBox.getSelectedIndex() == 0) {
 					System.out.println("You need to select a date");
 				} else {
-					date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()), Integer.parseInt(dayComboBox.getSelectedItem().toString()));
+					date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()) - 1, Integer.parseInt(dayComboBox.getSelectedItem().toString()));
+					searchTimeRegistrations();
 					panelSelectEmployee.setVisible(false);
 					panelSelectDate.setVisible(false);
 					panelSelectTimeReg.setVisible(true);
@@ -240,7 +242,6 @@ public class CorrectReportedTimeScreen {
 				panelSelectEmployee.setVisible(true);
 				panelSelectDate.setVisible(false);
 				panelSelectTimeReg.setVisible(false);
-				timeRegistrations.clear();
 			}
 		});
 		// –––––––––––––––––––––––––––––––––––––––––––––––
@@ -261,6 +262,29 @@ public class CorrectReportedTimeScreen {
 		lblPhase.setText(b.toString());
 		panelSelectTimeReg.add(lblPhase);
 		
+		
+		//---------
+		timeRegistrations = new DefaultListModel<>();
+		listTimeRegistrations = new JList<TimeRegistration>(timeRegistrations);
+		listTimeRegistrations.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listTimeRegistrations.setSelectedIndex(0);
+//		listTimeRegistrations.addListSelectionListener(new ListSelectionListener() {
+//			public void valueChanged(ListSelectionEvent e) {
+//				if (listSearchResult.getSelectedIndex() == -1) {
+//					searchField.setText("");
+//				} else {
+//					searchField.setText(listSearchResult.getSelectedValue().getName());
+//				}
+//				
+//			}
+//		});
+		listTimeRegistrations.setVisibleRowCount(5);
+        listScrollPane = new JScrollPane(listTimeRegistrations);
+
+        listScrollPane.setBounds(80, 120, 250, 150);
+		panelSelectTimeReg.add(listScrollPane);
+		//--------
+		
 		JButton btnEdit = new JButton();
 		b = new StringBuffer(); b.append("<html><h2>Edit</h2></html>");
 		btnEdit.setText(b.toString());
@@ -268,14 +292,11 @@ public class CorrectReportedTimeScreen {
 		panelSelectTimeReg.add(btnEdit);
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (dayComboBox.getSelectedIndex() == 0 ||
-						monthComboBox.getSelectedIndex() == 0 ||
-						yearComboBox.getSelectedIndex() == 0) {
-					System.out.println("You need to select a date");
+				if (listTimeRegistrations.getSelectedIndex() == -1) {
+					System.out.println("You need to select a time registration");
 				} else {
-					date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()), Integer.parseInt(dayComboBox.getSelectedItem().toString()));
-					panelSelectEmployee.setVisible(false);
-					panelSelectDate.setVisible(false);
+					timeRegistration = listTimeRegistrations.getSelectedValue();
+					setAmountOfTimeFields();
 					panelSelectTimeReg.setVisible(false);
 					panelEditTime.setVisible(true);
 				}
@@ -292,7 +313,6 @@ public class CorrectReportedTimeScreen {
 				panelSelectEmployee.setVisible(false);
 				panelSelectDate.setVisible(true);
 				panelSelectTimeReg.setVisible(false);
-				timeRegistrations.clear();
 			}
 		});
 		// –––––––––––––––––––––––––––––––––––––––––––––––
@@ -325,7 +345,7 @@ public class CorrectReportedTimeScreen {
 						yearComboBox.getSelectedIndex() == 0) {
 					System.out.println("You need to select a date");
 				} else {
-					date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()), Integer.parseInt(dayComboBox.getSelectedItem().toString()));
+					date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()) - 1, Integer.parseInt(dayComboBox.getSelectedItem().toString()));
 					panelSelectEmployee.setVisible(false);
 					panelSelectDate.setVisible(false);
 					panelSelectTimeReg.setVisible(true);
@@ -344,29 +364,39 @@ public class CorrectReportedTimeScreen {
 				panelSelectDate.setVisible(false);
 				panelSelectTimeReg.setVisible(true);
 				panelEditTime.setVisible(false);
-				timeRegistrations.clear();
 			}
 		});
 		// ––––––––––––––––––––––––––––––––––––––––––––––––
 	}
 	
+	protected void setAmountOfTimeFields() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void setVisible(boolean aFlag) {
 		panelCorrectTime.setVisible(aFlag);
 	}
 	
 	public void clear() {
 		panelSelectEmployee.setVisible(true);
-//		panelSelectDate.setVisible(false);
-//		panelSelectTimeReg.setVisible(false);
+		panelSelectDate.setVisible(false);
+		panelSelectTimeReg.setVisible(false);
 //		panelEditTime.setVisible(false);
-//		employeeReminderField.setText("");
-//		searchField.setText("");
+		searchField.setText("");
 		searchResults.clear();
+		
 //		hoursComboBox.setSelectedItem(0);
 //		minutesComboBox.setSelectedItem(0);
 //		dayComboBox.setSelectedIndex(0);
 //		monthComboBox.setSelectedIndex(0);
 //		yearComboBox.setSelectedIndex(0);
+	}
+	
+	private void searchTimeRegistrations() {
+		timeRegistrations.clear();
+		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date)
+		.forEach(t -> {timeRegistrations.addElement(t);});
 	}
 	
 	protected void searchEmployees() {

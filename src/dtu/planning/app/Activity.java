@@ -91,10 +91,11 @@ public class Activity {
 
 	public TimeRegistration getTimeRegistrationForEmployeeOnDate (Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
 		for (TimeRegistration t : this.timeRegistrations) {
-			if (t.getEmployee()==employee && t.getDate()==date) {
+			if (t.match(employee, date)) {
 				return t;
 			}
 		}
+//		return null;
 		throw new TimeRegistrationNotFoundException("The employee has not registered time for this activity");
 	}
 
@@ -109,6 +110,8 @@ public class Activity {
 		return name.toLowerCase().contains(searchText.toLowerCase());
 	}
 
+	
+	
 	public String toString() {
 		return name;
 	}

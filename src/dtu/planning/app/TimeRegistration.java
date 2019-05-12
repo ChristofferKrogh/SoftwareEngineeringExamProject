@@ -43,5 +43,19 @@ public class TimeRegistration {
 		int day = date.get(GregorianCalendar.DATE);
 		return amountOfTime + " hours on " + day + "/" + month + "/" + year + " for " + employee.getName();
 	}
+
+	// TODO: there are no tests
+	public boolean match(Employee employee, GregorianCalendar date) {
+		boolean year = this.date.get(GregorianCalendar.YEAR) == date.get(GregorianCalendar.YEAR);
+		boolean month = this.date.get(GregorianCalendar.MONTH) == date.get(GregorianCalendar.MONTH);
+		boolean day = this.date.get(GregorianCalendar.DATE) == date.get(GregorianCalendar.DATE);
+		boolean employeeMatch;
+		if (this.employee == null) {
+			employeeMatch = employee == null;
+		} else {
+			employeeMatch = this.employee.equals(employee);
+		}
+		return employeeMatch && year && month && day;
+	}
 	
 }
