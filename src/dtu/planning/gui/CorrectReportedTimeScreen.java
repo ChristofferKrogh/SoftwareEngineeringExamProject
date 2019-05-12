@@ -145,7 +145,7 @@ public class CorrectReportedTimeScreen {
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select an employee");
+					setConsoleMessage("You need to select an employee");
 				} else {
 					employee = listSearchResult.getSelectedValue();
 					panelSelectEmployee.setVisible(false);
@@ -210,7 +210,7 @@ public class CorrectReportedTimeScreen {
 				if (dayComboBox.getSelectedIndex() == 0 ||
 						monthComboBox.getSelectedIndex() == 0 ||
 						yearComboBox.getSelectedIndex() == 0) {
-					System.out.println("You need to select a date");
+					setConsoleMessage("You need to select a date");
 				} else {
 					date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()) - 1, Integer.parseInt(dayComboBox.getSelectedItem().toString()));
 					searchTimeRegistrations();
@@ -269,7 +269,7 @@ public class CorrectReportedTimeScreen {
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listTimeRegistrations.getSelectedIndex() == -1) {
-					System.out.println("You need to select a time registration");
+					setConsoleMessage("You need to select a time registration");
 				} else {
 					timeRegistration = listTimeRegistrations.getSelectedValue();
 					setAmountOfTimeComboBoxes();
@@ -425,7 +425,7 @@ public class CorrectReportedTimeScreen {
 			planningApp.searchForEmployeesByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
+			setConsoleMessage(e.getMessage());
 		}		
 	}
 	

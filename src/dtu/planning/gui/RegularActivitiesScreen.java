@@ -199,11 +199,11 @@ public class RegularActivitiesScreen {
 						clear();
 						btnEditRegActivity.setText("Edit Expected Start and End");
 					} catch (Exception e2) {
-						System.out.println(e2.getMessage());
+						setConsoleMessage(e2.getMessage());
 					}
 				} else {
 					if (listSearchResult.getSelectedIndex() == -1) {
-						System.out.println("You need to select a regular activity");
+						setConsoleMessage("You need to select a regular activity");
 					} else {
 						regularActivity = listSearchResult.getSelectedValue();
 						editDatesMode = true;

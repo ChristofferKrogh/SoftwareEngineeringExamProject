@@ -317,19 +317,21 @@ public class CreateProjectScreen {
 		String name = projectNameField.getText();
 		boolean isProjectInternal = internalOrExternalComboBox.getSelectedItem().toString().matches("Internal");
 		if (name.equals("")) {
-			System.out.println("The project needs a name");
+			setConsoleMessage("The project needs a name");
 		} else {
+			StringBuffer b = new StringBuffer();
+        	b.append("<html>");
 			// Create the project
 			Project project = planningApp.createProject(name, isProjectInternal);
 			
 			// Add a project leader to the project if possible
 			if (listSearchResult.getSelectedIndex() == -1) {
-				System.out.println("The project was created without a project leader");
+				b.append("The project was created without a project leader<br>");
 			} else {
 				try {
 					planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getInitials());
 				} catch (OperationNotAllowedException e) {
-					System.out.println(e.getMessage());
+					b.append(e.getMessage() + "<br>");
 				}
 			}
 			
@@ -337,7 +339,7 @@ public class CreateProjectScreen {
 			if (startDayField.getText().equals("") || 
 					startMonthField.getText().equals("") || 
 					startYearField.getText().equals("")) { // All fields need to be filled out
-				System.out.println("The project was created without a start date");
+				b.append("The project was created without a start date<br>");
 			} else {
 				try {
 					int day = Integer.parseInt(startDayField.getText());
@@ -346,15 +348,14 @@ public class CreateProjectScreen {
 					GregorianCalendar startDate = new GregorianCalendar(year, month - 1, day);
 					planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
-				}
+					b.append(e.getMessage() + "<br>");				}
 			}
 			
 			// Add an end date to the project if possible
 			if (endDayField.getText().equals("") || 
 					endMonthField.getText().equals("") || 
 					endYearField.getText().equals("")) { // All fields need to be filled out
-				System.out.println("The project was created without a end date");
+				b.append("The project was created without an end date<br>");
 			} else {
 				try {
 					int day = Integer.parseInt(endDayField.getText());
@@ -363,9 +364,11 @@ public class CreateProjectScreen {
 					GregorianCalendar endDate = new GregorianCalendar(year, month - 1, day);
 					planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
+					b.append(e.getMessage() + "<br>");
 				}
 			}
+			b.append("</html>");
+			setConsoleMessage(b.toString());
 			
 			this.project = project;
 		}

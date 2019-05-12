@@ -106,7 +106,7 @@ public class MainScreen {
 		consoleFrame.getContentPane().add(panelConsole, "name_160236068959177"); //-6 til -7
 		panelConsole.setLayout(null);
 		panelConsole.setBorder(BorderFactory.createTitledBorder(
-                "Console"));
+                "Status"));
 		lblConsoleMessage = new JLabel("Important messages will appear in this window");
 		lblConsoleMessage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblConsoleMessage.setVerticalAlignment(SwingConstants.CENTER);
@@ -176,14 +176,6 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				getDailyScreen.setVisible(true);
-				
-				for (Project p : planningApp.getProjects()) {
-					for (Activity a : p.getActivities()) {
-						for (TimeRegistration t : a.getTimeRegistrations()) {
-							System.out.println(t);
-						}
-					}
-				}
 			}
 		});
 		btnGetTime.setBounds(104, 286, 193, 29);

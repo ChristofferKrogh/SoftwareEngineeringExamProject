@@ -294,18 +294,20 @@ public class CreateActivitiesScreen {
         Activity activity = null;
 
         if(name.equals("")){
-            System.out.println("The activity needs a name");
+        	setConsoleMessage("The activity needs a name");
         } else {
+        	StringBuffer b = new StringBuffer();
+        	b.append("<html>");
             // Create the activity
             try {
                 activity = planningApp.addActivity(projectNumber, name, null, null, 0,project.getProjectLeader().getInitials());
             } catch (OperationNotAllowedException | NotProjectLeaderException e) {
-            	System.out.println(e.getMessage());
+            	b.append(e.getMessage() + "<br>");
             }
 
             // Add a start date to the activity
             if (startWeekField.getText().equals("")) { // All fields need to be filled out
-                System.out.println("The activity was created without a start date");
+            	b.append("The activity was created without a start week<br>");
             } else {
                 try {
                     int week = Integer.parseInt(startWeekField.getText());
@@ -314,13 +316,13 @@ public class CreateActivitiesScreen {
                     startDate.setWeekDate(year, week, GregorianCalendar.SUNDAY);
                     planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                	b.append(e.getMessage() + "<br>");
                 }
             }
 
             // Add an end date to the activity
             if (endWeekField.getText().equals("")) { // All fields need to be filled out
-                System.out.println("The activity was created without an end date");
+            	b.append("The activity was created without an end week<br>");
             } else {
                 try {
                     int week = Integer.parseInt(endWeekField.getText());
@@ -329,7 +331,7 @@ public class CreateActivitiesScreen {
                     endDate.setWeekDate(year, week, GregorianCalendar.SATURDAY);
                     planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                	b.append(e.getMessage() + "<br>");
                 }
             }
 
@@ -339,8 +341,7 @@ public class CreateActivitiesScreen {
                     float expectedAmountOfHours = Float.parseFloat(amountOfHours.getText());
                     planningApp.editExpectedAmountOfHoursForActivity(expectedAmountOfHours,project.getProjectNumber(), name, project.getProjectLeader().getInitials());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
+                	b.append(e.getMessage() + "<br>");                }
             }
             
             // Add employee to the activity by initials
@@ -349,9 +350,10 @@ public class CreateActivitiesScreen {
                 employee = planningApp.searchForEmployee(employeeNameField.getText());
                 activity.assignEmployee(employee);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+            	b.append("No employees were assigned to the activity on creation<br>");
             }
-            
+            b.append("</html>");
+            setConsoleMessage(b.toString());
 
             this.activity = activity;
         }

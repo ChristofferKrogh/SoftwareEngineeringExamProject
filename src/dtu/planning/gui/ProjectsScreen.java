@@ -93,7 +93,7 @@ public class ProjectsScreen {
 		btnEditProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select a project");
+					setConsoleMessage("You need to select a project");
 				} else {
 					editProjectScreen.setProject(listSearchResult.getSelectedValue());
 					setVisible(false);
@@ -110,7 +110,7 @@ public class ProjectsScreen {
 		btnCreateActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select a project");
+					setConsoleMessage("You need to select a project");
 				} else {
 					// Jeg forestiller mig, at det bliver noget i stil med:
 					createActivitiesScreen.setProject(listSearchResult.getSelectedValue());
@@ -128,7 +128,6 @@ public class ProjectsScreen {
 		btnGenerateReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select a project");
 					setConsoleMessage("You need to select a project");
 				} else {
 					// Generate Report
@@ -136,7 +135,7 @@ public class ProjectsScreen {
 			}
 		});
 		btnGenerateReport.setBounds(270, 385, 115, 50);
-		btnGenerateReport.setVisible(true);
+		btnGenerateReport.setVisible(false);
 		panelProjects.add(btnGenerateReport);
 		
 		searchResults = new DefaultListModel<>();

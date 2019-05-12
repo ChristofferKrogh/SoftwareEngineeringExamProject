@@ -267,7 +267,7 @@ public class GetDailyScreen {
 			planningApp.searchForEmployeesByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
+			setConsoleMessage(e.getMessage());
 		}		
 	}
 	

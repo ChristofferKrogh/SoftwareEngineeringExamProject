@@ -171,7 +171,7 @@ public class ReportTimeScreen {
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select an employee");
+					setConsoleMessage("You need to select an employee");
 				} else {
 					employee = listSearchResult.getSelectedValue();
 					findRelevantActivities();
@@ -235,7 +235,7 @@ public class ReportTimeScreen {
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listRelevantActivities.getSelectedIndex() == -1) {
-					System.out.println("You need to select an activity");
+					setConsoleMessage("You need to select an activity");
 				} else {
 					activity = listRelevantActivities.getSelectedValue();
 					projectNumber = relevantProjectNumbers.get(relevantActivities.indexOf(activity));
@@ -377,7 +377,7 @@ public class ReportTimeScreen {
 				if (dayComboBox.getSelectedIndex() == 0 ||
 						monthComboBox.getSelectedIndex() == 0 ||
 						yearComboBox.getSelectedIndex() == 0) {
-					System.out.println("You need to select a date");
+					setConsoleMessage("You need to select a date");
 				} else {
 					reportTime();
 					setSuccessMessage();
@@ -536,18 +536,21 @@ public class ReportTimeScreen {
 	private void reportTime() {
 		GregorianCalendar date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()) - 1, Integer.parseInt(dayComboBox.getSelectedItem().toString()));
 		TimeRegistration timeRegistration = null;
+		StringBuffer b = new StringBuffer();
+		b.append("<html>");
 		try {
 			timeRegistration = new TimeRegistration(employee, date, amountOfTime);
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
-		}
+			b.append(e.getMessage() + "<br>");		}
 		try {
 			planningApp.registerTime(projectNumber, activity.getName(), timeRegistration);
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
+			b.append(e.getMessage() + "<br>");
 		} catch (ActivityNotFoundException e) {
-			System.out.println(e.getMessage());
+			b.append(e.getMessage() + "<br>");
 		}
+		b.append("</html>");
+		setConsoleMessage(b.toString());
 		
 	}
 	

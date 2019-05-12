@@ -84,12 +84,13 @@ public class CreateRegularActivityScreen {
 				try {
 					createRegActivity();
 				} catch (Exception e1) {
-					System.out.println(e1.getMessage());
+					setConsoleMessage(e1.getMessage());
 				}
 				if (regActivity != null) {
 					setVisible(false);
 					setSuccessMessage();
 					panelCreateRegActivitySuccess.setVisible(true);
+					regActivity = null;
 				}
 			}
 		});
