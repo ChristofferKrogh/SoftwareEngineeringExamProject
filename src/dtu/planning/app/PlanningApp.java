@@ -284,9 +284,9 @@ public class PlanningApp {
 			
 	}
 	
-	public Activity searchForActivity(int projectNumber, String name) throws ActivityNotFoundException, OperationNotAllowedException {
+	public Activity searchForActivity(int projectNumber, String activityName) throws ActivityNotFoundException, OperationNotAllowedException {
 		Project project = searchForProject(projectNumber);
-		return project.getActivityByName(name);
+		return project.getActivityByName(activityName);
 	}
     
 
