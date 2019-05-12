@@ -15,7 +15,6 @@ import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
-import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
 import dtu.planning.app.TimeRegistrationNotFoundException;
 
