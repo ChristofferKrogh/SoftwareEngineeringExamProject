@@ -115,7 +115,10 @@ public class Activity {
 
 	public void setExpectedAmountOfHours(float hours) throws OperationNotAllowedException {
 		if(hours < 0) {
-			throw new OperationNotAllowedException("The expected amount of hours must be at least 0");
+			throw new OperationNotAllowedException("The expected amount of hours must be at least 0 hours");
+		}
+		if (hours > 24) {
+			throw new OperationNotAllowedException("The expected amount of hours cannot be higher than 24 hours");
 		}
 		this.expectedAmountOfHours = hours; 	
 	}

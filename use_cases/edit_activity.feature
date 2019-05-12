@@ -54,7 +54,7 @@ Scenario: A employee who are not project leader changes an activity
 	And "BS" is project leader for the project
 	And the activity with name "Some Activity" exists for project
     And the actor is not project leader for the project
-    When an actor changes the expected amount of hours to 20
+    When an actor changes the expected amount of hours to 20.0
 	Then I get the error message "You must be project leader to change an activity"
 
 Scenario: The start week is set to a week after the end week 
@@ -103,8 +103,14 @@ Scenario: The amount of expected hours is set to less than 0
 	Given the project with id 1 exists 
     And the actor is project leader for the project
     And the activity with name "Some Activity" exists for project
-    When an actor changes the expected amount of hours to -1
-	Then I get the error message "The expected amount of hours must be at least 0"
+    When an actor changes the expected amount of hours to -1.0
+	Then I get the error message "The expected amount of hours must be at least 0 hours"
  
+Scenario: The amount of expected hours is set to less than 0 
+	Given the project with id 1 exists 
+    And the actor is project leader for the project
+    And the activity with name "Some Activity" exists for project
+    When an actor changes the expected amount of hours to 24.1
+	Then I get the error message "The expected amount of hours cannot be higher than 24 hours"
 	
 	

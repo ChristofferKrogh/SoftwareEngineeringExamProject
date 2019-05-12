@@ -125,10 +125,8 @@ public class CreateActivitySteps {
 	    planningAppHolder.getPlanningApp().editExpectedAmountOfHoursForActivity(expectedAmountOfHours, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 	}
 	
-	@When("an actor changes the expected amount of hours to {int}")
-	public void anActorChangesTheExpectedAmountOfHoursTo(Integer hours) throws ActivityNotFoundException {
-		float expectedAmountOfHours = new Float(hours); 
-
+	@When("an actor changes the expected amount of hours to {float}")
+	public void anActorChangesTheExpectedAmountOfHoursTo(Float expectedAmountOfHours) throws ActivityNotFoundException {
 	    try {
 			planningAppHolder.getPlanningApp().editExpectedAmountOfHoursForActivity(expectedAmountOfHours, projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), actorHolder.getActor().getInitials());
 		} catch (OperationNotAllowedException e) {

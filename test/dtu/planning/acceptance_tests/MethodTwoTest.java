@@ -118,10 +118,10 @@ public class MethodTwoTest {
         int projectNumber = planningApp.createProject(null, true).getProjectNumber();
 
         // Add employees by initials
-        planningApp.addEmployee(new Employee(null,"JD"));
+        planningApp.addEmployee(new Employee(null,"PL"));
         
         // Set project leader
-        planningApp.setProjectLeader(projectNumber, "JD");
+        planningApp.setProjectLeader(projectNumber, "PL");
         
         
         // Check input
@@ -136,10 +136,10 @@ public class MethodTwoTest {
         assertThat(projectNumber,is(not(190)));
 
         // Assert that the project leader has been set
-        assertEquals(planningApp.searchForProject(projectNumber).getProjectLeader().getInitials(),"JD");
+        assertEquals(planningApp.searchForProject(projectNumber).getProjectLeader().getInitials(),"PL");
         
         // Assert the employees is added
-        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        assertEquals(planningApp.searchForEmployee("PL").getInitials(),"PL");
         
         // Assert the employee list only contain the two employees
         assertEquals(planningApp.getEmployees().size(),1);
@@ -148,7 +148,7 @@ public class MethodTwoTest {
         // Primary action test
         
         // Add activity
-        planningApp.addActivity(projectNumber, null, new GregorianCalendar(), new GregorianCalendar(), 0, "JD");
+        planningApp.addActivity(projectNumber, null, new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
                 
         // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
 	}
