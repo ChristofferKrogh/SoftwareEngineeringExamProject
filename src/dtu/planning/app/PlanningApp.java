@@ -177,7 +177,6 @@ public class PlanningApp {
 		// Design by contract
 		assert employee!=null : "Precondition #1 violated";
 		
-		
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 

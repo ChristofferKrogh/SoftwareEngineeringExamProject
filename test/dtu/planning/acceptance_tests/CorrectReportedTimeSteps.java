@@ -28,6 +28,7 @@ public class CorrectReportedTimeSteps {
 	private EmployeeHolder employeeHolder;
 	private ErrorMessageHolder errorMessageHolder;
 	private ActivityHolder activityHolder;
+	private TimeRegistrationHolder timeRegistrationHolder;
 
 	private Employee employee;
 
@@ -36,18 +37,19 @@ public class CorrectReportedTimeSteps {
 	private String activityName;
 	private GregorianCalendar date;
 
-	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder) {//ActorHolder actorHolder
+	public CorrectReportedTimeSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, EmployeeHolder employeeHolder, ActivityHolder activityHolder, TimeRegistrationHolder timeRegistrationHolder) {
 		this.planningAppHolder = planningAppHolder;
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
 		this.activityHolder = activityHolder;
+		this.timeRegistrationHolder = timeRegistrationHolder;
 	}
 
 	@Given("the employee with initials {string} has reported {int} hours for the activity with name {string} on the date {int}\\/{int}\\/{int}")
 	public void theEmployeeWithInitialsHasReportedTimeForTheActivityWithNameOnTheDate(String initials, int hours, String nameActivity, Integer day, Integer month, Integer year) throws TimeRegistrationNotFoundException, OperationNotAllowedException {
 		employee = employeeHolder.getEmployee();
-		date = new GregorianCalendar(year, month, day);
+		date = new GregorianCalendar(year, month-1, day);
 		activityName = nameActivity;
 		try {
 			TimeRegistration timereg = new TimeRegistration(employee, date, hours);
@@ -57,6 +59,7 @@ public class CorrectReportedTimeSteps {
 			activity.registerTime(timereg);
 			TimeRegistration timer = projectHolder.getProject().getActivityByName(nameActivity).getTimeRegistrationForEmployeeOnDate(employee, date);
 			assertTrue(activityHolder.getActivity().getTimeRegistrations().contains(timer));
+			timeRegistrationHolder.setTimeRegistration(timereg);
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
@@ -71,20 +74,12 @@ public class CorrectReportedTimeSteps {
 	}
 
 	@When("I update time used to {int} hours")
-	public void iUpdatedeTimeUsedToHours(Integer amountOfTime) {
+	public void iUpdatedeTimeUsedToHours(Integer amountOfTime) throws OperationNotAllowedException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		/*
-		try {
-			Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
-			TimeRegistration timeRegistration = project.getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date);
-			planningApp.correctTimeReport(projectHolder.getProject().getProjectNumber(), activityName, timeRegistration, amountOfTime);
-		} catch (OperationNotAllowedException | ActivityNotFoundException e1) {
-			errorMessageHolder.setErrorMessage(e1.getMessage());
-		}
-		*/
 		
 		try {
-			projectHolder.getProject().getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date).correctTime(amountOfTime);
+			TimeRegistration foundTimeRegistration = projectHolder.getProject().getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date);
+			planningApp.correctTimeReport(projectHolder.getProject().getProjectNumber(), activityHolder.getActivity().getName(), foundTimeRegistration, amountOfTime);
 		} catch (TimeRegistrationNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (ActivityNotFoundException e) {

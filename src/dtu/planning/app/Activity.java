@@ -52,7 +52,6 @@ public class Activity {
 				+ " of " + startWeek.get(GregorianCalendar.YEAR);
 	}
 
-	// TODO: there are no tests for the method below
 	public String getEndWeekString() {
 		return "week " + endWeek.get(GregorianCalendar.WEEK_OF_YEAR)
 				+ " of " + endWeek.get(GregorianCalendar.YEAR);
@@ -94,7 +93,6 @@ public class Activity {
 				return t;
 			}
 		}
-//		return null;
 		throw new TimeRegistrationNotFoundException("The employee has not registered time for this activity");
 	}
 
