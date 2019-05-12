@@ -9,7 +9,9 @@ import java.util.GregorianCalendar;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
@@ -29,11 +31,14 @@ public class MainScreen {
 	CreateRegularActivityScreen createRegularActivityScreen;
 	ReportTimeScreen reportTimeScreen;
 	CorrectReportedTimeScreen correctReportedTimeScreen;
+	GetDailyScreen getDailyScreen;
 	private int firstYear = 2000;
 	private int lastYear = 2040;
 
 	private JFrame frame;
+	private JFrame consoleFrame;
 	private JPanel panelMenu;
+	private JLabel lblConsoleMessage;
 	
 	/**
 	 * Launch the application.
@@ -44,6 +49,7 @@ public class MainScreen {
 				try {
 					MainScreen screen = new MainScreen();
 					screen.frame.setVisible(true);
+					screen.consoleFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -90,8 +96,26 @@ public class MainScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// ---------- Console ------------
+		consoleFrame = new JFrame();
+		consoleFrame.setBounds(0, 510, 404, 200);
+		consoleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		consoleFrame.getContentPane().setLayout(new CardLayout(0, 0));
+		
+		JPanel panelConsole = new JPanel();
+		consoleFrame.getContentPane().add(panelConsole, "name_160236068959177"); //-6 til -7
+		panelConsole.setLayout(null);
+		panelConsole.setBorder(BorderFactory.createTitledBorder(
+                "Console"));
+		lblConsoleMessage = new JLabel("Important messages will appear in this window");
+		lblConsoleMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConsoleMessage.setVerticalAlignment(SwingConstants.CENTER);
+		lblConsoleMessage.setBounds(5, 5, 395, 170);
+		panelConsole.add(lblConsoleMessage);
+		// -------------------------------
+		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 404, 486);
+		frame.setBounds(0, 0, 404, 486);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		
@@ -121,6 +145,10 @@ public class MainScreen {
 		btnRegularActivities.setBounds(104, 90, 193, 29);
 		panelMenu.add(btnRegularActivities);
 		
+		JLabel lblTime = new JLabel("<html><b>Time</b></html>");
+		lblTime.setBounds(185, 155, 100, 30);
+		panelMenu.add(lblTime);
+		
 		JButton btnReportTime = new JButton("Report Time");
 		btnReportTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -146,6 +174,9 @@ public class MainScreen {
 		JButton btnGetTime = new JButton("Get Daily Reported Time");
 		btnGetTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				getDailyScreen.setVisible(true);
+				
 				for (Project p : planningApp.getProjects()) {
 					for (Activity a : p.getActivities()) {
 						for (TimeRegistration t : a.getTimeRegistrations()) {
@@ -167,6 +198,7 @@ public class MainScreen {
 		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, regularActivitiesScreen, firstYear, lastYear);
 		reportTimeScreen = new ReportTimeScreen(planningApp, this);
 		correctReportedTimeScreen = new CorrectReportedTimeScreen(planningApp, this);
+		getDailyScreen = new GetDailyScreen(planningApp, this);
 	}
 	
 	public void setVisible(boolean aFlag) {
@@ -181,5 +213,8 @@ public class MainScreen {
 		frame.getContentPane().add(panel);
 	}
 
+	public void setConsoleMessage(String message) {
+		lblConsoleMessage.setText(message);
+	}
 
 }

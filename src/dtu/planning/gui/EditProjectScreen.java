@@ -367,4 +367,8 @@ public class EditProjectScreen {
 		parentWindow.addPanel(panel);
 	}
 	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
+	}
+	
 }

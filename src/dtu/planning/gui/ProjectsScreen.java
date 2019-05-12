@@ -129,13 +129,14 @@ public class ProjectsScreen {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
 					System.out.println("You need to select a project");
+					setConsoleMessage("You need to select a project");
 				} else {
 					// Generate Report
 				}
 			}
 		});
 		btnGenerateReport.setBounds(270, 385, 115, 50);
-		btnGenerateReport.setVisible(false);
+		btnGenerateReport.setVisible(true);
 		panelProjects.add(btnGenerateReport);
 		
 		searchResults = new DefaultListModel<>();
@@ -143,8 +144,6 @@ public class ProjectsScreen {
 		listSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listSearchResult.setSelectedIndex(0);
 		listSearchResult.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
 			public void valueChanged(ListSelectionEvent e) {
 		        if (e.getValueIsAdjusting() == false) {
 
@@ -200,9 +199,7 @@ public class ProjectsScreen {
 			planningApp.searchForProjectsByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			// TODO: Add action if no project was found.
-			// e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}
 	}
 
@@ -224,5 +221,9 @@ public class ProjectsScreen {
 		btnEditProject.setVisible(isProjectSelected);
 		btnCreateActivity.setVisible(isProjectSelected);
 		btnGenerateReport.setVisible(isProjectSelected);
+	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
 	}
 }

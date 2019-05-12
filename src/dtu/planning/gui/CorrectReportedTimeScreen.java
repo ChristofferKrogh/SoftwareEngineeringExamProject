@@ -3,8 +3,6 @@ package dtu.planning.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
@@ -20,15 +18,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.BorderUIResource;
 
 import dtu.planning.app.PlanningApp;
-import dtu.planning.app.Project;
-import dtu.planning.app.Activity;
-import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.TimeRegistration;
-import dtu.planning.app.TimeRegistrationNotFoundException;
 import dtu.planning.app.OperationNotAllowedException;
 
 public class CorrectReportedTimeScreen {
@@ -41,17 +34,13 @@ public class CorrectReportedTimeScreen {
 	private JPanel panelEditTime;
 	private JTextField searchField;
 	private JLabel lblPhase;
-//	private JLabel employeeReminderField;
 	private JList<Employee> listSearchResult;
 	private JList<TimeRegistration> listTimeRegistrations;
 	private JScrollPane listScrollPane;
 	private DefaultListModel<Employee> searchResults;
 	private DefaultListModel<TimeRegistration> timeRegistrations;
-	private List<Integer> relevantProjectNumbers;
 	private Employee employee;
-	private Activity activity;
 	private GregorianCalendar date;
-	private int projectNumber;
 	private JButton btnBack;
 	private JButton btnNext;
 	private JButton btnPrevious;
@@ -262,28 +251,15 @@ public class CorrectReportedTimeScreen {
 		lblPhase.setText(b.toString());
 		panelSelectTimeReg.add(lblPhase);
 		
-		
-		//---------
 		timeRegistrations = new DefaultListModel<>();
 		listTimeRegistrations = new JList<TimeRegistration>(timeRegistrations);
 		listTimeRegistrations.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listTimeRegistrations.setSelectedIndex(0);
-//		listTimeRegistrations.addListSelectionListener(new ListSelectionListener() {
-//			public void valueChanged(ListSelectionEvent e) {
-//				if (listSearchResult.getSelectedIndex() == -1) {
-//					searchField.setText("");
-//				} else {
-//					searchField.setText(listSearchResult.getSelectedValue().getName());
-//				}
-//				
-//			}
-//		});
 		listTimeRegistrations.setVisibleRowCount(5);
         listScrollPane = new JScrollPane(listTimeRegistrations);
 
         listScrollPane.setBounds(80, 120, 250, 150);
 		panelSelectTimeReg.add(listScrollPane);
-		//--------
 		
 		JButton btnEdit = new JButton();
 		b = new StringBuffer(); b.append("<html><h2>Edit</h2></html>");
@@ -296,7 +272,7 @@ public class CorrectReportedTimeScreen {
 					System.out.println("You need to select a time registration");
 				} else {
 					timeRegistration = listTimeRegistrations.getSelectedValue();
-					setAmountOfTimeFields();
+					setAmountOfTimeComboBoxes();
 					panelSelectTimeReg.setVisible(false);
 					panelEditTime.setVisible(true);
 				}
@@ -319,7 +295,7 @@ public class CorrectReportedTimeScreen {
 		
 		// –––––––– Step 4: Edit  TimeRegistration ––––––-
 		panelEditTime = new JPanel();
-		panelEditTime.setBounds(0, 28, 365, 500);
+		panelEditTime.setBounds(0, 28, 370, 500);
 		panelCorrectTime.add(panelEditTime);
 		panelEditTime.setLayout(null);
 		panelEditTime.setVisible(false);
@@ -327,11 +303,49 @@ public class CorrectReportedTimeScreen {
 		lblPhase = new JLabel();
 		lblPhase.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPhase.setVerticalAlignment(SwingConstants.TOP);
-		lblPhase.setBounds(160, 0, 150, 90);
+		lblPhase.setBounds(140, 0, 150, 90);
 		b = new StringBuffer();
-		b.append("<html><h2>&nbsp;Step 3</h2>Select Time Registration</html>");
+		b.append("<html><h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Step 4</h2>Submit Amount of Time</html>");
 		lblPhase.setText(b.toString());
 		panelEditTime.add(lblPhase);
+		
+		JLabel timeDetails = new JLabel("hours:                    minutes:");
+		timeDetails.setBounds(80, 140, 200, 30);
+		panelEditTime.add(timeDetails);
+		
+		Integer[] comboBoxHours = new Integer[24];
+		for (int i = 0; i < 24; i++) {
+			comboBoxHours[i] = i;
+		}
+		hoursComboBox = new JComboBox<>(comboBoxHours);
+		hoursComboBox.setBounds(120, 140, 70, 30);
+		panelEditTime.add(hoursComboBox);
+		hoursComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				float time = Float.parseFloat(minutesComboBox.getSelectedItem().toString()) / 60 + Float.parseFloat(hoursComboBox.getSelectedItem().toString());
+				amountOfTime = BigDecimal.valueOf(time).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+				setSelectedTimeLbl();
+			}
+		});
+		
+		Integer[] comboBoxMinutes = new Integer[60];
+		for (int i = 0; i < 60; i++) {
+			comboBoxMinutes[i] = i;
+		}
+		minutesComboBox = new JComboBox<>(comboBoxMinutes);
+		minutesComboBox.setBounds(255, 140, 70, 30);
+		panelEditTime.add(minutesComboBox);
+		minutesComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				float time = Float.parseFloat(minutesComboBox.getSelectedItem().toString()) / 60 + Float.parseFloat(hoursComboBox.getSelectedItem().toString());
+				amountOfTime = BigDecimal.valueOf(time).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+				setSelectedTimeLbl();
+			}
+		});
+		
+		lblReportingDetails = new JLabel();
+		lblReportingDetails.setBounds(80, 210, 300, 30);
+		panelEditTime.add(lblReportingDetails);
 		
 		JButton btnSave = new JButton();
 		b = new StringBuffer(); b.append("<html><h2>Save Change</h2></html>");
@@ -340,16 +354,12 @@ public class CorrectReportedTimeScreen {
 		panelEditTime.add(btnSave);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (dayComboBox.getSelectedIndex() == 0 ||
-						monthComboBox.getSelectedIndex() == 0 ||
-						yearComboBox.getSelectedIndex() == 0) {
-					System.out.println("You need to select a date");
-				} else {
-					date = new GregorianCalendar(Integer.parseInt(yearComboBox.getSelectedItem().toString()), Integer.parseInt(monthComboBox.getSelectedItem().toString()) - 1, Integer.parseInt(dayComboBox.getSelectedItem().toString()));
-					panelSelectEmployee.setVisible(false);
-					panelSelectDate.setVisible(false);
-					panelSelectTimeReg.setVisible(true);
-				}
+				correctTime();
+				searchTimeRegistrations();
+				panelSelectEmployee.setVisible(false);
+				panelSelectDate.setVisible(false);
+				panelSelectTimeReg.setVisible(true);
+				panelEditTime.setVisible(false);
 			}
 		});
 		
@@ -369,9 +379,20 @@ public class CorrectReportedTimeScreen {
 		// ––––––––––––––––––––––––––––––––––––––––––––––––
 	}
 	
-	protected void setAmountOfTimeFields() {
-		// TODO Auto-generated method stub
-		
+	private void correctTime() {
+		timeRegistration.correctTime(amountOfTime);
+	}
+
+	private void setSelectedTimeLbl() {
+		StringBuffer b = new StringBuffer();
+		b.append("<html>You are currently reporting <b>" + amountOfTime + " hour(s)</b></html>");
+		lblReportingDetails.setText(b.toString());
+	}
+
+	private void setAmountOfTimeComboBoxes() {
+		hoursComboBox.setSelectedItem((int) timeRegistration.getAmountOfTime());
+		int minutes = (int) Math.round(timeRegistration.getAmountOfTime() * 100 % 100 * 0.6);
+		minutesComboBox.setSelectedItem(minutes);
 	}
 
 	public void setVisible(boolean aFlag) {
@@ -382,15 +403,14 @@ public class CorrectReportedTimeScreen {
 		panelSelectEmployee.setVisible(true);
 		panelSelectDate.setVisible(false);
 		panelSelectTimeReg.setVisible(false);
-//		panelEditTime.setVisible(false);
+		panelEditTime.setVisible(false);
 		searchField.setText("");
 		searchResults.clear();
-		
-//		hoursComboBox.setSelectedItem(0);
-//		minutesComboBox.setSelectedItem(0);
-//		dayComboBox.setSelectedIndex(0);
-//		monthComboBox.setSelectedIndex(0);
-//		yearComboBox.setSelectedIndex(0);
+		hoursComboBox.setSelectedItem(0);
+		minutesComboBox.setSelectedItem(0);
+		dayComboBox.setSelectedIndex(0);
+		monthComboBox.setSelectedIndex(0);
+		yearComboBox.setSelectedIndex(0);
 	}
 	
 	private void searchTimeRegistrations() {
@@ -399,7 +419,7 @@ public class CorrectReportedTimeScreen {
 		.forEach(t -> {timeRegistrations.addElement(t);});
 	}
 	
-	protected void searchEmployees() {
+	private void searchEmployees() {
 		searchResults.clear();
 		try {
 			planningApp.searchForEmployeesByName(searchField.getText())
@@ -407,5 +427,9 @@ public class CorrectReportedTimeScreen {
 		} catch (OperationNotAllowedException e) {
 			System.out.println(e.getMessage());
 		}		
+	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
 	}
 }

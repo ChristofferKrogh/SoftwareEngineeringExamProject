@@ -550,5 +550,9 @@ public class ReportTimeScreen {
 		}
 		
 	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
+	}
 
 }

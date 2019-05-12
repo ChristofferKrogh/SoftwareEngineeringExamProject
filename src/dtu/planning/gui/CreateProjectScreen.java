@@ -369,6 +369,9 @@ public class CreateProjectScreen {
 			
 			this.project = project;
 		}
-		
+	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
 	}
 }

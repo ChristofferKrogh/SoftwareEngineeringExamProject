@@ -278,5 +278,9 @@ public class RegularActivitiesScreen {
 	public void addPanel(JPanel panel) {
 		parentWindow.addPanel(panel);
 	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
+	}
 
 }

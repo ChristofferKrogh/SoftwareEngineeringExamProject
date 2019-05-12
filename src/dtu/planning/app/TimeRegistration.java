@@ -29,7 +29,7 @@ public class TimeRegistration {
 		return amountOfTime;
 	}
 	
-	public void correctTime(int amountOfTime) {
+	public void correctTime(float amountOfTime) {
 		this.amountOfTime = amountOfTime;
 	}
  	

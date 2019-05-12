@@ -292,4 +292,8 @@ public class CreateRegularActivityScreen {
 		endYearComboBox.setSelectedItem(2019);
 		employeeReminderField.setText("");
 	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
+	}
 }

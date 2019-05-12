@@ -356,4 +356,8 @@ public class CreateActivitiesScreen {
             this.activity = activity;
         }
     }
+    
+    public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
+	}
 }
