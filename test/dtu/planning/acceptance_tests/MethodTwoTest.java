@@ -110,7 +110,7 @@ public class MethodTwoTest {
 	}
 	
 	@Test
-	public void testActivityIsAddedToProjectSuccessfully() throws OperationNotAllowedException, NotProjectLeaderException {
+	public void testActivityIsAddedToProjectSuccessfully() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
         // Setup
 		PlanningApp planningApp = new PlanningApp();
 
@@ -148,8 +148,13 @@ public class MethodTwoTest {
         // Primary action test
         
         // Add activity
-        planningApp.addActivity(projectNumber, null, new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
                 
-        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+        // Assert that the activity is created
+        assertEquals(planningApp.searchForActivity(projectNumber, "Activity").getName(),"Activity");
+
+        // Assert that it is the only activity
+        assertEquals(planningApp.searchForProject(projectNumber).getActivities().size(),1);
+        
 	}
 }

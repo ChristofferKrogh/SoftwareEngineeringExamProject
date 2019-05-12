@@ -303,7 +303,8 @@ public class MethodThreeTest {
         
         // Edit hours
         planningApp.editExpectedAmountOfHoursForActivity((float) 3, projectNumber, "Activity", "PL");
-                
-        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+        
+        // Check that it did happen
+        assertEquals(planningApp.searchForActivity(projectNumber, "Activity").getExpectedAmountOfHours(),3.0, 0);
 	}
 }
