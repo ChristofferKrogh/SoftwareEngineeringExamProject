@@ -244,15 +244,25 @@ public class PlanningApp {
 	}
 
 	// Method 3 in report
-	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String name, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
+	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String activityName, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
+		Activity activity =  this.searchForActivity(projectNumber, activityName);
+		
+		// Design by contract
+		assert project != null : "Precondition #1 violoated";
 						
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
 			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
-		searchForActivity(projectNumber, name).setExpectedAmountOfHours(expectedAmountOfHours);
+		
+		// Design by contract
+		assert project.getProjectLeader() != null : "Precondition #2 violated";
+		
+		activity.setExpectedAmountOfHours(expectedAmountOfHours);
+		
+		assert Float.compare(activity.getExpectedAmountOfHours(),expectedAmountOfHours) == 0 : "Postcondition violated";
 	}
 
 	public void removeEmployeeFromActivity(int projectNumber, String activityName, String oldEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
