@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dtu.planning.app.Activity;
 import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
@@ -18,6 +20,9 @@ public class SearchSteps {
 	private ErrorMessageHolder errorMessageHolder;
 	private ActivityHolder activityHolder;
 	private EmployeeHolder employeeHolder;
+	
+	// Search result fields
+	private Project foundProject;
 
 	public SearchSteps(PlanningAppHolder planningAppHolder, ErrorMessageHolder errorMessageHolder, ProjectHolder projectHolder, ActivityHolder activityHolder, EmployeeHolder employeeHolder) {
 		this.planningAppHolder = planningAppHolder;
@@ -25,6 +30,11 @@ public class SearchSteps {
 		this.projectHolder = projectHolder;
 		this.activityHolder = activityHolder;
 		this.employeeHolder = employeeHolder;
+	}
+	
+	@Given("the project with some id exists")
+	public void theProjectWithSomeIdExists() {
+	    projectHolder.setProject(planningAppHolder.getPlanningApp().createProject(null, false));
 	}
 	
 	@When("I search for an activity with name {string}")
@@ -45,6 +55,17 @@ public class SearchSteps {
 		}
 	}
 	
+	@When("I search for a regular activies with name {string}")
+	public void iSearchForARegularActiviesWithName(String activityName) {
+		try {
+			List<Activity> searchResults = planningAppHolder.getPlanningApp().searchForRegActivitiesByName(activityName);
+			activityHolder.setActivity(searchResults.get(0));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+
+	
 	@When("I search a project with id {int}")
 	public void iSearchAProjectWithId(Integer searchTerm) {
 	    try {
@@ -53,6 +74,11 @@ public class SearchSteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 	}
+	
+	@When("I search a project with that id")
+	public void iSearchAProjectWithThatId() throws OperationNotAllowedException {
+		foundProject = planningAppHolder.getPlanningApp().searchForProject(projectHolder.getProject().getProjectNumber());
+	}	
 	
 	@When("I search a project with name {string}")
 	public void iSearchAProjectWithName(String searchTerm) {
@@ -88,9 +114,9 @@ public class SearchSteps {
 		assertEquals(activityHolder.getActivity().getName(),activityName);
 	}
 	
-	@Then("I get a project with id {int}")
-	public void iGetAProjectWithId(int projectId) {
-		assertEquals(projectHolder.getProject().getProjectNumber(),projectId);
+	@Then("I get a project that project")
+	public void iGetAProjectThatProject() {
+		assertEquals(projectHolder.getProject().getProjectNumber(),foundProject.getProjectNumber());
 	}
 	
 	@Then("I get a project with name {string}")

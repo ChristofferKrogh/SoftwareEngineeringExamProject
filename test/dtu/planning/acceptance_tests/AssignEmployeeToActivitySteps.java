@@ -56,10 +56,8 @@ public class AssignEmployeeToActivitySteps {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
 		// Name does not matter here, so it is set to null. It does not matter if the project is internal or external so it is set to false
 		// Please note: Planning app API naming. Here createProject is not creating a new project. It adds the project in question to the planning app.
-		Project project = new Project(null, false, projectCount);
-		planningApp.createProject(project);
-
-		projectHolder.setProject(project);
+		
+		projectHolder.setProject(planningApp.createProject(null, false));
 		
 		// assertEquals(projectCount,project.getProjectNumber());
 	}
@@ -117,10 +115,13 @@ public class AssignEmployeeToActivitySteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
-		if (activityHolder.getActivity() == null) {
-			// The 2nd and 3rd arguments are set to 0 as they are not important here.
-			activityHolder.setActivity(new Activity(activityName,null,null,0));
-		}
+		// ActivityHolder should be empty before this step
+		assertEquals(activityHolder.getActivity(),null);
+		
+		// The 2nd and 3rd arguments are set to 0 as they are not important here.
+		// Put in some activity that does not exist in the planningApp or project.
+		// To avoid null-pointer exceptions - so that edge case errors may be tested
+		activityHolder.setActivity(new Activity(activityName,null,null,0));
 	}
 
 

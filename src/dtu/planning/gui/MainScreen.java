@@ -24,6 +24,7 @@ public class MainScreen {
 	CreateProjectScreen createProjectScreen;
 	CreateActivitiesScreen createActivitiesScreen; 
 	EditProjectScreen editProjectScreen;
+	EditActivitiesScreen editActivitiesScreen; 
 	RegularActivitiesScreen regularActivitiesScreen;
 	CreateRegularActivityScreen createRegularActivityScreen;
 	ReportTimeScreen reportTimeScreen;
@@ -161,6 +162,7 @@ public class MainScreen {
 		createProjectScreen = new CreateProjectScreen(planningApp, projectsScreen);
 		createActivitiesScreen = new CreateActivitiesScreen(planningApp, projectsScreen); 
 		editProjectScreen = new EditProjectScreen(planningApp, projectsScreen);
+		editActivitiesScreen = new EditActivitiesScreen(planningApp, editProjectScreen); 
 		regularActivitiesScreen = new RegularActivitiesScreen(planningApp, this, firstYear, lastYear);
 		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, regularActivitiesScreen, firstYear, lastYear);
 		reportTimeScreen = new ReportTimeScreen(planningApp, this);

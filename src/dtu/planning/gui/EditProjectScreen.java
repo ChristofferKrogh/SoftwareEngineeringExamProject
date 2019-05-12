@@ -32,6 +32,7 @@ public class EditProjectScreen {
 
 	private ProjectsScreen parentWindow;
 	private PlanningApp planningApp;
+	private EditActivitiesScreen editActivitiesScreen; 
 	private JPanel panelEditProject;
 	private JPanel panelSuccessMessage;
 	private JTextField searchField;
@@ -79,12 +80,12 @@ public class EditProjectScreen {
 		btnEditActivities.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Jeg forestiller mig, at det bliver noget i stil med:
-//				activityScreen.setProject(project);
-//				setVisible(false);
-//				clear();
-//				activityScreen.setVisible(true);
+				// editActivitiesScreen.setProject(project);
+				setVisible(false);
+				clear();
+				editActivitiesScreen.setVisible(true);
 				//–––––––––––––––––––––––––––––-
-				project.getActivities().forEach((a)-> {System.out.println(a + " (" + a.getExpectedAmountOfHours() + " hours)" + " - " + a.getAssignedEmployees());});
+				// project.getActivities().forEach((a)-> {System.out.println(a + " (" + a.getExpectedAmountOfHours() + " hours)" + " - " + a.getAssignedEmployees());});
 			}
 		});
 		
@@ -242,6 +243,8 @@ public class EditProjectScreen {
 
         listScrollPane.setBounds(100, 280, 250, 100);
 		panelEditProject.add(listScrollPane);
+		
+		editActivitiesScreen = new EditActivitiesScreen(planningApp, this);
 
 	}
 
@@ -358,6 +361,10 @@ public class EditProjectScreen {
 				System.out.println(e.getMessage());
 			}
 		}
+	}
+	
+	public void addPanel(JPanel panel) {
+		parentWindow.addPanel(panel);
 	}
 	
 }

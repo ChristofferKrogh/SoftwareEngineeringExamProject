@@ -1,6 +1,9 @@
 package dtu.planning.acceptance_tests;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 import java.util.GregorianCalendar;
 
@@ -15,6 +18,7 @@ import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
 import dtu.planning.app.TimeRegistrationNotFoundException;
+
 
 public class CorrectReportedTimeSteps {
 
@@ -37,7 +41,6 @@ public class CorrectReportedTimeSteps {
 		this.errorMessageHolder = errorMessageHolder;
 		this.projectHolder = projectHolder;
 		this.employeeHolder = employeeHolder;
-//		this.actorHolder = actorHolder;
 		this.activityHolder = activityHolder;
 	}
 
@@ -57,6 +60,14 @@ public class CorrectReportedTimeSteps {
 		} catch (ActivityNotFoundException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
+	}
+
+	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
+	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year) throws ActivityNotFoundException{
+		employee = employeeHolder.getEmployee();
+		date = new GregorianCalendar(year, month, day);
+		activityName = nameActivity;
+		activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
 	}
 
 	@When("I update time used to {int} hours")
@@ -95,18 +106,7 @@ public class CorrectReportedTimeSteps {
 	@Then("the updated time report is saved to activity with name {string}")
 	public void theUpdatedTimeReportIsSavedToActivityWithName(String activityName) throws TimeRegistrationNotFoundException, ActivityNotFoundException {
 		// Check that the time registration is in the list of time registration for the activity by that name. Contains object check
-		assertTrue(timeregOld != activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime());
+		assertThat(timeregOld,not(equalTo(activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date).getAmountOfTime())));
 		assertTrue(projectHolder.getProject().getActivityByName(activityName).getTimeRegistrations().contains(activityHolder.getActivity().getTimeRegistrationForEmployeeOnDate(employee, date)));
 	}
-
-	@Given("the employee with initials {string} does not have reported time for the activity with name {string} on the date {int}\\/{int}\\/{int}")
-	public void theEmployeeWithInitialsDoesNotHaveReportedTimeForTheActivityWithNameOnTheDate(String initials, String nameActivity, Integer day, Integer month, Integer year) throws ActivityNotFoundException{
-		employee = employeeHolder.getEmployee();
-		date = new GregorianCalendar(year, month, day);
-		activityName = nameActivity;
-		activityHolder.setActivity(projectHolder.getProject().getActivityByName(activityName));
-	}
-
-
-
 }

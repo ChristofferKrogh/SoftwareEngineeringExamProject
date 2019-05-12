@@ -21,12 +21,6 @@ public class PlanningApp {
 	// Counter to ensure unique ID's for each project
 	public int projectCount = 0;
 
-	public void createProject(Project project) {
-		projects.add(project);
-		projectCount++;
-	}
-
-	// TODO: der mangler test for nedenstående metode
 	public Project createProject(String name, boolean isProjectInternal) {
 		Project newProject = new Project(name, isProjectInternal, projectCount);
 		projects.add(newProject);
@@ -67,7 +61,6 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The project does not exist");
 	}
 
-	// TODO: der mangler test for nedenstående metode
 	public List<Project> searchForProjectsByName(String name) throws OperationNotAllowedException {
 		List<Project> searchResults = new ArrayList<>();
 		for (Project p : projects) {
@@ -101,19 +94,21 @@ public class PlanningApp {
 		throw new OperationNotAllowedException("The regular activity does not exist");
 	}
 
-	// TODO: there are no tests for the method below
-	public List<Activity> searchForRegActivitiesByName(String searchText) {
+	public List<Activity> searchForRegActivitiesByName(String searchText) throws OperationNotAllowedException {
 		List<Activity> searchResults = new ArrayList<>();
 		for (Activity a : regularActivities) {
 			if (a.match(searchText)) {
 				searchResults.add(a);
 			}
 		}
+		
+		if (searchResults.isEmpty()) {
+			throw new OperationNotAllowedException("The regular activity does not exist");
+		}
+		
 		return searchResults;
 	}
 
-
-	// TODO: there are no tests for this method
 	public List<Employee> searchForEmployeesByName(String name) throws OperationNotAllowedException {
 		List<Employee> searchResults = new ArrayList<>();
 		for (Employee e : employees) {
@@ -133,9 +128,6 @@ public class PlanningApp {
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
 			projectNumbers.add(p.getProjectNumber());
-//			if (!p.isPresent()) {
-//				throw new OperationNotAllowedException("The project does not exist");
-//			}
 		}
 		return projectNumbers;
 	}
@@ -173,25 +165,33 @@ public class PlanningApp {
 		return employeeInitials;
 	}
 
-	// TODO: there are no tests for the method below
 	public List<Employee> getEmployees() {
 		return employees;
 	}
 	
+	// Method 1 in report
 	public void assignEmployee(int projectNumber, String activityName, String projectLeaderInitials, String employeeInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		Employee employee = searchForEmployee(employeeInitials);
 		Employee projectLeader = searchForEmployee(projectLeaderInitials);
 		
+		// Design by contract
+		assert employee!=null : "Precondition #1 violated";
+		
+		
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 
-		// Check that the employee given exists, if not throw exception
-		this.checkEmployeeExist(employee);
-
+		// This is design by contract to ensure the same employee isn't assigned twice to the same activity
+		assert !project.getEmployeesAssignedToActivity(activityName).contains(employee) : "Precondition #2 violated";
+		
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);
+
+		// Design by contract
+		// Check if employee is assigned to activity. That should return true
+		assert project.getEmployeesAssignedToActivity(activityName).contains(employee) : "Postcondition violated";
 		
-	};
+	}
 
 	private void checkEmployeeExist(Employee employee) throws OperationNotAllowedException {
 		Optional<Employee> r = employees
@@ -203,6 +203,7 @@ public class PlanningApp {
 		}
 	}
 
+	// Method 2 in report
 	public Activity addActivity(int projectNumber, String activityName, GregorianCalendar startWeek, GregorianCalendar endWeek, int expectedAmountOfHours, String actorInitials) throws OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
@@ -215,53 +216,60 @@ public class PlanningApp {
 		project.addActivity(activity, actorInitials);
 		return activity;
 	}
-    
-    
-	// TODO no test for the method below
+
 	public void editStartDateOfActivity(GregorianCalendar startDate, int projectNumber, String name, String projectLeaderInitials) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException{
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 		
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
 		
 		searchForActivity(projectNumber, name).setStartWeek(startDate);
 	}
 
-	// TODO no test for the method below
 	public void editEndDateOfActivity(GregorianCalendar endDate, int projectNumber, String name, String projectLeaderInitials) throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 				
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
 		
 		searchForActivity(projectNumber, name).setEndWeek(endDate);
 	}
 
-	// TODO no test for the method below
-	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String name, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
+	// Method 3 in report
+	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String activityName, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
+		Activity activity =  this.searchForActivity(projectNumber, activityName);
+		
+		// Design by contract
+		assert project != null : "Precondition #1 violoated";
 						
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
-		searchForActivity(projectNumber, name).setExpectedAmountOfHours(expectedAmountOfHours);
+		
+		// Design by contract
+		assert project.getProjectLeader() != null : "Precondition #2 violated";
+		
+		activity.setExpectedAmountOfHours(expectedAmountOfHours);
+		
+		assert Float.compare(activity.getExpectedAmountOfHours(),expectedAmountOfHours) == 0 : "Postcondition violated";
 	}
 
-	public void editEmployeeForActivity(int projectNumber, String activityName, String oldEmployeeInitials, String newEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+	public void removeEmployeeFromActivity(int projectNumber, String activityName, String oldEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 								
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
-			throw new NotProjectLeaderException("You must be project leader to change a activity"); 
+			throw new NotProjectLeaderException("You must be project leader to change an activity"); 
 		}
 		
 		// Check that the current employee is assigned to the activity 
@@ -269,12 +277,9 @@ public class PlanningApp {
 			throw new OperationNotAllowedException("The employee is not assigned to the activity"); 
 		}
 				
-		
 		// Remove old employee from activity and add new employee to the activity
 		Employee oldEmployee = searchForEmployee(oldEmployeeInitials); 
 		project.getActivityByName(activityName).removeEmployee(oldEmployee);
-		Employee newEmployee = searchForEmployee(newEmployeeInitials); 
-		project.getActivityByName(activityName).assignEmployee(newEmployee);
 			
 	}
 	
@@ -293,6 +298,7 @@ public class PlanningApp {
 		project.setProjectLeader(employee);
 	}
 
+	// Method 4 in report
 	public void registerTime(int projectNumber, String activityName, TimeRegistration timeRegistration) throws OperationNotAllowedException, ActivityNotFoundException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
@@ -350,18 +356,17 @@ public class PlanningApp {
 		return dailyUsedTime;
 	};
 	
-	public SimpleEntry<List<Activity>, List<Integer>> getAllRelevantActivitiesForEmployee(Employee employee) {
+	public SimpleEntry<List<Activity>, List<Integer>> getAllRelevantActivitiesForEmployee(String employeeInitials) {
 		List<Activity> relevantActivities = new ArrayList<>();
 		List<Integer> projectNumbers = new ArrayList<>();
 		for (Project p : projects) {
 			for (Activity a : p.getActivities()) {
-				if (a.getAssignedEmployees().contains(employee)) {
+				if (a.getAssignedEmployees().stream().map(e -> e.getInitials()).anyMatch(i -> i.equals(employeeInitials))) {
 					relevantActivities.add(a);
 					projectNumbers.add(p.getProjectNumber());
 				}
 			}
 		}
-		AbstractMap.SimpleEntry<List<Activity>, List<Integer>> activitiesWithProjectNumbers = new AbstractMap.SimpleEntry<>(relevantActivities, projectNumbers);
-		return activitiesWithProjectNumbers;
+		return new AbstractMap.SimpleEntry<>(relevantActivities, projectNumbers);
 	}
 }

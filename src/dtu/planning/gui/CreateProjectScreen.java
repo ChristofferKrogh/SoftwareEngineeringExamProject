@@ -36,7 +36,6 @@ public class CreateProjectScreen {
 	private PlanningApp planningApp;
 	private JPanel panelCreateProject;
 	private JPanel panelCreateProjectSuccess;
-	private JPanel panelCreateActivity; 
 	private JTextField searchField;
 	private JTextField projectNameField;
 	private JLabel leaderReminderField;

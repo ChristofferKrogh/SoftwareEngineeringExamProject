@@ -39,6 +39,17 @@ public class GenerateReportSteps {
 		activity.setExpectedAmountOfHours((float) hours);
 	}
 	
+	@Given("the project with id {int} exists with project leader {string}")
+	public void theProjectWithIdExistsWithProjectLeader(Integer projectCount, String initials) {
+		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		// Name does not matter here, so it is set to null. It does not matter if the project is internal or external so it is set to false
+		Project project = planningApp.createProject(null,false);
+		
+		Employee projectLeader = new Employee(null,initials); 
+		project.setProjectLeader(projectLeader);
+		projectHolder.setProject(project);
+	}
+	
 	@When("The actor generates a report for the project")
 	public void theActorGeneratesAReportForTheProject() {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
@@ -72,20 +83,5 @@ public class GenerateReportSteps {
 		float hours1 = new Float(hours); 
 		// Third argument in assert equals with doubble is delta
 		assertEquals(report.getReportedTimeForActivity(activityName),hours1,0);	
-	}
-	
-	@Given("the project with id {int} exists with project leader {string}")
-	public void theProjectWithIdExistsWithProjectLeader(Integer projectCount, String initials) {
-		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		// Name does not matter here, so it is set to null. It does not matter if the project is internal or external so it is set to false
-		// Please note: Planning app API naming. Here createProject is not creating a new project. It adds the project in question to the planning app.
-		Project project = new Project(null, false, projectCount);
-		planningApp.createProject(project);
-		
-		Employee projectLeader = new Employee(null,initials); 
-		project.setProjectLeader(projectLeader);
-		projectHolder.setProject(project);
-	}
-	
-	
+	}	
 }

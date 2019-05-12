@@ -21,8 +21,3 @@ Scenario: Create activity when not project leader
 #	When the project leader creates an activity
 #	Then get the error message "The activity is already part of the project."
 # 
-#Scenario: Create activity with no project attached 
-#	Given project "Test Project 2" doesn't exist 
-#	And actor have and activity "Project design" 
-#	When the project leader creates an activity 
-#	Then get the error message "The activity is not part of a project."
