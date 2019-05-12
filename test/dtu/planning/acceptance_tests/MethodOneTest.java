@@ -1,6 +1,9 @@
 package dtu.planning.acceptance_tests;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.GregorianCalendar;
@@ -159,7 +162,7 @@ public class MethodOneTest {
         
         // Check input
         
-        // Assert the project list is empty
+        // Assert the project list contains project
         assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
         
         // Assert that it is the only project
@@ -172,6 +175,8 @@ public class MethodOneTest {
         // Assert the employee list only contain the two employees
         assertEquals(planningApp.getEmployees().size(),2);
         
+        // Assert that the project number isn't 190
+        assertThat(projectNumber,is(not(190)));
         
         // Primary action test
         
@@ -196,7 +201,7 @@ public class MethodOneTest {
         
         // Check input
         
-        // Assert the project list is empty
+        // Assert the project list contains project
         assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
         
         // Assert that it is the only project
@@ -236,7 +241,7 @@ public class MethodOneTest {
         
         // Check input
         
-        // Assert the project list is empty
+        // Assert the project list contains project
         assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
         
         // Assert that it is the only project
@@ -282,7 +287,7 @@ public class MethodOneTest {
         
         // Check input
         
-        // Assert the project list is empty
+        // Assert the project list contains project
         assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
         
         // Assert that it is the only project
