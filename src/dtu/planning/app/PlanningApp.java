@@ -309,12 +309,19 @@ public class PlanningApp {
 
 		// Find activity in project
 		Activity activity = project.getActivityByName(activityName);
+		
+		// Design by contract
+		assert project != null : "Precondition #1 violoated";
+		assert activity != null : "Precondition #2 violoated";
 
 		// Check that the employee given exists, if not throw exception
 		this.checkEmployeeExist(timeRegistration.getEmployee());
 
 		// Add time registration to that activity
 		activity.registerTime(timeRegistration);
+		
+		// Design by contract
+		assert activity.getTimeRegistrations().contains(timeRegistration) : "Postcondition violated";
 	}
 
 	public Report generateReport(int projectNumber, Employee projectLeader) throws NotProjectLeaderException, OperationNotAllowedException {
