@@ -395,8 +395,13 @@ public class CorrectReportedTimeScreen {
 	
 	private void searchTimeRegistrations() {
 		timeRegistrations.clear();
-		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date)
-		.forEach(t -> {timeRegistrations.addElement(t);});
+		try {
+			planningApp.getAllTimeRegistrationsForEmployeeOnDate(employee, date)
+			.forEach(t -> {timeRegistrations.addElement(t);});
+		} catch (TimeRegistrationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	protected void searchEmployees() {

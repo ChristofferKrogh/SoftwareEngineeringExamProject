@@ -53,9 +53,8 @@ public class Project {
 	}
 
 	public void addActivity(Activity activity, String actorInitials) throws NotProjectLeaderException, OperationNotAllowedException {
-		if(!this.projectLeader.getInitials().equals(actorInitials)) {
-			throw new NotProjectLeaderException("You are not the project leader for this project");
-		}
+		// Check project leader
+		this.isProjectLeader(actorInitials);
 		
 		activities.add(activity);
 	}
@@ -66,9 +65,7 @@ public class Project {
 	
 	public void assignEmployee(String activityName, Employee projectLeader, Employee employee ) throws NotProjectLeaderException, ActivityNotFoundException {
 		// Check that projectleader is projectleader for this project. If not stop!
-		if (!this.projectLeader.equals(projectLeader)) {
-			throw new NotProjectLeaderException("You are not the project leader for this project");
-		}
+		this.isProjectLeader(projectLeader.getInitials());
 		
 		// Find and get the activity by name.
 		Activity activity = getActivityByName(activityName);
@@ -192,12 +189,15 @@ public class Project {
 
 	public Report generateReport(Employee actor) throws NotProjectLeaderException {
 		// Check that projectleader is projectleader for this project. If not stop!
-		
-		if (this.projectLeader != null && !this.projectLeader.equals(actor)) {
-			throw new NotProjectLeaderException("You are not the project leader for this project");
-		}
+		this.isProjectLeader(actor.getInitials());
 		
 		return new Report(this);
+	}
+	
+	private void isProjectLeader(String projectLeaderInitials) throws NotProjectLeaderException {
+		if (this.projectLeader == null || projectLeaderInitials == null || !this.projectLeader.getInitials().equals(projectLeaderInitials)) {
+			throw new NotProjectLeaderException("You are not the project leader for this project");
+		}
 	}
 
 }

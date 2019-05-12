@@ -1,6 +1,7 @@
 package dtu.planning.acceptance_tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.GregorianCalendar;
 
@@ -16,79 +17,303 @@ public class MethodOneTest {
 
 	@Test (expected = OperationNotAllowedException.class)
     public void testNoEmployees() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
-        PlanningApp planningApp = new PlanningApp();
+        // Setup
+		PlanningApp planningApp = new PlanningApp();        
+             
         
+        // Check input
+        
+        // Assert employee list is empty
+        assertTrue(planningApp.getEmployees().isEmpty());
+        
+        // Assign employee
+        planningApp.assignEmployee(0, null, null, "JD");
+        
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+    }
+	
+	@Test (expected = OperationNotAllowedException.class)
+    public void testInitialsOfNonexistingEmployee() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employee by initials
+        planningApp.addEmployee(new Employee(null,"LL"));
+
+        
+        // Check input
+        
+        // Assert the employee is added
+        assertEquals(planningApp.searchForEmployee("LL").getInitials(),"LL");
+        
+        // Assert the employee is the only one
+        assertEquals(planningApp.getEmployees().size(),1);
+        
+        
+        // Primary action test
+        
+        // Assign employee
+        planningApp.assignEmployee(0, null, null, "JD");
+        
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+    }
+	
+	@Test (expected = OperationNotAllowedException.class)
+    public void testOnlyOneEmployee() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employee by initials
+        planningApp.addEmployee(new Employee(null,"JD"));
+
+        
+        // Check input
+        
+        
+        // Assert the employee is added
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        
+        // Assert the employee is the only one
+        assertEquals(planningApp.getEmployees().size(),1);
+        
+        
+        // Primary action test
+        
+        // Assign employee
+        planningApp.assignEmployee(0, null, null, "JD");
+        
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+    }
+	
+	@Test (expected = OperationNotAllowedException.class)
+    public void testInitialsOfNonExistingEmployee() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employees by initials
+        planningApp.addEmployee(new Employee(null,"JD"));
+        planningApp.addEmployee(new Employee(null,"NE"));
+
+        
+        // Check input
+        
+        
+        // Assert the employees is added
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        assertEquals(planningApp.searchForEmployee("NE").getInitials(),"NE");
+        
+        // Assert the employee list only contain the two employees
+        assertEquals(planningApp.getEmployees().size(),2);
+        
+        
+        // Primary action test
+        
+        // Assign employee
+        planningApp.assignEmployee(0, null, "PL", "JD");
+        
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+    }
+	
+	@Test (expected = OperationNotAllowedException.class)
+    public void testNoProjects() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employees by initials
+        planningApp.addEmployee(new Employee(null,"JD"));
+        planningApp.addEmployee(new Employee(null,"PL"));
+
+        
+        // Check input
+        
+        // Assert the project list is empty
+        assertTrue(planningApp.getProjects().isEmpty());
+        
+        // Assert the employees is added
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        assertEquals(planningApp.searchForEmployee("PL").getInitials(),"PL");
+        
+        // Assert the employee list only contain the two employees
+        assertEquals(planningApp.getEmployees().size(),2);
+        
+        
+        // Primary action test
+        
+        // Assign employee
+        planningApp.assignEmployee(0, null, "PL", "JD");
+        
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+    }
+	
+	@Test (expected = OperationNotAllowedException.class)
+    public void testProjectnumberOfNonexistingProject() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employees by initials
+        planningApp.addEmployee(new Employee(null,"JD"));
+        planningApp.addEmployee(new Employee(null,"PL"));
+
         // Create project and get its ID
         int projectNumber = planningApp.createProject(null, true).getProjectNumber();
         
-        // Assert that the project is created
+        // Check input
+        
+        // Assert the project list is empty
         assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
         
-        // Activity name
-        String activityName = "Activity";
+        // Assert that it is the only project
+        assertEquals(planningApp.getProjects().size(),1);
         
-        // Add project leader by initials
-        String projectLeaderInitials = "PL";
-        planningApp.addEmployee(new Employee(null,projectLeaderInitials));
+        // Assert the employees is added
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        assertEquals(planningApp.searchForEmployee("PL").getInitials(),"PL");
         
-        // Assert the project leader is added
-        assertEquals(planningApp.searchForEmployee(projectLeaderInitials).getInitials(),projectLeaderInitials);
+        // Assert the employee list only contain the two employees
+        assertEquals(planningApp.getEmployees().size(),2);
         
-        // Set project leader
-        planningApp.setProjectLeader(projectNumber, projectLeaderInitials);
         
-        // Assert that the project leader has been set
-        assertEquals(planningApp.searchForProject(projectNumber).getProjectLeader().getInitials(),projectLeaderInitials);
-        
-        // Create activity
-        planningApp.addActivity(projectNumber, activityName, new GregorianCalendar(), new GregorianCalendar(), 0, projectLeaderInitials);
-
-        // Assert that the activity is created
-        assertEquals(planningApp.searchForActivity(projectNumber, activityName).getName(),activityName);
+        // Primary action test
         
         // Assign employee
-        planningApp.assignEmployee(projectNumber, activityName, projectLeaderInitials, "JD");
+        planningApp.assignEmployee(190, null, "PL", "JD");
         
-        // Assert hat exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+    }
+	
+	@Test (expected = NotProjectLeaderException.class)
+    public void testNoProjectLeaderForProject() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employees by initials
+        planningApp.addEmployee(new Employee(null,"JD"));
+        planningApp.addEmployee(new Employee(null,"PL"));
+
+        // Create project and get its ID
+        int projectNumber = planningApp.createProject(null, true).getProjectNumber();
+        
+        
+        // Check input
+        
+        // Assert the project list is empty
+        assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
+        
+        // Assert that it is the only project
+        assertEquals(planningApp.getProjects().size(),1);
+        
+        // Assert the employees is added
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        assertEquals(planningApp.searchForEmployee("PL").getInitials(),"PL");
+        
+        // Assert the employee list only contain the two employees
+        assertEquals(planningApp.getEmployees().size(),2);
+        
+        
+        // Primary action test
+        
+        // Assign employee
+        planningApp.assignEmployee(projectNumber, null, "PL", "JD");
+        
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
+    }
+	
+	@Test (expected = ActivityNotFoundException.class)
+    public void testActivitynameOfNonexistingActivity() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employees by initials
+        planningApp.addEmployee(new Employee(null,"JD"));
+        planningApp.addEmployee(new Employee(null,"PL"));
+
+        // Create project and get its ID
+        int projectNumber = planningApp.createProject(null, true).getProjectNumber();
+        
+        // Set project leader
+        planningApp.setProjectLeader(projectNumber, "PL");
+        
+        
+        // Check input
+        
+        // Assert the project list is empty
+        assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
+        
+        // Assert that it is the only project
+        assertEquals(planningApp.getProjects().size(),1);
+        
+        // Assert that the project leader has been set
+        assertEquals(planningApp.searchForProject(projectNumber).getProjectLeader().getInitials(),"PL");
+        
+        // Assert the employees is added
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        assertEquals(planningApp.searchForEmployee("PL").getInitials(),"PL");
+        
+        // Assert the employee list only contain the two employees
+        assertEquals(planningApp.getEmployees().size(),2);
+        
+        
+        // Primary action test
+        
+        // Assign employee
+        planningApp.assignEmployee(projectNumber, "Activity", "PL", "JD");
+        
+        // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
     }
 	
 	@Test
-    public void testInitialsOfNonexistingEmployee() {
+    public void testEmployeeAssignedToActivitySuccessfully() throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
+        // Setup
+		PlanningApp planningApp = new PlanningApp();
+
+        // Add employees by initials
+        planningApp.addEmployee(new Employee(null,"JD"));
+        planningApp.addEmployee(new Employee(null,"PL"));
+
+        // Create project and get its ID
+        int projectNumber = planningApp.createProject(null, true).getProjectNumber();
         
-    }
-	
-	@Test
-    public void testOnlyOneEmployee() {
+        // Set project leader
+        planningApp.setProjectLeader(projectNumber, "PL");
         
-    }
-	
-	@Test
-    public void testInitialsOfNonExistingEmployee() {
+        // Create activity
+        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+
         
-    }
-	
-	@Test
-    public void testNoProjects() {
+        // Check input
         
-    }
-	
-	@Test
-    public void testProjectnumberOfNonexistingProject() {
+        // Assert the project list is empty
+        assertEquals(planningApp.searchForProject(projectNumber).getProjectNumber(),projectNumber);
         
-    }
-	
-	@Test
-    public void testNoProjectLeaderForProject() {
+        // Assert that it is the only project
+        assertEquals(planningApp.getProjects().size(),1);
         
-    }
-	
-	@Test
-    public void testActivitynameOfNonexistingActivity() {
+        // Assert that the project leader has been set
+        assertEquals(planningApp.searchForProject(projectNumber).getProjectLeader().getInitials(),"PL");
         
-    }
-	
-	@Test
-    public void testEvertyhingWorks() {
+        // Assert that the activity is created
+        assertEquals(planningApp.searchForActivity(projectNumber, "Activity").getName(),"Activity");
+
+        // Assert that it is the only activity
+        assertEquals(planningApp.searchForProject(projectNumber).getActivities().size(),1);
         
+        // Assert the employees is added
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+        assertEquals(planningApp.searchForEmployee("PL").getInitials(),"PL");
+        
+        // Assert the employee list only contain the two employees
+        assertEquals(planningApp.getEmployees().size(),2);
+        
+        
+        // Primary action test
+        
+        // Assign employee
+        planningApp.assignEmployee(projectNumber, "Activity", "PL", "JD");
+        
+        // Assert that the employee is assigned to the activity
+        assertEquals(planningApp.searchForEmployee("JD").getInitials(),"JD");
+
+        // Assert that the employee is the only assigned employee
+        assertEquals(planningApp.searchForActivity(projectNumber, "Activity").getAssignedEmployees().size(),1);
     }
 }

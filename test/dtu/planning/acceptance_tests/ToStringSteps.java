@@ -66,7 +66,8 @@ public class ToStringSteps {
 		Employee employee = new Employee(null,initials);
 		employeeHolder.setEmployee(employee);
 		
-		Employee projectLeader = new Employee(null, null);
+		// "PL" is chosen as initials for the Project Leader.
+		Employee projectLeader = new Employee(null, "PL");
 		
 		// If this step is used by other features than to-string this might prevent a proper setup since is overrides projectleader that might be set by anohter given
 		project.setProjectLeader(projectLeader);
