@@ -192,8 +192,8 @@ public class Project {
 
 	public Report generateReport(Employee actor) throws NotProjectLeaderException {
 		// Check that projectleader is projectleader for this project. If not stop!
-		 
-		if (!this.projectLeader.equals(actor) && this.projectLeader!= null) {
+		
+		if (this.projectLeader != null && !this.projectLeader.equals(actor)) {
 			throw new NotProjectLeaderException("You are not the project leader for this project");
 		}
 		

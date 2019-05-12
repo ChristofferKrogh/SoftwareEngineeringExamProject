@@ -40,4 +40,31 @@ public class Employee {
 		return this.name + " (" + this.initials + ")";
 	}
 	
+	
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} 
+		
+		if (obj.getClass() != this.getClass()) {
+			return false;
+		}
+		
+		Employee other = (Employee) obj;
+		boolean sameName;
+		if (this.name == null) {
+			sameName = other.name == null;
+		} else {
+			sameName = this.name.equals(other.name);
+		}
+		boolean sameInitials;
+		if (this.initials == null) {
+			sameInitials = other.initials == null;
+		} else {
+			sameInitials = this.initials.equals(other.initials);
+		}
+		
+		return sameName && sameInitials;
+	}
+	
 }

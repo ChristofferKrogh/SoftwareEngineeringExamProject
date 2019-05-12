@@ -15,6 +15,7 @@ import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
+import dtu.planning.app.Project;
 import dtu.planning.app.TimeRegistration;
 import dtu.planning.app.TimeRegistrationNotFoundException;
 
@@ -72,6 +73,16 @@ public class CorrectReportedTimeSteps {
 	@When("I update time used to {int} hours")
 	public void iUpdatedeTimeUsedToHours(Integer amountOfTime) {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
+		/*
+		try {
+			Project project = planningApp.searchForProject(projectHolder.getProject().getProjectNumber());
+			TimeRegistration timeRegistration = project.getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date);
+			planningApp.correctTimeReport(projectHolder.getProject().getProjectNumber(), activityName, timeRegistration, amountOfTime);
+		} catch (OperationNotAllowedException | ActivityNotFoundException e1) {
+			errorMessageHolder.setErrorMessage(e1.getMessage());
+		}
+		*/
+		
 		try {
 			projectHolder.getProject().getActivityByName(activityName).getTimeRegistrationForEmployeeOnDate(employee, date).correctTime(amountOfTime);
 		} catch (TimeRegistrationNotFoundException e) {
