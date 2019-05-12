@@ -247,7 +247,9 @@ public class PlanningApp {
 	public void editExpectedAmountOfHoursForActivity(float expectedAmountOfHours, int projectNumber, String activityName, String projectLeaderInitials)throws ActivityNotFoundException, OperationNotAllowedException, NotProjectLeaderException {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
-		Activity activity =  this.searchForActivity(projectNumber, activityName);
+
+		// Find activity in project
+		Activity activity =  project.getActivityByName(activityName);
 		
 		// Design by contract
 		assert project != null : "Precondition #1 violoated";
