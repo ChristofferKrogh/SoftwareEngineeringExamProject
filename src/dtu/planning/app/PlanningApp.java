@@ -179,9 +179,6 @@ public class PlanningApp {
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 
-		// Check that the employee given exists, if not throw exception
-		this.checkEmployeeExist(employee);
-
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);
 		
