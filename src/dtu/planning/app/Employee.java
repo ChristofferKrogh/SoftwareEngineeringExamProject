@@ -42,12 +42,8 @@ public class Employee {
 	
 	
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		
 		Employee other = (Employee) obj;
-		
+				
 		return this.initials.equals(other.initials);
 	}
 	
