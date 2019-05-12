@@ -340,12 +340,16 @@ public class PlanningApp {
 		return project.generateReport(projectLeader);
 	}
 	
-	public List<TimeRegistration> getAllTimeRegistrationsForEmployeeOnDate(Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
+	public List<TimeRegistration> getAllTimeRegistrationsForEmployeeOnDate(Employee employee, GregorianCalendar date) {
 		List<TimeRegistration> timeRegistration = new ArrayList<>();
 		for(Project p : projects) {
 			for(Activity a : p.getActivities()) {
 				TimeRegistration t = null;
-				t = a.getTimeRegistrationForEmployeeOnDate(employee, date);
+				try {
+					t = a.getTimeRegistrationForEmployeeOnDate(employee, date);
+				} catch (TimeRegistrationNotFoundException e) {
+					// Ignore the error and continue the search. We need this try-catch block
+				}
 				if (t != null) {
 					timeRegistration.add(t);
 				}
