@@ -37,7 +37,7 @@ Please note: The eclpise project does not contain any run configurations by defa
 
 1. Be sure to fulfill the prerequirements
 2. Check that the "JAVA_HOME" enviroment variable is set to the root of the JDK, and Maven is added to your enviroment
-3. Run `mvn test`
+3. Run `mvn test` in your console
 4. Inspect result. Every JUnit test and Cucumber acceptence test will run automaticlly.
 
 
