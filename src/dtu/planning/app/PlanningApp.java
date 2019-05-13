@@ -194,13 +194,10 @@ public class PlanningApp {
 		Employee projectLeader = searchForEmployee(projectLeaderInitials);
 		
 		// Design by contract
-		// assert employee!=null : "Precondition #1 violated";
+		// assert employee!=null : "Precondition violated";
 		
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
-
-		// This is design by contract to ensure the same employee isn't assigned twice to the same activity
-		// assert !project.getEmployeesAssignedToActivity(activityName).contains(employee) : "Precondition #2 violated";
 		
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);
