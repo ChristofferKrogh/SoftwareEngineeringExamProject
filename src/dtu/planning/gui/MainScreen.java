@@ -17,7 +17,6 @@ import dtu.planning.app.Activity;
 import dtu.planning.app.Employee;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
-import dtu.planning.app.TimeRegistration;
 
 public class MainScreen {
 	

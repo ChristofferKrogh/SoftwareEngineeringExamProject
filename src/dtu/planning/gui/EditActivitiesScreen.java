@@ -555,64 +555,7 @@ public class EditActivitiesScreen {
     	StringBuffer b = new StringBuffer();
     	b.append("<html>");
     	// There is no way to update a name
-    	String name = activity.getName(); 
-    	/*
-    	int startWeek;
-    	int startYear;
-    	GregorianCalendar start = null;
-    	try {
-    		startWeek = Integer.parseInt(startWeekField.getText());
-            startYear = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
-            start = new GregorianCalendar(); 
-            start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
-		} catch (Exception e) {
-			b.append(e.getMessage() + "<br>");
-		}
-    	
-    	int endWeek;
-    	int endYear;
-    	GregorianCalendar end = null;
-    	try {
-    		endWeek = Integer.parseInt(startWeekField.getText());
-            endYear = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
-            end = new GregorianCalendar(); 
-            end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
-		} catch (Exception e) {
-			b.append(e.getMessage() + "<br>");
-		}
-    	
-    	if (start == null && end == null) {
-    		b.append("Neither the start nor the end were changed<br>");
-    	} else if (start != null && end != null) {
-    		try {
-        		if (start.after(activity.getEndWeek())) {
-        			planningApp.editEndDateOfActivity(end, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
-        			planningApp.editStartDateOfActivity(start, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
-    			} else {
-    				planningApp.editStartDateOfActivity(start, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
-    				planningApp.editEndDateOfActivity(end, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
-    			}
-    		} catch (Exception e) {
-    			b.append(e.getMessage() + "<br>");
-    		}
-    	} else if (end == null) { // start must be different from null
-    		try {
-    			planningApp.editStartDateOfActivity(start, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
-			} catch (Exception e) {
-				b.append(e.getMessage() + "<br>");
-			}
-    	} else { // end date must be different from null while start must be null
-    		try {
-    			planningApp.editEndDateOfActivity(end, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
-			} catch (Exception e) {
-				b.append(e.getMessage() + "<br>");
-			}
-    	}*/
-    	
-    	
-    	
-    	
-    	
+    	String name = activity.getName();
     	
     	// Update start week to the activity
         if (!startWeekField.getText().equals("")) { // Only change the start week if there is any information

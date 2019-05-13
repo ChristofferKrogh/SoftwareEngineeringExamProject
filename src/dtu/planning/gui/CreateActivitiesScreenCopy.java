@@ -68,7 +68,7 @@ public class CreateActivitiesScreenCopy {
         lblProjectName.setBounds(40, 0, 260, 30);
         panelActivityDetails.add(lblProjectName);
 
-        // Project leader for the project <<<<< TODO
+        // Project leader for the project
         lblLeader = new JLabel("Project Leader:");
         lblLeader.setBounds(40, 35, 260, 30);
         panelActivityDetails.add(lblLeader);

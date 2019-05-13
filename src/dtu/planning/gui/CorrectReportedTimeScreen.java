@@ -189,8 +189,6 @@ public class CorrectReportedTimeScreen {
 		monthComboBox.setBounds(155, 170, 90, 30);
 		panelSelectDate.add(monthComboBox);
 		
-		
-		// TODO: use first and last year
 		String[] comboBoxYears = new String[32];
 		comboBoxYears[0] = "Year";
 		for (int i = 1; i < 32; i++) {

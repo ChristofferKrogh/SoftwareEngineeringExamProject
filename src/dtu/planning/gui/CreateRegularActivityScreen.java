@@ -232,8 +232,7 @@ public class CreateRegularActivityScreen {
 			planningApp.searchForEmployeesByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}		
 	}
 

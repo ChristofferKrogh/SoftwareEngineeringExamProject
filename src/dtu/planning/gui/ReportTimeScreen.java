@@ -29,21 +29,25 @@ import dtu.planning.app.TimeRegistration;
 import dtu.planning.app.OperationNotAllowedException;
 
 public class ReportTimeScreen {
-	// flow idea: 
-	// Select which employee to report time for
-	// Show all the activities that the employee is assigned and which project they belong to
-	// Select the activity to report time on
-	// Give amount of time with units and date (the date could be set to today as standard)
-	// Finally, the time can be reported. Afterwards, a success message will be shown
+	/*
+	 * flow idea: 
+	 * Select which employee to report time for
+	 * Show all the activities that the employee is assigned and which project they belong to
+	 * Select the activity to report time on
+	 * Give amount of time with units and date (the date could be set to today as standard)
+	 * Finally, the time can be reported. Afterwards, a success message will be shown
+	 */
 	
-	// Implementation:
-	// There will be one master panel that contains three other panels. Only one of these panels will be shown at a time
-	// The first panel will say "Step 1" and here you will be able to search for and select an employee.
-	// At the bottom of this panel there will be a button to take you to the next panel. You must select an employee to move forward
-	// The second panel will say "Step 2" and all the activities that the employee is assigned to will be shown.
-	// At the bottom of the second panel there will be a previous and next button. You must select an Activity to move forward.
-	// In the third panel it will be possible to give the amount of time in units and date
-	// At the bottom of the third panel there will be a previous button and a report time button
+	/*
+	 * Implementation:
+	 * There will be one master panel that contains three other panels. Only one of these panels will be shown at a time
+	 * The first panel will say "Step 1" and here you will be able to search for and select an employee.
+	 * At the bottom of this panel there will be a button to take you to the next panel. You must select an employee to move forward
+	 * The second panel will say "Step 2" and all the activities that the employee is assigned to will be shown.
+	 * At the bottom of the second panel there will be a previous and next button. You must select an Activity to move forward.
+	 * In the third panel it will be possible to give the amount of time in hours (float)
+	 * At the bottom of the third panel there will be a previous button and a report time button
+	 */
 	
 	private MainScreen parentWindow;
 	private PlanningApp planningApp;
@@ -217,15 +221,6 @@ public class ReportTimeScreen {
 
         listScrollPane.setBounds(80, 120, 250, 150);
 		panelSelectActivity.add(listScrollPane);
-//		 TODO: implement details about activities
-//		listRelevantActivities.addListSelectionListener(new ListSelectionListener() {
-//			public void valueChanged(ListSelectionEvent e) {
-//				if (listRelevantActivities.getSelectedIndex() == -1) {
-//				} else {
-//				}
-//				
-//			}
-//		});
 		
 		btnNext = new JButton();
 		b = new StringBuffer(); b.append("<html><h2>Next</h2></html>");
@@ -350,7 +345,6 @@ public class ReportTimeScreen {
 		monthComboBox.setBounds(205, 170, 90, 30);
 		panelGiveTime.add(monthComboBox);
 		
-		// TODO: use first and last year
 		String[] comboBoxYears = new String[32];
 		comboBoxYears[0] = "Year";
 		for (int i = 1; i < 32; i++) {
@@ -440,12 +434,6 @@ public class ReportTimeScreen {
 				panelGiveTime.setVisible(false);
 				panelSuccess.setVisible(false);
 				clear();
-//				hoursComboBox.setSelectedItem(0);
-//				minutesComboBox.setSelectedItem(0);
-//				setReportingDetails();
-//				dayComboBox.setSelectedIndex(0);
-//				monthComboBox.setSelectedIndex(0);
-//				yearComboBox.setSelectedIndex(0);
 			}
 		});
 		
@@ -509,8 +497,7 @@ public class ReportTimeScreen {
 			planningApp.searchForEmployeesByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}		
 	}
 

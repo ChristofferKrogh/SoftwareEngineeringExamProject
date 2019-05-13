@@ -6,38 +6,24 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.GregorianCalendar;
 
 public class GenerateReportScreen {
 	
 	private ProjectsScreen parentWindow;
     private PlanningApp planningApp;
     private JPanel panelCreateActivity;
-    private JPanel panelCreateActivitySuccess;
     private JPanel panelCheckLeader;
     private JPanel panelActivityDetails;
     private JEditorPane activityNamePane;
     private JEditorPane reportedTimePane;
     private JEditorPane estimatedTimePane;
-    private JTextField activityNameField;
-    private JTextField employeeNameField;
-    private JTextField amountOfHours;
     private JButton btnBack;
     private JButton btnYes;
     private JButton btnNo;
     private JButton btnOkay;
-    private JLabel lblSuccessMessage;
     private JLabel lblProjectName;
-    private JLabel lblLeader;
     private JLabel lblCheckLeader;
-    private Activity activity;
     private Project project;
-	private JTextField startWeekField;
-	private JTextField endWeekField;
-	private int firstYear = 2000;
-	private int lastYear = 2040;
-	private JComboBox<Integer> startYearComboBox;
-	private JComboBox<Integer> endYearComboBox;
 	
 	public GenerateReportScreen(PlanningApp planningApp, ProjectsScreen parentWindow) {
 		this.planningApp = planningApp;

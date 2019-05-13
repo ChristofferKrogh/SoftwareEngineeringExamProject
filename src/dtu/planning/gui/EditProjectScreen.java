@@ -47,7 +47,6 @@ public class EditProjectScreen {
 	private JComboBox<String> internalOrExternalComboBox;
 	private JList<Employee> listSearchResult;
 	private DefaultListModel<Employee> searchResults;
-//	private JLabel lblSearchResultDetail;
 	private JButton btnBack;
 	private Project project;
 	
@@ -262,8 +261,7 @@ public class EditProjectScreen {
 			planningApp.searchForEmployeesByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}
 	}
 	
@@ -300,8 +298,6 @@ public class EditProjectScreen {
 		endDayField.setText(Integer.toString(project.getEndDate().get(Calendar.DATE)));
 		endMonthField.setText(Integer.toString(project.getEndDate().get(Calendar.MONTH) + 1));
 		endYearField.setText(Integer.toString(project.getEndDate().get(Calendar.YEAR)));
-		
-		// TODO: include activities
 	}
 	
 	public void editProject() {
