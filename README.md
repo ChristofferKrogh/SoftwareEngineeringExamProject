@@ -8,8 +8,11 @@ Planning app exam project for 02161 Software Engineering 1
 # Authors
 
 Christoffer Krogh, s163959@student.dtu.dk
+
 Clara Chini Nielsen, s164213@student.dtu.dk
+
 Emil Ørup Kristensen, s154304@student.dtu.dk
+
 Thina Lundsgaard Thøgersen, s165541@student.dtu.dk
 
 
