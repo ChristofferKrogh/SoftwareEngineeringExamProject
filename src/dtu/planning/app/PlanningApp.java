@@ -125,7 +125,6 @@ public class PlanningApp {
 		return searchResults;
 	}
 
-	// TODO no test for this method 
 	public List<Activity> searchForActivitiesByName(int projectNumber, String searchText) throws OperationNotAllowedException {
 		List<Activity> searchResults = new ArrayList<>();
 		List<Activity> activities = new ArrayList<>(); 

@@ -96,8 +96,6 @@ public class Activity {
 		throw new TimeRegistrationNotFoundException("The employee has not registered time for this activity");
 	}
 
-
-	// TODO: there are no tests for the method below
 	public boolean match(String searchText) {
 		for (Employee e : employees) {
 			if (e.match(searchText)) {
@@ -106,8 +104,6 @@ public class Activity {
 		}
 		return name.toLowerCase().contains(searchText.toLowerCase());
 	}
-
-	
 	
 	public String toString() {
 		return name;
