@@ -34,6 +34,7 @@ public class MainScreen {
 	CorrectReportedTimeScreen correctReportedTimeScreen;
 	GetDailyScreen getDailyScreen;
 	GenerateReportScreen generateReportScreen;
+	CreateActivitiesScreenCopy createActivitiesScreenCopy ; 
 	private int firstYear = 2000;
 	private int lastYear = 2040;
 
@@ -91,7 +92,10 @@ public class MainScreen {
 		planningApp.addRegularActivity(new Activity("Vacation", startWeek, endWeek), "CK");
 		planningApp.addRegularActivity(new Activity("Child Sickness", startWeek, endWeek), "CK");
 		planningApp.addActivity(p1.getProjectNumber(), "Buy lawnmower", startWeek, endWeek, 4, p1.getProjectLeader().getInitials());
+		planningApp.addActivity(p1.getProjectNumber(), "Cut grass", startWeek, endWeek, 4, p1.getProjectLeader().getInitials()); 
 		planningApp.assignEmployee(p1.getProjectNumber(), "Buy lawnmower", p1.getProjectLeader().getInitials(), "JaD");
+		planningApp.assignEmployee(p1.getProjectNumber(), "Buy lawnmower", p1.getProjectLeader().getInitials(), "CK");
+		planningApp.assignEmployee(p1.getProjectNumber(), "Cut grass", p1.getProjectLeader().getInitials(), "JD");
 	}
 
 	/**
@@ -204,6 +208,8 @@ public class MainScreen {
 		correctReportedTimeScreen = new CorrectReportedTimeScreen(planningApp, this);
 		getDailyScreen = new GetDailyScreen(planningApp, this);
 		generateReportScreen = new GenerateReportScreen(planningApp, projectsScreen);
+		createActivitiesScreenCopy = new CreateActivitiesScreenCopy(planningApp, editActivitiesScreen); 
+		
 		createEmployeeScreen = new CreateEmployeeScreen(planningApp, this);
 	}
 	

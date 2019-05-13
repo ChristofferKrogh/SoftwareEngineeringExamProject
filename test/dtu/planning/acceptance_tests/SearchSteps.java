@@ -46,6 +46,16 @@ public class SearchSteps {
 		}
 	}
 	
+	@When("I search for an activities with name {string}")
+	public void iSearchForAnActivitiesWithName(String activityName) {
+		try {
+			List<Activity> searchResults = planningAppHolder.getPlanningApp().searchForActivitiesByName(projectHolder.getProject().getProjectNumber(),activityName);
+			activityHolder.setActivity(searchResults.get(0));
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
+		}
+	}
+	
 	@When("I search for a regular activity with name {string}")
 	public void iSearchForARegularActivityWithName(String activityName) {
 	    try {
