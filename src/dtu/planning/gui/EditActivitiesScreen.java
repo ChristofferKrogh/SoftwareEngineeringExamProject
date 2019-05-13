@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -57,14 +56,10 @@ public class EditActivitiesScreen {
     private JButton btnYes; 
     private JButton btnNo; 
     private JButton btnOkay; 
-    private JButton btnAddNewEmployee; 
-    private JButton btnEditDate; 
-    private JLabel lblSuccessMessage;
-    private JLabel activityReminderField; 
+    private JButton btnAddNewEmployee;
+//    private JLabel lblSuccessMessage;
     private JLabel lblPhase; 
-    private JLabel lblPhaseEmployee; 
-    private JLabel lblProjectName;
-    private JLabel lblLeader;
+    private JLabel lblPhaseEmployee;
     private JLabel lblCheckLeader;
     private JLabel lblPhaseChooseEmployee; 
     private JLabel lblActivity; 
@@ -79,12 +74,9 @@ public class EditActivitiesScreen {
 	private int firstYear = 2000;
 	private int lastYear = 2040;
 	private JComboBox<Integer> startYearComboBox;
-	private JComboBox<Integer> endYearComboBox; 
-	
-    
+	private JComboBox<Integer> endYearComboBox;
 
     public EditActivitiesScreen(PlanningApp planningApp, EditProjectScreen parentScreen) {
-    	// TODO Remove planningApp from constructor, not used here
         this.planningApp = planningApp;
         this.parentScreen = parentScreen;
         initialize();
@@ -156,10 +148,6 @@ public class EditActivitiesScreen {
         panelCheckLeader.add(btnOkay);
         btnOkay.setVisible(false);
         
-        // TODO not used only initialization 
-        lblProjectName = new JLabel("Project Name: ");
-        lblLeader = new JLabel("Project Leader:");
-        
         // End of panel check project leader 
         
         
@@ -197,12 +185,6 @@ public class EditActivitiesScreen {
 		panelEditActivitySearch.add(searchField);
 		searchField.setColumns(10);
 		
-//		activityReminderField = new JLabel(); // Chosen to not show this activity reminder field 
-//		activityReminderField.setBounds(5, 280, 87, 45);
-//		panelEditActivitySearch.add(activityReminderField);
-		
-		
-		
 		searchResults = new DefaultListModel<>();
 		listSearchResult = new JList<Activity>(searchResults);
 		listSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -231,7 +213,7 @@ public class EditActivitiesScreen {
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select an activity");
+					setConsoleMessage("You need to select an activity");
 				} else {
 					activity = listSearchResult.getSelectedValue();
 					setActivity(activity);
@@ -252,7 +234,6 @@ public class EditActivitiesScreen {
 			public void actionPerformed(ActionEvent e) {
 				// Something to redirect to create activity screen
 				createActivitiesScreenCopy.setProject(project);
-				searchResults.clear();  
 				setVisible(false);
 				createActivitiesScreenCopy.setVisible(true);
 			}
@@ -303,13 +284,9 @@ public class EditActivitiesScreen {
      	panelEditActivityDetails.add(btnAddEmployee);
      	btnAddEmployee.addActionListener(new ActionListener() {
 	     	public void actionPerformed(ActionEvent e) {
-	     		if (listSearchResultEmployee.getSelectedIndex() == -1) {
-	     			panelAddEmployee.setVisible(true);
-	     			panelEditActivityDetails.setVisible(false);
-	     			searchAllEmployees();	     			
-	     		} else {
-	     			System.out.println("");
-	     		}
+	     		panelAddEmployee.setVisible(true);
+     			panelEditActivityDetails.setVisible(false);
+     			searchAllEmployees();
 	     	}
      	});
      		
@@ -321,7 +298,7 @@ public class EditActivitiesScreen {
      	btnRemove.addActionListener(new ActionListener() {
      		public void actionPerformed(ActionEvent e) {
      			if (listSearchResultEmployee.getSelectedIndex() == -1) {
-					System.out.println("You need to choose an employee to remove");
+     				setConsoleMessage("You need to choose an employee to remove");
 				} else {
 					removeEmployee();
 					searchResultEmployee.clear(); 
@@ -355,21 +332,21 @@ public class EditActivitiesScreen {
 			comboBoxItems[i] = firstYear + i;
 		}
 		startYearComboBox = new JComboBox<>(comboBoxItems);
-		startYearComboBox.setBounds(185, 250, 85, 30);
+		startYearComboBox.setBounds(205, 250, 85, 30);
 		startYearComboBox.setSelectedItem(2019);
 		panelEditActivityDetails.add(startYearComboBox);
 		endYearComboBox = new JComboBox<>(comboBoxItems);
-		endYearComboBox.setBounds(185, 280, 85, 30);
+		endYearComboBox.setBounds(205, 280, 85, 30);
 		endYearComboBox.setSelectedItem(2019);
 		panelEditActivityDetails.add(endYearComboBox);
 		
 		JLabel lblDates = new JLabel();
 		lblDates.setVerticalAlignment(SwingConstants.TOP);
 		lblDates.setHorizontalAlignment(SwingConstants.LEFT);
-		lblDates.setBounds(50, 250, 260, 75);
+		lblDates.setBounds(50, 255, 260, 75);
 		StringBuffer b4 = new StringBuffer();
-		b4.append("<html><b>Start:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;week&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of<br><br>"
-					 + "<b>End:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;week&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of</html>");
+		b4.append("<html><b>Start:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;week&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of<br><br>"
+					 + "<b>End:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;week&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of</html>");
 		lblDates.setText(b4.toString());
 		panelEditActivityDetails.add(lblDates);
 
@@ -438,7 +415,7 @@ public class EditActivitiesScreen {
 				searchAllEmployees();
 			}
 		});
-		searchFieldAddEmployee.setBounds(100, 100, 130, 30);
+		searchFieldAddEmployee.setBounds(130, 100, 130, 30);
 		panelAddEmployee.add(searchFieldAddEmployee);
 		searchFieldAddEmployee.setColumns(10);
 		
@@ -472,7 +449,7 @@ public class EditActivitiesScreen {
      	btnAddNewEmployee.addActionListener(new ActionListener() {
 	     	public void actionPerformed(ActionEvent e) {
 	     		if (listSearchResultAddEmployee.getSelectedIndex() == -1) {
-	     			System.out.println("");	     			
+	     			setConsoleMessage("You must select an employee");
 	     		} else {
 	     			panelAddEmployee.setVisible(false);
 	     			panelEditActivityDetails.setVisible(true);
@@ -521,32 +498,20 @@ public class EditActivitiesScreen {
     	try {
         	activity.getAssignedEmployees().forEach((m) -> {searchResultEmployee.addElement(m);});
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			setConsoleMessage(e.getMessage());
 		}
     }
-    
-    private void initializeSearchResultsAllEmployees() { 
-    	planningApp.getEmployees().forEach((m) -> {searchResultsAddEmployee.addElement(m);});	
-	}
 
 	public void setProject(Project project) {
     	 this.project = project;
-         StringBuffer b = new StringBuffer();
-         b.append("<html>Project Name: <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-         		+ project.getName() + "</b></html>");
-         lblProjectName.setText(b.toString());
+         StringBuffer b;
          if(project.getProjectLeader() != null) {
-         	b = new StringBuffer();
-         	b.append("<html>Project Leader: <b>&nbsp;&nbsp;&nbsp;&nbsp;"
-         			+ project.getProjectLeader().getName() + "</b></html>");
-         	lblLeader.setText(b.toString());
-         	
-         	b = new StringBuffer();
-         	b.append("<html><h2>Are You</h2><h1>" + project.getProjectLeader().getName() + "?</h1></html>");
-             lblCheckLeader.setText(b.toString());
+        	 b = new StringBuffer();
+        	 b.append("<html><h2>Are You</h2><h1>" + project.getProjectLeader().getName() + "?</h1></html>");
+        	 lblCheckLeader.setText(b.toString());
          } else {
-         	b = new StringBuffer();
-         	b.append("<html><h2>There has not been selected a project leader for</h2><h1>" + project.getName() + "</h1></html>");
+        	 b = new StringBuffer();
+        	 b.append("<html><h2>There has not been selected a project leader for</h2><h1>" + project.getName() + "</h1></html>");
              lblCheckLeader.setText(b.toString());
              btnYes.setVisible(false);
              btnNo.setVisible(false);
@@ -556,15 +521,13 @@ public class EditActivitiesScreen {
     }
     
     public void searchActivities() {
-
 		searchResults.clear();	
 		try {
 			planningApp.searchForActivitiesByName(project.getProjectNumber(), searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage()); // TODO correct new solution
-		} 
-    	
+			setConsoleMessage(e.getMessage());
+		}
     }
     
     public void setActivity(Activity activity) {
@@ -578,30 +541,94 @@ public class EditActivitiesScreen {
         b = new StringBuffer(); 
         b.append(activity.getExpectedAmountOfHours());
     	amountOfHours.setText(b.toString());
+    	GregorianCalendar start = activity.getStartWeek();
+    	GregorianCalendar end = activity.getEndWeek();
+    	startWeekField.setText(Integer.toString(start.get(GregorianCalendar.WEEK_OF_YEAR)));
+    	endWeekField.setText(Integer.toString(end.get(GregorianCalendar.WEEK_OF_YEAR)));
+    	startYearComboBox.setSelectedItem(start.get(GregorianCalendar.YEAR));
+    	endYearComboBox.setSelectedItem(end.get(GregorianCalendar.YEAR));
         
     	initializeSearchResultsEmployee(); 
     }
     
     public void editActivity() {
+    	StringBuffer b = new StringBuffer();
+    	b.append("<html>");
     	// There is no way to update a name
     	String name = activity.getName(); 
+    	/*
+    	int startWeek;
+    	int startYear;
+    	GregorianCalendar start = null;
+    	try {
+    		startWeek = Integer.parseInt(startWeekField.getText());
+            startYear = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
+            start = new GregorianCalendar(); 
+            start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
+		} catch (Exception e) {
+			b.append(e.getMessage() + "<br>");
+		}
     	
-    	// Update start week  to the activity
-        if (!startWeekField.getText().equals("")) { // Only change the start week if there is new information
+    	int endWeek;
+    	int endYear;
+    	GregorianCalendar end = null;
+    	try {
+    		endWeek = Integer.parseInt(startWeekField.getText());
+            endYear = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
+            end = new GregorianCalendar(); 
+            end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
+		} catch (Exception e) {
+			b.append(e.getMessage() + "<br>");
+		}
+    	
+    	if (start == null && end == null) {
+    		b.append("Neither the start nor the end were changed<br>");
+    	} else if (start != null && end != null) {
+    		try {
+        		if (start.after(activity.getEndWeek())) {
+        			planningApp.editEndDateOfActivity(end, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+        			planningApp.editStartDateOfActivity(start, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+    			} else {
+    				planningApp.editStartDateOfActivity(start, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+    				planningApp.editEndDateOfActivity(end, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+    			}
+    		} catch (Exception e) {
+    			b.append(e.getMessage() + "<br>");
+    		}
+    	} else if (end == null) { // start must be different from null
+    		try {
+    			planningApp.editStartDateOfActivity(start, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+			} catch (Exception e) {
+				b.append(e.getMessage() + "<br>");
+			}
+    	} else { // end date must be different from null while start must be null
+    		try {
+    			planningApp.editEndDateOfActivity(end, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+			} catch (Exception e) {
+				b.append(e.getMessage() + "<br>");
+			}
+    	}*/
+    	
+    	
+    	
+    	
+    	
+    	
+    	// Update start week to the activity
+        if (!startWeekField.getText().equals("")) { // Only change the start week if there is any information
             try {
                 int week = Integer.parseInt(startWeekField.getText());
                 int year = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
-                GregorianCalendar startDate = new GregorianCalendar(); 
+                GregorianCalendar startDate = new GregorianCalendar();
                 startDate.setWeekDate(year, week, GregorianCalendar.SUNDAY);
                 planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+            	b.append(e.getMessage() + "<br>");
             }
         }
 
         // Update the end week of the activity
-        if (!endWeekField.getText().equals("")) { // Only change if there is new information
-            
+        if (!endWeekField.getText().equals("")) { // Only change if there is any information
             try {
                 int week = Integer.parseInt(endWeekField.getText());
                 int year = Integer.parseInt(endYearComboBox.getSelectedItem().toString());
@@ -609,7 +636,7 @@ public class EditActivitiesScreen {
                 endDate.setWeekDate(year, week, GregorianCalendar.SATURDAY);
                 planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+            	b.append(e.getMessage() + "<br>");
             }
         }
     	    	
@@ -619,21 +646,18 @@ public class EditActivitiesScreen {
         	try {
 				planningApp.editExpectedAmountOfHoursForActivity(hours, project.getProjectNumber(), name, project.getProjectLeader().getInitials());
 			} catch (ActivityNotFoundException | OperationNotAllowedException | NotProjectLeaderException e) {
-				System.out.println(e.getMessage());
+				b.append(e.getMessage() + "<br>");
 			}
-        	
         }
-        
+        b.append("</html>");
+        setConsoleMessage(b.toString());
     }
 
 	public void setVisible(boolean b) {
 		panelEditActivities.setVisible(b);
 	}
 	
-	public void clear() {
-		lblProjectName.setText("Projectname: ");
-        lblLeader.setText("Project Leader: "); 
-		
+	private void clear() {
 		btnYes.setVisible(true);
         btnNo.setVisible(true);
         btnOkay.setVisible(false);
@@ -652,14 +676,11 @@ public class EditActivitiesScreen {
 		searchResultEmployee.clear();
     }
 
-	protected void removeEmployee() {
-		String employeeInitials = listSearchResultEmployee.getSelectedValue().getInitials();  
-		System.out.println(employeeInitials);
+	private void removeEmployee() {
 		try {
-			planningApp.removeEmployeeFromActivity(project.getProjectNumber(), activity.getName(), employeeInitials, project.getProjectLeader().getInitials());
+			planningApp.removeEmployeeFromActivity(project.getProjectNumber(), activity.getName(), listSearchResultEmployee.getSelectedValue().getInitials(), project.getProjectLeader().getInitials());
 		} catch (OperationNotAllowedException | NotProjectLeaderException | ActivityNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}  
 	}
 
@@ -667,39 +688,26 @@ public class EditActivitiesScreen {
 		parentScreen.addPanel(panel);	
 	}
 	
-	public void searchEmployees() {
-		searchResultEmployee.clear();
-		activity.getAssignedEmployees().forEach((m) -> {searchResultEmployee.addElement(m);});
-			
-	}
-	
-	public void searchAllEmployees() {		
+	private void searchAllEmployees() {		
 		searchResultsAddEmployee.clear();
 		try {
 			planningApp.searchForEmployeesByName(searchFieldAddEmployee.getText())
 			.forEach((m) -> {searchResultsAddEmployee.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}	
 	}
 	
-	public void addEmployee() {
+	private void addEmployee() {
 		String initials = searchFieldAddEmployee.getText(); 
         try{
             planningApp.assignEmployee(project.getProjectNumber(), activity.getName(), project.getProjectLeader().getInitials(), initials);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            setConsoleMessage(e.getMessage());
         }
 	}
 	
-    private void setSuccessMessage() {
-        StringBuffer b = new StringBuffer();
-        b.append("<html><h1>The activity \"");
-        b.append(activity.getName());
-        b.append("\" was changed!</h1><br>");
-        b.append("<p>You can now add or edit another activity to this project.</p></html>");
-        lblSuccessMessage.setText(b.toString());
-    }
-
+	public void setConsoleMessage(String message) {
+		parentScreen.setConsoleMessage(message);
+	}
 }
