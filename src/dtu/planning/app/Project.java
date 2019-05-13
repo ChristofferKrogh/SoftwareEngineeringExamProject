@@ -56,6 +56,15 @@ public class Project {
 		// Check project leader
 		this.isProjectLeader(actorInitials);
 		
+		// Check for duplicate
+		Optional<Activity> r = activities
+						      .stream()
+						      .filter(b -> b.getName().equals(activity.getName()))
+						      .findFirst();
+		if (r.isPresent()) {
+			throw new OperationNotAllowedException("The activity is already part of the project.");
+		}
+		
 		activities.add(activity);
 	}
 	
