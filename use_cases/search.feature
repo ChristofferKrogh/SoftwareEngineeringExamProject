@@ -21,6 +21,11 @@ Scenario: Search for activity that does not exist
     When I search for an activity with name "Some Activity"
     Then I get the error message "The activity does not exist"
 
+Scenario: Search for activities successfully
+    Given the project with id 1 exists
+    When I search for an activities with name "Some Activity"
+    Then I get the error message "The activity does not exist"
+
 Scenario: Search for regular activity successfully
 	Given I have the regular activity with name "Sickness" , start: week 2 of year 2019 and end: week 4 of year 2019
 	And employee with initials "JD" exists
