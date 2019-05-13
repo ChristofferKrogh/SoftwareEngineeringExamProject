@@ -77,7 +77,9 @@ public class RegularActivitiesScreen {
 		searchField = new JTextField();
 		searchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				clear();
 				searchRegActivities();
+//				panelEditDates.setVisible(false);
 			}
 		});
 		searchField.setBounds(138, 28, 130, 26);
@@ -87,7 +89,9 @@ public class RegularActivitiesScreen {
 		JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				clear();
 				searchRegActivities();
+//				panelEditDates.setVisible(false);
 			}
 		});
 		btnSearch.setBounds(148, 68, 117, 29);
@@ -108,6 +112,7 @@ public class RegularActivitiesScreen {
 		            	lblSearchResultDetail.setText("");
 
 		            } else {
+		            	closeEditPanel();
 		            	Activity selectedRegular = listSearchResult.getSelectedValue();
 		            	StringBuffer b = new StringBuffer();
 		        		b.append("<html>");
@@ -115,7 +120,6 @@ public class RegularActivitiesScreen {
 		        		b.append("<b>Expected Start:</b> " + selectedRegular.getStartWeekString() + "<br>");
 		        		b.append("<b>Expected End:</b>&nbsp; " + selectedRegular.getEndWeekString() + "<br>");
 		        		b.append("<b>Assigned Employee:</b> " + selectedRegular.getAssignedEmployees().get(0).toString() + "<br></html>");
-		        		
 		            	lblSearchResultDetail.setText(b.toString());
 		            }
 		        }
@@ -149,6 +153,8 @@ public class RegularActivitiesScreen {
                 "Edit Epected Start and End"));
 		panelEditDates.setLayout(null);
 		
+		panelEditDates.setVisible(false);
+		
 		startWeekField = new JTextField();
 		startWeekField.setBounds(165, 13, 35, 30);
 		panelEditDates.add(startWeekField);
@@ -173,7 +179,6 @@ public class RegularActivitiesScreen {
 		lblEditDates.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEditDates.setBounds(23, 20, 318, 75);
 		panelEditDates.add(lblEditDates);
-		panelEditDates.setVisible(false);
 		// -----------------------------------------------------------
 		
 		
@@ -194,10 +199,7 @@ public class RegularActivitiesScreen {
 				if (editDatesMode) {
 					try {
 						editDates();
-						editDatesMode = false;
-						panelEditDates.setVisible(false);
-						clear();
-						btnEditRegActivity.setText("Edit Expected Start and End");
+						closeEditPanel();
 					} catch (Exception e2) {
 						setConsoleMessage(e2.getMessage());
 					}
@@ -227,8 +229,7 @@ public class RegularActivitiesScreen {
 			planningApp.searchForRegActivitiesByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}
 	}
 	
@@ -254,6 +255,12 @@ public class RegularActivitiesScreen {
 		startYearComboBox.setSelectedItem(regularActivity.getStartWeek().get(GregorianCalendar.YEAR));
 		endWeekField.setText(Integer.toString(regularActivity.getEndWeek().get(GregorianCalendar.WEEK_OF_YEAR)));
 		endYearComboBox.setSelectedItem(regularActivity.getEndWeek().get(GregorianCalendar.YEAR));
+	}
+	
+	private void closeEditPanel() {
+		panelEditDates.setVisible(false);
+		editDatesMode = false;
+		btnEditRegActivity.setText("Edit Expected Start and End");
 	}
 	
 	private void editDates() throws OperationNotAllowedException {

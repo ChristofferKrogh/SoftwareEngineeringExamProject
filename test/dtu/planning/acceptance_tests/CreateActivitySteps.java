@@ -81,12 +81,14 @@ public class CreateActivitySteps {
 	}
 
 	@When("an employee {string} creates an activity {string}")
-	public void anEmployeeCreatesAnActivity(String initials, String name) throws OperationNotAllowedException {
+	public void anEmployeeCreatesAnActivity(String initials, String name) {
 	
 		Employee employee = new Employee(null,initials);
 		try {
 			Activity activity = new Activity(name, null, null, 0);
 			projectHolder.getProject().addActivity(activity,employee.getInitials());
+		} catch (OperationNotAllowedException e) {
+			errorMessageHolder.setErrorMessage(e.getMessage());
 		} catch (NotProjectLeaderException e) {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}

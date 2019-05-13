@@ -49,7 +49,7 @@ public class GetDailyReportedTimeSteps {
 	@Given("time report exists for the date {int}\\/{int}\\/{int}")
 	public void timeReportExistsForTheDate(Integer day, Integer month, Integer year) throws TimeRegistrationNotFoundException, OperationNotAllowedException, ActivityNotFoundException, NotProjectLeaderException {
 		PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		date = new GregorianCalendar(year, month, day);
+		date = new GregorianCalendar(year, month-1, day);
 		// assume that a time registration exist for project with id 1 and activity with name "Some activity"
 		// the project and activity chosen is only relevant for the purpose of a test 
 		TimeRegistration timeReg = new TimeRegistration(employeeHolder.getEmployee(), date, 2); //2 hours registered 
@@ -66,9 +66,9 @@ public class GetDailyReportedTimeSteps {
     @Given("no time report for date {int}\\/{int}\\/{int} exists")
     public void noTimeReportForDateExists(Integer day, Integer month, Integer year) throws OperationNotAllowedException, TimeRegistrationNotFoundException {
     	PlanningApp planningApp = planningAppHolder.getPlanningApp();
-		date = new GregorianCalendar(year, month, day);
-		planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
-		assertTrue(timeRegistrations.isEmpty());
+		date = new GregorianCalendar(year, month-1, day);
+		List<TimeRegistration> localTimeRegistrations = planningApp.getAllTimeRegistrationsForEmployeeOnDate(employeeHolder.getEmployee(), date);
+		assertTrue(localTimeRegistrations.isEmpty());
     }
 
 	@When("I ask for my daily used time")

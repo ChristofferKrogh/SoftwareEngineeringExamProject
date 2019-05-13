@@ -7,8 +7,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 
-import cucumber.api.java.ca.Cal;
-
 public class PlanningApp {
 	// Storage for the projects
 	private List<Project> projects = new ArrayList<>();
@@ -367,11 +365,9 @@ public class PlanningApp {
 				TimeRegistration t = null;
 				try {
 					t = a.getTimeRegistrationForEmployeeOnDate(employee, date);
+					timeRegistration.add(t);
 				} catch (TimeRegistrationNotFoundException e) {
 					// Ignore the error and continue the search. We need this try-catch block
-				}
-				if (t != null) {
-					timeRegistration.add(t);
 				}
 			}
 		}
