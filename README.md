@@ -41,7 +41,7 @@ Please note: The eclpise project does not contain any run configurations by defa
 4. Inspect result. Every JUnit test and Cucumber acceptence test will run automaticlly.
 
 
-## Import project into Eclipse
+## Import project into Eclipse - tested on Windows
 1. Be sure to fulfill the prerequirements
 2. Open a fresh and empty workspace
 3. Select from menu: "File -> Import..."
@@ -60,7 +60,7 @@ Please note: The eclpise project does not contain any run configurations by defa
 4. Inspect the result of the tests
 
 
-## Run GUI with Eclipse - tested on Windows
+## Run GUI with Eclipse - tested on Mac
 
 1. Complete "Import project into Eclipse" if you haven't done that already
 2. Navigate to "src/dtu.planning.gui" and select "MainScreen.java"
