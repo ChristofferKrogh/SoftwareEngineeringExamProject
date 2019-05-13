@@ -1,5 +1,6 @@
 package dtu.planning.gui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
@@ -20,7 +21,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import dtu.planning.app.Activity;
+import dtu.planning.app.ActivityNotFoundException;
 import dtu.planning.app.Employee;
+import dtu.planning.app.NotProjectLeaderException;
 import dtu.planning.app.OperationNotAllowedException;
 import dtu.planning.app.PlanningApp;
 import dtu.planning.app.Project;
@@ -28,23 +31,24 @@ import dtu.planning.app.Project;
 public class EditActivitiesScreen {
 
     private EditProjectScreen parentScreen;
-    private PlanningApp planningApp;
+    private CreateActivitiesScreenCopy createActivitiesScreenCopy;
+	private PlanningApp planningApp;
     private JPanel panelEditActivities;
-	private JPanel panelSuccessMessage;
+	private JPanel panelEditActivitySuccess;
     private JPanel panelEditActivitySearch;    
     private JPanel panelEditActivityDetails;
     private JPanel panelAddEmployee; 
     private JPanel panelCheckLeader; 
 	private JList<Activity> listSearchResult;
+	private JList<Employee> listSearchResultEmployee;
+	private JList<Employee> listSearchResultAddEmployee; 
 	private DefaultListModel<Activity> searchResults;
-	private JList<Employee> listEmployees;
-	private DefaultListModel<Employee> searchEmployees;
-	private JLabel lblSearchResultDetail;
-	private JLabel lblSearchResultEmployees; 
+	private DefaultListModel<Employee> searchResultEmployee; 
+	private DefaultListModel<Employee> searchResultsAddEmployee; 
     private JTextField activityNameField;
-    private JTextField employeeNameField;
     private JTextField amountOfHours;
 	private JButton btnBack;
+	private JButton btnAddEmployee; 
     private JButton btnAdd;
     private JButton btnEdit; 
     private JButton btnRemove;
@@ -53,28 +57,29 @@ public class EditActivitiesScreen {
     private JButton btnYes; 
     private JButton btnNo; 
     private JButton btnOkay; 
+    private JButton btnAddNewEmployee; 
+    private JButton btnEditDate; 
     private JLabel lblSuccessMessage;
     private JLabel activityReminderField; 
     private JLabel lblPhase; 
+    private JLabel lblPhaseEmployee; 
     private JLabel lblProjectName;
     private JLabel lblLeader;
     private JLabel lblCheckLeader;
-    private JTextField startDayField;
-    private JTextField startMonthField;
-    private JTextField startYearField;
-    private JTextField endDayField;
-    private JTextField endMonthField;
-    private JTextField endYearField;
+    private JLabel lblPhaseChooseEmployee; 
+    private JLabel lblActivity; 
+    private JLabel lblAddEmployee; 
+    private JLabel lblPhaseAddEmployee; 
     private JTextField searchField; 
+    private JTextField searchFieldAddEmployee; 
     private Activity activity;
-    private int projectNumber;
     private Project project;
 	private JTextField startWeekField;
 	private JTextField endWeekField;
 	private int firstYear = 2000;
 	private int lastYear = 2040;
 	private JComboBox<Integer> startYearComboBox;
-	private JComboBox<Integer> endYearComboBox;
+	private JComboBox<Integer> endYearComboBox; 
 	
     
 
@@ -103,7 +108,7 @@ public class EditActivitiesScreen {
         btnBack.setBounds(21, 28, 59, 29);
         panelEditActivities.add(btnBack);
     	
-     // Check Project Leader 
+        // Check Project Leader 
         panelCheckLeader = new JPanel();
         panelEditActivities.add(panelCheckLeader);
         panelCheckLeader.setLayout(null);
@@ -121,6 +126,7 @@ public class EditActivitiesScreen {
         btnYes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelCheckLeader.setVisible(false);
+				panelEditActivities.setVisible(true);
 				panelEditActivitySearch.setVisible(true);
 			}
 		});
@@ -131,7 +137,7 @@ public class EditActivitiesScreen {
         btnNo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-                clear();
+				clear();
                 parentScreen.setVisible(true);
 			}
 		});
@@ -148,6 +154,11 @@ public class EditActivitiesScreen {
 		});
         panelCheckLeader.add(btnOkay);
         btnOkay.setVisible(false);
+        
+        // TODO not used only initialization 
+        lblProjectName = new JLabel("Project Name: ");
+        lblLeader = new JLabel("Project Leader:");
+        
         // End of panel check project leader 
         
         
@@ -171,32 +182,27 @@ public class EditActivitiesScreen {
 		lblPhase.setText(b.toString());
 		panelEditActivitySearch.add(lblPhase);
 		
-		JLabel lblActivity = new JLabel("Activity:");
+		lblActivity = new JLabel("Activity:");
 		lblActivity.setBounds(50, 100, 100, 30);
 		panelEditActivitySearch.add(lblActivity);
 		
 		searchField = new JTextField();
 		searchField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setProject(project); 
-				searchActivities(project.getProjectNumber());
+				searchActivities();
 			}
 		});
 		searchField.setBounds(100, 100, 130, 30);
 		panelEditActivitySearch.add(searchField);
 		searchField.setColumns(10);
 		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				searchActivities(project.getProjectNumber());
-			}
-		});
-		btnSearch.setBounds(235, 100, 105, 30);
-		panelEditActivitySearch.add(btnSearch);
-		btnSearch.getRootPane().setDefaultButton(btnSearch);
+//		activityReminderField = new JLabel(); // Chosen to not show this activity reminder field 
+//		activityReminderField.setBounds(5, 280, 87, 45);
+//		panelEditActivitySearch.add(activityReminderField);
 		
-		searchResults = new DefaultListModel<>(); 
+		
+		
+		searchResults = new DefaultListModel<>();
 		listSearchResult = new JList<Activity>(searchResults);
 		listSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listSearchResult.setSelectedIndex(0);
@@ -227,11 +233,11 @@ public class EditActivitiesScreen {
 					System.out.println("You need to select an activity");
 				} else {
 					activity = listSearchResult.getSelectedValue();
-					projectNumber = project.getProjectNumber();
-					setActivity();
+					setActivity(activity);
 					panelEditActivitySearch.setVisible(false);
 					panelCheckLeader.setVisible(false);
 					panelEditActivityDetails.setVisible(true);
+					
 				}
 			}
 		});
@@ -244,11 +250,15 @@ public class EditActivitiesScreen {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Something to redirect to create activity screen
-				
-				panelEditActivitySearch.setVisible(false);
-				panelEditActivityDetails.setVisible(false);
-				panelCheckLeader.setVisible(false);
-				searchResults.clear();
+//				createActivitiesScreen.setProject(project); 
+				// TODO make new createActivitiesScreen so it returns to this screen 
+				createActivitiesScreenCopy.setProject(project);
+				setVisible(false);
+				clear();
+				createActivitiesScreenCopy.setVisible(true);
+//				panelEditActivitySearch.setVisible(false);
+//				panelEditActivityDetails.setVisible(false);
+//				clear(); 
 			}
 		});
 		
@@ -258,73 +268,272 @@ public class EditActivitiesScreen {
 		panelEditActivityDetails = new JPanel();
         panelEditActivities.add(panelEditActivityDetails);
         panelEditActivityDetails.setLayout(null);
-        panelEditActivityDetails.setBounds(60, 60, 330, 390);
+        panelEditActivityDetails.setBounds(0, 28, 350, 500);
         panelEditActivityDetails.setVisible(false);
+     	
+        // Setting headline for step 2 
+        lblPhaseEmployee = new JLabel();
+        lblPhaseEmployee.setHorizontalAlignment(SwingConstants.LEFT);
+        lblPhaseEmployee.setVerticalAlignment(SwingConstants.TOP);
+        lblPhaseEmployee.setBounds(160, 0, 150, 90);
+		StringBuffer R = new StringBuffer();
+		R.append("<html><h1>&nbsp;Step 2</h1>Edit the selected activity</html>");
+		lblPhaseEmployee.setText(R.toString());
+		panelEditActivityDetails.add(lblPhaseEmployee);
+        
+		// Scroll panel with the employees assigned to the chosen activity
+		lblPhaseChooseEmployee = new JLabel();
+		lblPhaseChooseEmployee.setBounds(50, 70, 150, 30);
+		StringBuffer b2 = new StringBuffer();
+		b2.append("<html>All assigned employees:</html>");
+		lblPhaseChooseEmployee.setText(b2.toString());
+		panelEditActivityDetails.add(lblPhaseChooseEmployee);
+		
+        searchResultEmployee = new DefaultListModel<>();
+		listSearchResultEmployee = new JList<Employee>(searchResultEmployee);
+		listSearchResultEmployee.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listSearchResultEmployee.setSelectedIndex(0);
+		listSearchResultEmployee.setVisibleRowCount(4);
+        JScrollPane listScrollPaneEmployee = new JScrollPane(listSearchResultEmployee);
+        listScrollPaneEmployee.setBounds(50, 100, 295, 80);
+		panelEditActivityDetails.add(listScrollPaneEmployee);
+     	
      		
+     	btnAddEmployee = new JButton();
+     	StringBuffer b3 = new StringBuffer(); 
+     	b3.append("<html><h2>Add</h2></html>");
+     	btnAddEmployee.setText(b3.toString());
+     	btnAddEmployee.setBounds(255, 180, 90, 30);
+     	panelEditActivityDetails.add(btnAddEmployee);
+     	btnAddEmployee.addActionListener(new ActionListener() {
+	     	public void actionPerformed(ActionEvent e) {
+	     		if (listSearchResultEmployee.getSelectedIndex() == -1) {
+	     			panelAddEmployee.setVisible(true);
+	     			panelEditActivityDetails.setVisible(false);
+	     			searchAllEmployees();	     			
+	     		} else {
+	     			System.out.println("");
+	     		}
+	     	}
+     	});
      		
-      searchEmployees = new DefaultListModel<>();
-     	listEmployees = new JList<Employee>(searchEmployees);
-     	listEmployees.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-     	listEmployees.setSelectedIndex(-1);
-     	listEmployees.setVisibleRowCount(7);
-        listScrollPane = new JScrollPane(listEmployees);
+     	btnRemove = new JButton(); 
+     	b = new StringBuffer(); b.append("<html><h2>Remove</h2></html>");
+    	btnRemove.setText(b.toString());
+    	btnRemove.setBounds(50, 180, 120, 30);
+     	panelEditActivityDetails.add(btnRemove);
+     	btnRemove.addActionListener(new ActionListener() {
+     		public void actionPerformed(ActionEvent e) {
+     			if (listSearchResultEmployee.getSelectedIndex() == -1) {
+					System.out.println("You need to choose an employee to remove");
+				} else {
+					removeEmployee();
+					searchResultEmployee.clear(); 
+					setActivity(activity);  
+				}	
+     		}
+     	});
+     	
+        // Activity name field
+        JLabel lblActivityName = new JLabel("Activity Name:");
+        lblActivityName.setBounds(50, 220, 100, 30);
+        panelEditActivityDetails.add(lblActivityName);
 
-        listScrollPane.setBounds(80, 120, 250, 150);
-     	panelEditActivityDetails.add(listScrollPane);
-     		
-//     	btnAdd = new JButton();
-//     	StringBuffer b = new StringBuffer(); 
-//     	b.append("<html><h2>Add</h2></html>");
-//     	btnAdd.setText(b.toString());
-//     	btnAdd.setBounds(245, 290, 90, 40);
-//     	panelActivityDetails.add(btnAdd);
-//     	btnAdd.addActionListener(new ActionListener() {
-//	     	public void actionPerformed(ActionEvent e) {
-//	     		if (listEmployees.getSelectedIndex() == -1) {
-//	     			panelAddEmployee.setVisible(true);
-//	     			
-//	     		} else {
-//	     			System.out.println("");
-//	     		}
-//	     	}
-//     	});
-     		
-//     	btnRemove = new JButton(); 
-//     	b = new StringBuffer(); b.append("<html><h2>Remove</h2></html>");
-//    	btnRemove.setText(b.toString());
-//    	btnRemove.setBounds(80, 290, 120, 40);
-//     	panelActivityDetails.add(btnRemove);
-//     	btnPrevious.addActionListener(new ActionListener() {
-//     		public void actionPerformed(ActionEvent e) {
-//     			panelAddEmployee.setVisible(true);
-//     			panelActivityDetails.setVisible(false);
-//     			// Activities.clear(); ? 
-//     		}
-//     	});
-//     	
-//     	btnPrevious = new JButton();
-//     	b = new StringBuffer(); b.append("<html><h2>Previous</h2></html>");
-//     	btnPrevious.setText(b.toString());
-//     	btnPrevious.setBounds(80, 290, 120, 40);
-//     	panelActivityDetail.add(btnPrevious);
-//     	btnPrevious.addActionListener(new ActionListener() {
-//     		public void actionPerformed(ActionEvent e) {
-//     			panelSelectEmployee.setVisible(true);
-//     			panelSelectActivity.setVisible(false);
-//     			panelGiveTime.setVisible(false);
-//     			relevantActivities.clear();
-//     		}
-//     	});
+        activityNameField = new JTextField();
+        activityNameField.setBounds(150, 220, 140, 30);
+        panelEditActivityDetails.add(activityNameField);
+
+
+
+        // Set start week and end week
+        startWeekField = new JTextField();
+		startWeekField.setBounds(150, 250, 35, 30);
+		panelEditActivityDetails.add(startWeekField);
+		
+		endWeekField = new JTextField();
+		endWeekField.setBounds(150, 280, 35, 30);
+		panelEditActivityDetails.add(endWeekField);
+		
+		Integer[] comboBoxItems = new Integer[lastYear-firstYear];
+		for (int i = 0; i < lastYear - firstYear; i++) {
+			comboBoxItems[i] = firstYear + i;
+		}
+		startYearComboBox = new JComboBox<>(comboBoxItems);
+		startYearComboBox.setBounds(185, 250, 85, 30);
+		startYearComboBox.setSelectedItem(2019);
+		panelEditActivityDetails.add(startYearComboBox);
+		endYearComboBox = new JComboBox<>(comboBoxItems);
+		endYearComboBox.setBounds(185, 280, 85, 30);
+		endYearComboBox.setSelectedItem(2019);
+		panelEditActivityDetails.add(endYearComboBox);
+		
+		JLabel lblDates = new JLabel();
+		lblDates.setVerticalAlignment(SwingConstants.TOP);
+		lblDates.setHorizontalAlignment(SwingConstants.LEFT);
+		lblDates.setBounds(50, 250, 260, 75);
+		StringBuffer b4 = new StringBuffer();
+		b4.append("<html><b>Start:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;week&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of<br><br>"
+					 + "<b>End:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;week&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; of</html>");
+		lblDates.setText(b4.toString());
+		panelEditActivityDetails.add(lblDates);
+
+        // Amount of hours
+        JLabel lblAmountOfHours = new JLabel("Expected hours:");
+        lblAmountOfHours.setBounds(50, 310, 105, 30);
+        panelEditActivityDetails.add(lblAmountOfHours);
+
+        amountOfHours = new JTextField();
+        amountOfHours.setBounds(150, 310, 140, 30);
+        panelEditActivityDetails.add(amountOfHours);
+     	
         
+     	btnPrevious = new JButton();
+     	b = new StringBuffer(); b.append("<html><h2>Previous</h2></html>");
+     	btnPrevious.setText(b.toString());
+     	btnPrevious.setBounds(50, 350, 100, 30);
+     	panelEditActivityDetails.add(btnPrevious);
+     	btnPrevious.addActionListener(new ActionListener() {
+     		public void actionPerformed(ActionEvent e) {
+     			panelEditActivityDetails.setVisible(false);
+     			panelEditActivitySearch.setVisible(true);
+     			searchResultEmployee.clear();
+     		}
+     	});
         
+     	btnSave = new JButton(); 
+     	b = new StringBuffer(); 
+     	b.append("<html><h2>Save</h2></html>");
+        btnSave.setText(b.toString());
+        btnSave.setBounds(255, 350, 90, 30);
+        panelEditActivityDetails.add(btnSave);
+        btnSave.addActionListener(new ActionListener() {
+     		public void actionPerformed(ActionEvent e) {
+     			editActivity(); 
+                panelEditActivityDetails.setVisible(false);
+//                clear();
+                panelEditActivitySuccess.setVisible(true);
+     		}
+        });
+     	
+        
+        // Add employee panel
+        panelAddEmployee = new JPanel();
+        panelEditActivities.add(panelAddEmployee);
+        panelAddEmployee.setLayout(null);
+        panelAddEmployee.setBounds(0, 28, 350, 500);
+        panelAddEmployee.setVisible(false);
+        
+        lblPhaseAddEmployee = new JLabel();
+		lblPhaseAddEmployee.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPhaseAddEmployee.setVerticalAlignment(SwingConstants.TOP);
+		lblPhaseAddEmployee.setBounds(160, 0, 150, 90);
+		b = new StringBuffer();
+		b.append("<html><h1>&nbsp;Step 3</h1>Add another employee to the activty</html>");
+		lblPhaseAddEmployee.setText(b.toString());
+		panelAddEmployee.add(lblPhaseAddEmployee);
+		
+		lblAddEmployee = new JLabel("Employee:");
+		lblAddEmployee.setBounds(50, 100, 100, 30);
+		panelAddEmployee.add(lblAddEmployee);
+		
+		searchFieldAddEmployee = new JTextField();
+		searchFieldAddEmployee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				searchAllEmployees();
+			}
+		});
+		searchFieldAddEmployee.setBounds(100, 100, 130, 30);
+		panelAddEmployee.add(searchFieldAddEmployee);
+		searchFieldAddEmployee.setColumns(10);
 		
 		
-        
-        // Add employee
+		// Search after new employee to add to activity 
+		searchResultsAddEmployee = new DefaultListModel<>();
+		listSearchResultAddEmployee = new JList<Employee>(searchResultsAddEmployee);
+		listSearchResultAddEmployee.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listSearchResultAddEmployee.setSelectedIndex(0);
+		listSearchResultAddEmployee.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (listSearchResultAddEmployee.getSelectedIndex() == -1) {
+					searchFieldAddEmployee.setText("");
+				} else {
+					searchFieldAddEmployee.setText(listSearchResultAddEmployee.getSelectedValue().getInitials());
+				}
+			}
+		});
+		listSearchResultAddEmployee.setVisibleRowCount(4);
+        JScrollPane listScrollPaneAddEmployee = new JScrollPane(listSearchResultAddEmployee);
+
+        listScrollPaneAddEmployee.setBounds(50, 140, 295, 80);
+		panelAddEmployee.add(listScrollPaneAddEmployee);
+		
+		btnAddNewEmployee = new JButton();
+     	b = new StringBuffer(); 
+     	b.append("<html><h2>Add</h2></html>");
+     	btnAddNewEmployee.setText(b.toString());
+     	btnAddNewEmployee.setBounds(255, 280, 90, 30);
+     	panelAddEmployee.add(btnAddNewEmployee);
+     	btnAddNewEmployee.addActionListener(new ActionListener() {
+	     	public void actionPerformed(ActionEvent e) {
+	     		if (listSearchResultAddEmployee.getSelectedIndex() == -1) {
+	     			System.out.println("");	     			
+	     		} else {
+	     			panelAddEmployee.setVisible(false);
+	     			panelEditActivityDetails.setVisible(true);
+	     			addEmployee(); 
+	     			searchResultEmployee.clear(); 
+	     			setActivity(activity); 
+	     		}
+	     	}
+     	});
+		
+		
+		createActivitiesScreenCopy = new CreateActivitiesScreenCopy(planningApp, this); 
+		
+		// Success message 
+		panelEditActivitySuccess = new JPanel();
+	    panelEditActivities.add(panelEditActivitySuccess);
+	    panelEditActivitySuccess.setBounds(50, 110, 300, 200);
+	    panelEditActivitySuccess.setLayout(null);
+	    panelEditActivitySuccess.setBorder(BorderFactory.createLineBorder(Color.green, 5));
+	    panelEditActivitySuccess.setBackground(Color.white);
+	    panelEditActivitySuccess.setVisible(false);
+		JLabel lblSuccessMessage = new JLabel("The changes were saved");
+		lblSuccessMessage.setBounds(75, 50, 200, 30);
+		panelEditActivitySuccess.add(lblSuccessMessage);
+	        
+	    JButton btnEditNewActivity = new JButton("Edit another activity");
+	    btnEditNewActivity.setBounds(0, 100, 190, 50);
+	    panelEditActivitySuccess.add(btnEditNewActivity);
+	    btnEditNewActivity.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+				clear();
+				setProject(project);
+				panelEditActivitySuccess.setVisible(false);
+				panelCheckLeader.setVisible(false);
+				panelEditActivitySearch.setVisible(true);
+			}
+		});
         
     }
     
-    public void setProject(Project project) {
+    private void initializeSearchResults() { 
+		project.getActivities().forEach(a->{searchResults.addElement(a);});	
+	}
+    
+    private void initializeSearchResultsEmployee() {
+    	try {
+        	activity.getAssignedEmployees().forEach((m) -> {searchResultEmployee.addElement(m);});
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+    }
+    
+    private void initializeSearchResultsAllEmployees() { 
+    	planningApp.getEmployees().forEach((m) -> {searchResultsAddEmployee.addElement(m);});	
+	}
+
+	public void setProject(Project project) {
     	 this.project = project;
          StringBuffer b = new StringBuffer();
          b.append("<html>Project Name: <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
@@ -347,49 +556,78 @@ public class EditActivitiesScreen {
              btnNo.setVisible(false);
              btnOkay.setVisible(true);
          }
-    	
+         initializeSearchResults();
     }
     
-    public void searchActivities(int projectNumber) {
-    	// Reminder to select an activity 	
-    	StringBuffer b = new StringBuffer();
-		b.append("<html><b>Reminder:</b> Select the<br>activity</html>");
-		activityReminderField.setText(b.toString());
-		
+    public void searchActivities() {
+
 		searchResults.clear();	
 		try {
-			planningApp.searchForActivitiesByName(projectNumber, searchField.getText())
+			planningApp.searchForActivitiesByName(project.getProjectNumber(), searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage()); // TODO correct new solution
 		} 
     	
     }
     
-    public void setActivity() {
+    public void setActivity(Activity activity) {
+    	this.activity = activity; 
     	
+    	// Display given settings for activity 
+    	StringBuffer b = new StringBuffer();
+        b.append(activity.getName());
+        activityNameField.setText(b.toString());
+        
+        b = new StringBuffer(); 
+        b.append(activity.getExpectedAmountOfHours());
+    	amountOfHours.setText(b.toString());
+        
+    	initializeSearchResultsEmployee(); 
     }
     
     public void editActivity() {
-    	// Update name there is no way to update a name
+    	// There is no way to update a name
+    	String name = activity.getName(); 
     	
-    	// Update start week 
-    	if (!(startDayField.getText().equals("") || 
-				startMonthField.getText().equals("") || 
-				startYearField.getText().equals(""))) { // All fields need to be filled out
-			try {
-				int day = Integer.parseInt(startDayField.getText());
-				int month = Integer.parseInt(startMonthField.getText());
-				int year = Integer.parseInt(startYearField.getText());
-				GregorianCalendar startDate = new GregorianCalendar(year, month - 1, day);
-				planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(), activity.getName(), null);
-			} catch (Exception e) {
+    	// Update start week  to the activity
+        if (!startWeekField.getText().equals("")) { // Only change the start week if there is new information
+            try {
+                int week = Integer.parseInt(startWeekField.getText());
+                int year = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
+                GregorianCalendar startDate = new GregorianCalendar(); 
+                startDate.setWeekDate(year, week, GregorianCalendar.SUNDAY);
+                planningApp.editStartDateOfActivity(startDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // Update the end week of the activity
+        if (!endWeekField.getText().equals("")) { // Only change if there is new information
+            
+            try {
+                int week = Integer.parseInt(endWeekField.getText());
+                int year = Integer.parseInt(endYearComboBox.getSelectedItem().toString());
+                GregorianCalendar endDate = new GregorianCalendar();
+                endDate.setWeekDate(year, week, GregorianCalendar.SATURDAY);
+                planningApp.editEndDateOfActivity(endDate, project.getProjectNumber(),name, project.getProjectLeader().getInitials());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    	    	
+    	// Update expected amount of hours 
+        if(!amountOfHours.getText().equals("")) {
+        	float hours = Float.parseFloat(amountOfHours.getText()); 
+        	try {
+				planningApp.editExpectedAmountOfHoursForActivity(hours, project.getProjectNumber(), name, project.getProjectLeader().getInitials());
+			} catch (ActivityNotFoundException | OperationNotAllowedException | NotProjectLeaderException e) {
 				System.out.println(e.getMessage());
 			}
-		}
-    	
-    	// Update end week
-    	// Update expected amount of hours 
+        	
+        }
+        
     }
 
 	public void setVisible(boolean b) {
@@ -397,33 +635,75 @@ public class EditActivitiesScreen {
 	}
 	
 	public void clear() {
-		employeeNameField.setText("");
-        activityNameField.setText("");
-        amountOfHours.setText("");
-        lblLeader.setText("Project Leader:");
-        lblProjectName.setText("Project Name:");
+		lblProjectName.setText("Projectname: ");
+        lblLeader.setText("Project Leader: "); 
+		
+		btnYes.setVisible(true);
+        btnNo.setVisible(true);
+        btnOkay.setVisible(false);
+    	panelEditActivitySuccess.setVisible(false);
+        panelEditActivitySearch.setVisible(false);    
+        panelEditActivityDetails.setVisible(false);
+        panelAddEmployee.setVisible(false); 
+        panelCheckLeader.setVisible(true);
+        
         startWeekField.setText("");
         endWeekField.setText("");
         startYearComboBox.setSelectedItem(2019);
         endYearComboBox.setSelectedItem(2019); 
 		searchField.setText("");
 		searchResults.clear();
+		searchResultEmployee.clear();
     }
-//
-//	protected void searchEmployees() {
-//		// Show a reminder to select the employee
-//		StringBuffer b = new StringBuffer();
-//		b.append("<html><b>Reminder:</b> Select the<br>employee</html>");
-//		employeeReminderField.setText(b.toString());
-//		
-//		searchResults.clear();
-//		try {
-//			planningApp.searchForEmployeesByName(searchField.getText())
-//			.forEach((m) -> {searchResults.addElement(m);});
-//		} catch (OperationNotAllowedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}		
-//	}
+
+	protected void removeEmployee() {
+		String employeeInitials = listSearchResultEmployee.getSelectedValue().getInitials();  
+		System.out.println(employeeInitials);
+		try {
+			planningApp.removeEmployeeFromActivity(project.getProjectNumber(), activity.getName(), employeeInitials, project.getProjectLeader().getInitials());
+		} catch (OperationNotAllowedException | NotProjectLeaderException | ActivityNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+	}
+
+	public void addPanel(JPanel panel) {
+		parentScreen.addPanel(panel);	
+	}
+	
+	public void searchEmployees() {
+		searchResultEmployee.clear();
+		activity.getAssignedEmployees().forEach((m) -> {searchResultEmployee.addElement(m);});
+			
+	}
+	
+	public void searchAllEmployees() {		
+		searchResultsAddEmployee.clear();
+		try {
+			planningApp.searchForEmployeesByName(searchFieldAddEmployee.getText())
+			.forEach((m) -> {searchResultsAddEmployee.addElement(m);});
+		} catch (OperationNotAllowedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
+	public void addEmployee() {
+		String initials = searchFieldAddEmployee.getText(); 
+        try{
+            planningApp.assignEmployee(project.getProjectNumber(), activity.getName(), project.getProjectLeader().getInitials(), initials);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+	}
+	
+    private void setSuccessMessage() {
+        StringBuffer b = new StringBuffer();
+        b.append("<html><h1>The activity \"");
+        b.append(activity.getName());
+        b.append("\" was changed!</h1><br>");
+        b.append("<p>You can now add or edit another activity to this project.</p></html>");
+        lblSuccessMessage.setText(b.toString());
+    }
 
 }
