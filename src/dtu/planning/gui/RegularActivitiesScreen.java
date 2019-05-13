@@ -197,11 +197,10 @@ public class RegularActivitiesScreen {
 		btnEditRegActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (editDatesMode) {
-					try {
-						editDates();
+					boolean datesWereChanged = false;
+					datesWereChanged = editDates();
+					if (datesWereChanged) {
 						closeEditPanel();
-					} catch (Exception e2) {
-						setConsoleMessage(e2.getMessage());
 					}
 				} else {
 					if (listSearchResult.getSelectedIndex() == -1) {
@@ -263,22 +262,38 @@ public class RegularActivitiesScreen {
 		btnEditRegActivity.setText("Edit Expected Start and End");
 	}
 	
-	private void editDates() throws OperationNotAllowedException {
-		int startWeek = Integer.parseInt(startWeekField.getText());
-		int endWeek = Integer.parseInt(endWeekField.getText());
-		int startYear = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
-		int endYear = Integer.parseInt(endYearComboBox.getSelectedItem().toString());
+	private boolean editDates() {
+		int startWeek;
+		int endWeek;
+		int startYear;
+		int endYear;
+		try {
+			startWeek = Integer.parseInt(startWeekField.getText());
+			endWeek = Integer.parseInt(endWeekField.getText());
+			startYear = Integer.parseInt(startYearComboBox.getSelectedItem().toString());
+			endYear = Integer.parseInt(endYearComboBox.getSelectedItem().toString());
+		} catch (Exception e) {
+			setConsoleMessage("Was not able not read an integer " + e.getMessage());
+			return false;
+		}
+		
 		GregorianCalendar start = new GregorianCalendar();
 		GregorianCalendar end = new GregorianCalendar();
 		start.setWeekDate(startYear, startWeek, GregorianCalendar.SUNDAY);
 		end.setWeekDate(endYear, endWeek, GregorianCalendar.SATURDAY);
-		if (end.before(start)) {
-			throw new OperationNotAllowedException("End week must be after start week");
-		} else if (end.after(new GregorianCalendar(lastYear - 1, 11, 31))) {
-			throw new OperationNotAllowedException("The regular activity must end before " + lastYear);
+		try {
+			if (start.after(regularActivity.getEndWeek())) {
+				planningApp.editEndWeekOfRegular(end, regularActivity.getName());
+				planningApp.editStartWeekOfRegular(start, regularActivity.getName());
+			} else {
+				planningApp.editStartWeekOfRegular(start, regularActivity.getName());
+				planningApp.editEndWeekOfRegular(end, regularActivity.getName());
+			}	
+			return true;
+		} catch (OperationNotAllowedException e) {
+			setConsoleMessage(e.getMessage());
+			return false;
 		}
-		planningApp.editStartWeekOfRegular(start, regularActivity.getName());
-		planningApp.editEndWeekOfRegular(end, regularActivity.getName());
 		
 	}
 	
