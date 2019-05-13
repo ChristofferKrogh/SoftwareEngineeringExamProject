@@ -66,7 +66,8 @@ public class ToStringSteps {
 		Employee employee = new Employee(null,initials);
 		employeeHolder.setEmployee(employee);
 		
-		Employee projectLeader = new Employee(null, null);
+		// "PL" is chosen as initials for the Project Leader.
+		Employee projectLeader = new Employee(null, "PL");
 		
 		// If this step is used by other features than to-string this might prevent a proper setup since is overrides projectleader that might be set by anohter given
 		project.setProjectLeader(projectLeader);
@@ -97,7 +98,6 @@ public class ToStringSteps {
 		Project project = projectHolder.getProject();
 		project.setEndDate(date);
 	}
-
 	
 	@When("I get the string representation of the employee")
 	public void iGetTheStringRepresentationOfTheEmployee() {
@@ -159,7 +159,12 @@ public class ToStringSteps {
 		// This looks odd, but its still a sanity check. It ensures that the project can be found with the match function.
 	    isMatched = projectHolder.getProject().match(Integer.toString(projectHolder.getProject().getProjectNumber()));
 	}
-
+	
+	@When("I match the time registation for employee on the date {int}\\\\/{int}\\\\/{int}")
+	public void iMatchTheTimeRegistationForEmployeeOnTheDate(Integer day, Integer month, Integer year) {
+		GregorianCalendar date = new GregorianCalendar(year, month - 1, day);
+	    isMatched = timeRegistrationHolder.getTimeRegistration().match(employeeHolder.getEmployee(), date);
+	}
 	
 	@Then("I get the string {string}")
 	public void iGetTheString(String wantedString) {

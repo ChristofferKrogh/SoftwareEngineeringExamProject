@@ -305,12 +305,14 @@ public class EditProjectScreen {
 	}
 	
 	public void editProject() {
+		StringBuffer b = new StringBuffer();
+		b.append("<html>");
 		// Update project name
 		if (!projectNameField.getText().equals("")) {
 			try {
 				planningApp.setNameOfProject(projectNameField.getText(), project.getProjectNumber());
 			} catch (OperationNotAllowedException e) {
-				System.out.println(e.getMessage());
+				b.append(e.getMessage() + "<br>");
 			}
 		}
 		
@@ -319,7 +321,7 @@ public class EditProjectScreen {
 		try {
 			planningApp.setProjectInternal(isProjectInternal, project.getProjectNumber());
 		} catch (OperationNotAllowedException e) {
-			System.out.println(e.getMessage());
+			b.append(e.getMessage() + "<br>");
 		}
 		
 		// Set project leader if possible
@@ -327,7 +329,7 @@ public class EditProjectScreen {
 			try {
 				planningApp.setProjectLeader(project.getProjectNumber(), listSearchResult.getSelectedValue().getInitials());
 			} catch (OperationNotAllowedException e) {
-				System.out.println(e.getMessage());
+				b.append(e.getMessage() + "<br>");
 			}
 		}
 		
@@ -342,7 +344,7 @@ public class EditProjectScreen {
 				GregorianCalendar startDate = new GregorianCalendar(year, month - 1, day);
 				planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				b.append(e.getMessage() + "<br>");
 			}
 		}
 		
@@ -357,13 +359,20 @@ public class EditProjectScreen {
 				GregorianCalendar endDate = new GregorianCalendar(year, month - 1, day);
 				planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				b.append(e.getMessage() + "<br>");
 			}
 		}
+		b.append("</html>");
+		setConsoleMessage(b.toString());
+		
 	}
 	
 	public void addPanel(JPanel panel) {
 		parentWindow.addPanel(panel);
+	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
 	}
 	
 }

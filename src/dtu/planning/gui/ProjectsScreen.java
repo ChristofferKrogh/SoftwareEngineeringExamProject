@@ -30,6 +30,7 @@ public class ProjectsScreen {
 	private CreateProjectScreen createProjectScreen;
 	private EditProjectScreen editProjectScreen;
 	private CreateActivitiesScreen createActivitiesScreen;
+	private GenerateReportScreen generateReportScreen;
 	private JPanel panelProjects;
 	private JTextField searchField;
 	private JList<Project> listSearchResult;
@@ -93,7 +94,7 @@ public class ProjectsScreen {
 		btnEditProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select a project");
+					setConsoleMessage("You need to select a project");
 				} else {
 					editProjectScreen.setProject(listSearchResult.getSelectedValue());
 					setVisible(false);
@@ -110,7 +111,7 @@ public class ProjectsScreen {
 		btnCreateActivity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select a project");
+					setConsoleMessage("You need to select a project");
 				} else {
 					// Jeg forestiller mig, at det bliver noget i stil med:
 					createActivitiesScreen.setProject(listSearchResult.getSelectedValue());
@@ -128,9 +129,12 @@ public class ProjectsScreen {
 		btnGenerateReport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (listSearchResult.getSelectedIndex() == -1) {
-					System.out.println("You need to select a project");
+					setConsoleMessage("You need to select a project");
 				} else {
-					// Generate Report
+					generateReportScreen.setProject(listSearchResult.getSelectedValue());
+					setVisible(false);
+					clear();
+					generateReportScreen.setVisible(true);
 				}
 			}
 		});
@@ -143,8 +147,6 @@ public class ProjectsScreen {
 		listSearchResult.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listSearchResult.setSelectedIndex(0);
 		listSearchResult.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
 			public void valueChanged(ListSelectionEvent e) {
 		        if (e.getValueIsAdjusting() == false) {
 
@@ -191,6 +193,7 @@ public class ProjectsScreen {
 		createProjectScreen = new CreateProjectScreen(planningApp, this);
 		editProjectScreen = new EditProjectScreen(planningApp, this);
 		createActivitiesScreen = new CreateActivitiesScreen(planningApp, this);
+		generateReportScreen = new GenerateReportScreen(planningApp, this);
 
 	}
 	protected void searchProjects() {
@@ -200,9 +203,7 @@ public class ProjectsScreen {
 			planningApp.searchForProjectsByName(searchField.getText())
 			.forEach((m) -> {searchResults.addElement(m);});
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
-			// TODO: Add action if no project was found.
-			// e.printStackTrace();
+			setConsoleMessage(e.getMessage());
 		}
 	}
 
@@ -224,5 +225,9 @@ public class ProjectsScreen {
 		btnEditProject.setVisible(isProjectSelected);
 		btnCreateActivity.setVisible(isProjectSelected);
 		btnGenerateReport.setVisible(isProjectSelected);
+	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
 	}
 }

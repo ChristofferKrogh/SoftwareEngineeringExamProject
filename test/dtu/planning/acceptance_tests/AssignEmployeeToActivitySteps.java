@@ -115,10 +115,13 @@ public class AssignEmployeeToActivitySteps {
 			errorMessageHolder.setErrorMessage(e.getMessage());
 		}
 		
-		if (activityHolder.getActivity() == null) {
-			// The 2nd and 3rd arguments are set to 0 as they are not important here.
-			activityHolder.setActivity(new Activity(activityName,null,null,0));
-		}
+		// ActivityHolder should be empty before this step
+		assertEquals(activityHolder.getActivity(),null);
+		
+		// The 2nd and 3rd arguments are set to 0 as they are not important here.
+		// Put in some activity that does not exist in the planningApp or project.
+		// To avoid null-pointer exceptions - so that edge case errors may be tested
+		activityHolder.setActivity(new Activity(activityName,null,null,0));
 	}
 
 

@@ -47,13 +47,11 @@ public class Activity {
 		return endWeek;
 	}
 	
-	// TODO: there are no tests for the method below
 	public String getStartWeekString() {
 		return "week " + startWeek.get(GregorianCalendar.WEEK_OF_YEAR)
 				+ " of " + startWeek.get(GregorianCalendar.YEAR);
 	}
 
-	// TODO: there are no tests for the method below
 	public String getEndWeekString() {
 		return "week " + endWeek.get(GregorianCalendar.WEEK_OF_YEAR)
 				+ " of " + endWeek.get(GregorianCalendar.YEAR);
@@ -91,7 +89,7 @@ public class Activity {
 
 	public TimeRegistration getTimeRegistrationForEmployeeOnDate (Employee employee, GregorianCalendar date) throws TimeRegistrationNotFoundException {
 		for (TimeRegistration t : this.timeRegistrations) {
-			if (t.getEmployee()==employee && t.getDate()==date) {
+			if (t.match(employee, date)) {
 				return t;
 			}
 		}
@@ -109,13 +107,18 @@ public class Activity {
 		return name.toLowerCase().contains(searchText.toLowerCase());
 	}
 
+	
+	
 	public String toString() {
 		return name;
 	}
 
 	public void setExpectedAmountOfHours(float hours) throws OperationNotAllowedException {
 		if(hours < 0) {
-			throw new OperationNotAllowedException("The expected amount of hours must be at least 0");
+			throw new OperationNotAllowedException("The expected amount of hours must be at least 0 hours");
+		}
+		if (hours > 24) {
+			throw new OperationNotAllowedException("The expected amount of hours cannot be higher than 24 hours");
 		}
 		this.expectedAmountOfHours = hours; 	
 	}

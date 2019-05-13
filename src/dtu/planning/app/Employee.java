@@ -21,8 +21,7 @@ public class Employee {
 	public String getInitials() {
 		return initials; 
 	}
-	
-	// TODO: there are no tests for the method below
+
 	public boolean match(String searchText) {
 		searchText = searchText.toLowerCase();
 		String name;
@@ -39,6 +38,13 @@ public class Employee {
 	
 	public String toString() {
 		return this.name + " (" + this.initials + ")";
+	}
+	
+	
+	public boolean equals(Object obj) {
+		Employee other = (Employee) obj;
+				
+		return this.initials.equals(other.initials);
 	}
 	
 }

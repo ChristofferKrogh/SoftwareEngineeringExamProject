@@ -86,12 +86,8 @@ public class SearchSteps {
 	}
 	
 	@When("I search a project with that id")
-	public void iSearchAProjectWithThatId() {
-		try {
-			foundProject = planningAppHolder.getPlanningApp().searchForProject(projectHolder.getProject().getProjectNumber());
-		} catch (OperationNotAllowedException e) {
-			errorMessageHolder.setErrorMessage(e.getMessage());
-		}
+	public void iSearchAProjectWithThatId() throws OperationNotAllowedException {
+		foundProject = planningAppHolder.getPlanningApp().searchForProject(projectHolder.getProject().getProjectNumber());
 	}	
 	
 	@When("I search a project with name {string}")
@@ -126,11 +122,6 @@ public class SearchSteps {
 	@Then("I get an activity with name {string}")
 	public void iGetAnActivityWithName(String activityName) {
 		assertEquals(activityHolder.getActivity().getName(),activityName);
-	}
-	
-	@Then("I get a project with id {int}")
-	public void iGetAProjectWithId(int projectId) {
-		assertEquals(projectHolder.getProject().getProjectNumber(),projectId);
 	}
 	
 	@Then("I get a project that project")

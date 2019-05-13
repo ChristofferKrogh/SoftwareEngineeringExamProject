@@ -13,7 +13,7 @@ Scenario: Match employee intitials
     And the employee has the name "John Doe"
     When I match the employee with "jd"
     Then I get a match
-    
+
 Scenario: Match employee first name
     Given employee with initials "JD" exists
     And the employee has the name "John Doe"
@@ -153,3 +153,21 @@ Scenario: Represent a time registration as a string
     When the employee report 4 hour on "Don't look at me" on 1/1/2019
     When I get the string representation of the time registration
     Then I get the string "4.0 hours on 1/1/2019 for John Smith"
+
+Scenario: Search for time registration by employee and date successfully
+    Given employee with initials "ABCD" exists
+    And the project with id 1 exists    
+	And "BS" is project leader for the project
+    And the activity with name "Some Activity" exists for project
+    And the employee with initials "ABCD" has reported 0 hours for the activity with name "Some Activity" on the date 1/2/2019
+    When I match the time registation for employee on the date 1/2/2019
+    Then I get a match
+
+Scenario: Fail match timeregistration
+    Given employee with initials "ABCD" exists
+    And the project with id 1 exists    
+	And "BS" is project leader for the project
+    And the activity with name "Some Activity" exists for project
+    And the employee with initials "ABCD" has reported 0 hours for the activity with name "Some Activity" on the date 1/2/2019
+    When I match the time registation for employee on the date 31/12/3000
+    Then I do not get a match

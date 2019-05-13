@@ -84,12 +84,13 @@ public class CreateRegularActivityScreen {
 				try {
 					createRegActivity();
 				} catch (Exception e1) {
-					System.out.println(e1.getMessage());
+					setConsoleMessage(e1.getMessage());
 				}
 				if (regActivity != null) {
 					setVisible(false);
 					setSuccessMessage();
 					panelCreateRegActivitySuccess.setVisible(true);
+					regActivity = null;
 				}
 			}
 		});
@@ -291,5 +292,9 @@ public class CreateRegularActivityScreen {
 		startYearComboBox.setSelectedItem(2019);
 		endYearComboBox.setSelectedItem(2019);
 		employeeReminderField.setText("");
+	}
+	
+	public void setConsoleMessage(String message) {
+		parentWindow.setConsoleMessage(message);
 	}
 }

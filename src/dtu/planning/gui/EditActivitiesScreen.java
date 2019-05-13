@@ -84,6 +84,7 @@ public class EditActivitiesScreen {
     
 
     public EditActivitiesScreen(PlanningApp planningApp, EditProjectScreen parentScreen) {
+    	// TODO Remove planningApp from constructor, not used here
         this.planningApp = planningApp;
         this.parentScreen = parentScreen;
         initialize();
