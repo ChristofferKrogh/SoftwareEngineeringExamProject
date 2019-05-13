@@ -25,6 +25,7 @@ public class MainScreen {
 	ProjectsScreen projectsScreen;
 	CreateProjectScreen createProjectScreen;
 	CreateActivitiesScreen createActivitiesScreen; 
+	CreateEmployeeScreen createEmployeeScreen;
 	EditProjectScreen editProjectScreen;
 	EditActivitiesScreen editActivitiesScreen; 
 	RegularActivitiesScreen regularActivitiesScreen;
@@ -181,6 +182,16 @@ public class MainScreen {
 		});
 		btnGetTime.setBounds(104, 286, 193, 29);
 		panelMenu.add(btnGetTime);
+
+		JButton btnAddEmployee = new JButton("Add Employee");
+		btnAddEmployee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				createEmployeeScreen.setVisible(true);
+			}
+		});
+		btnAddEmployee.setBounds(104, 380, 193, 29);
+		panelMenu.add(btnAddEmployee);
 		
 		projectsScreen = new ProjectsScreen(planningApp, this);
 		createProjectScreen = new CreateProjectScreen(planningApp, projectsScreen);
@@ -193,6 +204,7 @@ public class MainScreen {
 		correctReportedTimeScreen = new CorrectReportedTimeScreen(planningApp, this);
 		getDailyScreen = new GetDailyScreen(planningApp, this);
 		generateReportScreen = new GenerateReportScreen(planningApp, projectsScreen);
+		createEmployeeScreen = new CreateEmployeeScreen(planningApp, this);
 	}
 	
 	public void setVisible(boolean aFlag) {

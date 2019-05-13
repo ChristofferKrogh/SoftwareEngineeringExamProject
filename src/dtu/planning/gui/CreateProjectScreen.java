@@ -348,7 +348,9 @@ public class CreateProjectScreen {
 					GregorianCalendar startDate = new GregorianCalendar(year, month - 1, day);
 					planningApp.editStartDateOfProject(startDate, project.getProjectNumber());
 				} catch (Exception e) {
-					b.append(e.getMessage() + "<br>");				}
+					b.append("The project was created without a start date:<br>Something Went Wrong ");			
+					b.append(e.getMessage() + "<br>");
+				}
 			}
 			
 			// Add an end date to the project if possible
@@ -364,6 +366,7 @@ public class CreateProjectScreen {
 					GregorianCalendar endDate = new GregorianCalendar(year, month - 1, day);
 					planningApp.editEndDateOfProject(endDate, project.getProjectNumber());
 				} catch (Exception e) {
+					b.append("The project was created without an end date:<br>Something went wrong ");
 					b.append(e.getMessage() + "<br>");
 				}
 			}
