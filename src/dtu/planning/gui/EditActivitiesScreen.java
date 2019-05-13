@@ -250,15 +250,10 @@ public class EditActivitiesScreen {
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Something to redirect to create activity screen
-//				createActivitiesScreen.setProject(project); 
-				// TODO make new createActivitiesScreen so it returns to this screen 
 				createActivitiesScreenCopy.setProject(project);
+				searchResults.clear();  
 				setVisible(false);
-				clear();
 				createActivitiesScreenCopy.setVisible(true);
-//				panelEditActivitySearch.setVisible(false);
-//				panelEditActivityDetails.setVisible(false);
-//				clear(); 
 			}
 		});
 		
@@ -503,7 +498,7 @@ public class EditActivitiesScreen {
 		panelEditActivitySuccess.add(lblSuccessMessage);
 	        
 	    JButton btnEditNewActivity = new JButton("Edit another activity");
-	    btnEditNewActivity.setBounds(0, 100, 190, 50);
+	    btnEditNewActivity.setBounds(45, 100, 190, 50);
 	    panelEditActivitySuccess.add(btnEditNewActivity);
 	    btnEditNewActivity.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {

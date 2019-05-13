@@ -28,6 +28,7 @@ public class MainScreen {
 	RegularActivitiesScreen regularActivitiesScreen;
 	CreateRegularActivityScreen createRegularActivityScreen;
 	ReportTimeScreen reportTimeScreen;
+	CreateActivitiesScreenCopy createActivitiesScreenCopy ; 
 	private int firstYear = 2000;
 	private int lastYear = 2040;
 
@@ -174,6 +175,7 @@ public class MainScreen {
 		regularActivitiesScreen = new RegularActivitiesScreen(planningApp, this, firstYear, lastYear);
 		createRegularActivityScreen = new CreateRegularActivityScreen(planningApp, regularActivitiesScreen, firstYear, lastYear);
 		reportTimeScreen = new ReportTimeScreen(planningApp, this);
+		createActivitiesScreenCopy = new CreateActivitiesScreenCopy(planningApp, editActivitiesScreen); 
 		
 	}
 	

@@ -82,7 +82,6 @@ public class EditProjectScreen {
 				// Jeg forestiller mig, at det bliver noget i stil med:
 				editActivitiesScreen.setProject(project);
 				setVisible(false);
-				clear();
 				editActivitiesScreen.setVisible(true);
 				//–––––––––––––––––––––––––––––-
 				// project.getActivities().forEach((a)-> {System.out.println(a + " (" + a.getExpectedAmountOfHours() + " hours)" + " - " + a.getAssignedEmployees());});
