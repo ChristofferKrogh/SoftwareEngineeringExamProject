@@ -194,20 +194,20 @@ public class PlanningApp {
 		Employee projectLeader = searchForEmployee(projectLeaderInitials);
 		
 		// Design by contract
-		// assert employee!=null : "Precondition #1 violated";
+		assert employee!=null : "Precondition #1 violated";
 		
 		// Find project from id
 		Project project = this.searchForProject(projectNumber);
 
 		// This is design by contract to ensure the same employee isn't assigned twice to the same activity
-		// assert !project.getEmployeesAssignedToActivity(activityName).contains(employee) : "Precondition #2 violated";
+		assert !project.getEmployeesAssignedToActivity(activityName).contains(employee) : "Precondition #2 violated";
 		
 		// Assign employee to the activity
 		project.assignEmployee(activityName, projectLeader, employee);
 
 		// Design by contract
 		// Check if employee is assigned to activity. That should return true
-		// assert project.getEmployeesAssignedToActivity(activityName).contains(employee) : "Postcondition violated";
+		assert project.getEmployeesAssignedToActivity(activityName).contains(employee) : "Postcondition violated";
 		
 	}
 
@@ -268,7 +268,7 @@ public class PlanningApp {
 		Activity activity =  project.getActivityByName(activityName);
 		
 		// Design by contract
-		// assert project != null : "Precondition #1 violoated";
+		assert project != null : "Precondition #1 violoated";
 						
 		// Check if project leader 
 		if(!project.getProjectLeader().getInitials().equals(projectLeaderInitials)) {
@@ -276,11 +276,11 @@ public class PlanningApp {
 		}
 		
 		// Design by contract
-		// assert project.getProjectLeader() != null : "Precondition #2 violated";
+		assert project.getProjectLeader() != null : "Precondition #2 violated";
 		
 		activity.setExpectedAmountOfHours(expectedAmountOfHours);
 		
-		// assert Float.compare(activity.getExpectedAmountOfHours(),expectedAmountOfHours) == 0 : "Postcondition violated";
+		assert Float.compare(activity.getExpectedAmountOfHours(),expectedAmountOfHours) == 0 : "Postcondition violated";
 	}
 
 	public void removeEmployeeFromActivity(int projectNumber, String activityName, String oldEmployeeInitials, String projectLeaderInitials) throws OperationNotAllowedException, NotProjectLeaderException, ActivityNotFoundException {
@@ -327,8 +327,8 @@ public class PlanningApp {
 		Activity activity = project.getActivityByName(activityName);
 		
 		// Design by contract
-		// assert project != null : "Precondition #1 violoated";
-		// assert activity != null : "Precondition #2 violoated";
+		assert project != null : "Precondition #1 violoated";
+		assert activity != null : "Precondition #2 violoated";
 
 		// Check that the employee given exists, if not throw exception
 		this.checkEmployeeExist(timeRegistration.getEmployee());
@@ -337,7 +337,7 @@ public class PlanningApp {
 		activity.registerTime(timeRegistration);
 		
 		// Design by contract
-		// assert activity.getTimeRegistrations().contains(timeRegistration) : "Postcondition violated";
+		assert activity.getTimeRegistrations().contains(timeRegistration) : "Postcondition violated";
 	}
 	
 	public void correctTimeReport(int projectNumber, String activityName, TimeRegistration timeRegistration, int amountOfTime) throws OperationNotAllowedException, ActivityNotFoundException {
