@@ -6,8 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.GregorianCalendar;
-
 import org.junit.Test;
 
 import dtu.planning.app.ActivityNotFoundException;
@@ -111,7 +109,7 @@ public class MethodFourTest {
         planningApp.setProjectLeader(projectNumber, "PL");
         
         // Create activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
 
         
         // Check input
@@ -144,7 +142,7 @@ public class MethodFourTest {
         // Primary action test
         
         // Timeregistration with nonexisiting employee, previous assertions checks that only "PL", the project leader is a employee in the planning app. So "JD" cannot be there.
-        TimeRegistration timeRegistration = new TimeRegistration(new Employee(null,"JD"), new GregorianCalendar(),(float) 0.0);
+        TimeRegistration timeRegistration = new TimeRegistration(new Employee(null,"JD"), null,(float) 0.0);
         
         // Register time
         planningApp.registerTime(projectNumber, "Activity", timeRegistration);
@@ -167,7 +165,7 @@ public class MethodFourTest {
         planningApp.setProjectLeader(projectNumber, "PL");
         
         // Create activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
 
         
         // Check input
@@ -200,7 +198,7 @@ public class MethodFourTest {
         // Primary action test
         
         // Timeregistration with nonexisiting employee, previous assertions checks that only "PL", the project leader is a employee in the planning app. So "JD" cannot be there.
-        TimeRegistration timeRegistration = new TimeRegistration(new Employee(null,"PL"), new GregorianCalendar(),(float) 0.0);
+        TimeRegistration timeRegistration = new TimeRegistration(new Employee(null,"PL"), null,(float) 0.0);
         
         // Register time
         planningApp.registerTime(projectNumber, "Activity", timeRegistration);

@@ -6,8 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.GregorianCalendar;
-
 import org.junit.Test;
 
 import dtu.planning.app.ActivityNotFoundException;
@@ -32,7 +30,7 @@ public class MethodTwoTest {
         // Primary action test
         
         // Add activity
-        planningApp.addActivity(0, null, new GregorianCalendar(), new GregorianCalendar(), 0, null);
+        planningApp.addActivity(0, null, null, null, 0, null);
         
         // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
     }
@@ -61,7 +59,7 @@ public class MethodTwoTest {
         // Primary action test
         
         // Add activity
-        planningApp.addActivity(190, null, new GregorianCalendar(), new GregorianCalendar(), 0, null);
+        planningApp.addActivity(190, null, null, null, 0, null);
                 
         // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
     }
@@ -81,7 +79,7 @@ public class MethodTwoTest {
         planningApp.setProjectLeader(projectNumber, "PL");
         
         // Create activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
 
         
         // Check input
@@ -111,7 +109,7 @@ public class MethodTwoTest {
         // Primary action test
         
         // Add activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
                 
         // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
 	}
@@ -154,7 +152,7 @@ public class MethodTwoTest {
         // Primary action test
         
         // Add activity
-        planningApp.addActivity(projectNumber, null, new GregorianCalendar(), new GregorianCalendar(), 0, "JD");
+        planningApp.addActivity(projectNumber, null, null, null, 0, "JD");
                 
         // Assert that exception is given on the assign is in the @Test annotation. So this test will fail if the exception not is given.
 	}
@@ -198,7 +196,7 @@ public class MethodTwoTest {
         // Primary action test
         
         // Add activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
                 
         // Assert that the activity is created
         assertEquals(planningApp.searchForActivity(projectNumber, "Activity").getName(),"Activity");

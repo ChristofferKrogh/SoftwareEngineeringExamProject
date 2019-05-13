@@ -6,8 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.util.GregorianCalendar;
-
 import org.junit.Test;
 
 import dtu.planning.app.ActivityNotFoundException;
@@ -110,7 +108,7 @@ public class MethodThreeTest {
         planningApp.setProjectLeader(projectNumber, "PL");
 
         // Create activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
 
         
         // Check input
@@ -163,7 +161,7 @@ public class MethodThreeTest {
         planningApp.setProjectLeader(projectNumber, "PL");
 
         // Create activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
 
         
         // Check input
@@ -216,7 +214,7 @@ public class MethodThreeTest {
         planningApp.setProjectLeader(projectNumber, "PL");
 
         // Create activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
 
         
         // Check input
@@ -269,7 +267,7 @@ public class MethodThreeTest {
         planningApp.setProjectLeader(projectNumber, "PL");
 
         // Create activity
-        planningApp.addActivity(projectNumber, "Activity", new GregorianCalendar(), new GregorianCalendar(), 0, "PL");
+        planningApp.addActivity(projectNumber, "Activity", null, null, 0, "PL");
 
         
         // Check input
