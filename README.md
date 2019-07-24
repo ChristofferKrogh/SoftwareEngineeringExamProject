@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/ChristofferKrogh/SoftwareEngineeringExamProject.svg?token=zvbHMxD5bkzRoESesxKQ&branch=master)](https://travis-ci.com/ChristofferKrogh/SoftwareEngineeringExamProject)
+[![Known Vulnerabilities](https://snyk.io//test/github/ChristofferKrogh/SoftwareEngineeringExamProject/badge.svg?targetFile=pom.xml)](https://snyk.io//test/github/ChristofferKrogh/SoftwareEngineeringExamProject?targetFile=pom.xml)
 
 # SoftwareEngineeringExamProject
 
